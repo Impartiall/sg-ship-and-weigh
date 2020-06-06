@@ -16,6 +16,6 @@ function sparklegear_scale_interface_add_acp_page() {
         'Sparklegear Scale Interface',
         'Scale Interface',
         'manage_options',
-        'includes/sparklegear-scale-interface-acp-page.php'
+        'pages/sparklegear-scale-interface-acp-page.php'
     );
 }
