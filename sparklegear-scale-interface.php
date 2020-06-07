@@ -18,4 +18,7 @@
  * Domain Path:       /languages
  */
 
-require_once plugin_dir_path(__FILE__) . 'admin/sparklegear-scale-interface-functions.php';
+define( 'SPARKLEGEAR_SCALE_INTERFACE_PLUGIN_ROOT', plugin_dir_path( __FILE__ ) );
+
+require_once SPARKLEGEAR_SCALE_INTERFACE_PLUGIN_ROOT
+             . 'admin/sparklegear-scale-interface-functions.php';
