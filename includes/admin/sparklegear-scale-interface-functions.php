@@ -33,6 +33,6 @@ function sparklegear_scale_interface_get_admin_page_contents() {
      */
     include(
         SPARKLEGEAR_SCALE_INTERFACE_PLUGIN_ROOT
-        . 'pages/sparklegear-scale-interface-acp-page.php'
+        . 'includes/pages/sparklegear-scale-interface-acp-page.php'
     );
 }

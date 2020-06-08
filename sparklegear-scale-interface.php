@@ -21,4 +21,4 @@
 define( 'SPARKLEGEAR_SCALE_INTERFACE_PLUGIN_ROOT', plugin_dir_path( __FILE__ ) );
 
 require_once SPARKLEGEAR_SCALE_INTERFACE_PLUGIN_ROOT
-             . 'admin/sparklegear-scale-interface-functions.php';
+             . 'includes/admin/sparklegear-scale-interface-functions.php';
