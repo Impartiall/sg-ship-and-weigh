@@ -21,4 +21,4 @@
 define( 'SG_SHIP_AND_WEIGH_PLUGIN_ROOT', plugin_dir_path( __FILE__ ) );
 
 require_once SG_SHIP_AND_WEIGH_PLUGIN_ROOT
-             . 'includes/admin/sg-ship-and-weigh-functions.php';
+             . 'includes/admin/sg-ship-and-weigh-admin-functions.php';
