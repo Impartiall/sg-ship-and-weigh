@@ -13,7 +13,7 @@ add_action( 'admin_menu', 'sg_ship_and_weigh_add_acp_page' );
 
 function sg_ship_and_weigh_add_acp_page() {
     add_menu_page(
-        'SparkleGear Ship and Weigh',
+        'Ship and Weigh',
         'Ship and Weigh',
         'manage_options',
         'ship-and-weigh',
@@ -32,7 +32,7 @@ function sg_ship_and_weigh_get_admin_page_contents() {
      * Echo page payload and run any php in the file
      */
     include(
-        SPARKLEGEAR_SCALE_INTERFACE_PLUGIN_ROOT
+        SG_SHIP_AND_WEIGH_PLUGIN_ROOT
         . 'includes/pages/sg-ship-and-weigh-acp-page.php'
     );
 }
