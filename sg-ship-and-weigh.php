@@ -18,7 +18,8 @@
  * Domain Path:       /languages
  */
 add_action( 'init', function() {
-    $admin_assets_root = plugin_dir_url( __FILE__ ) . "/admin";
+                        // or plugin_dir_url (?)
+    $admin_assets_root = plugin_dir_path( __FILE__ ) . "admin";
 
     // Setup menu
     if( is_admin() ) {

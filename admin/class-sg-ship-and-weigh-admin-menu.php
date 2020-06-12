@@ -78,8 +78,8 @@ class SG_Ship_And_Weigh_Admin_Menu {
             $this->register_assets();
         }
 
-        wp_enqueue_script( $this_slug );
-        wp_enqueue_style( $this_slug );
+        wp_enqueue_script( $this->slug );
+        wp_enqueue_style( $this->slug );
     }
     /**
      * Render plugin settings menu
