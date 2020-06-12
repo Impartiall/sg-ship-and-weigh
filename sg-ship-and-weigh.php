@@ -17,8 +17,23 @@
  * Text Domain:       sg-ship-and-weigh
  * Domain Path:       /languages
  */
+add_action( 'init', function() {
+    $admin_assets_root = plugin_dir_url( __FILE__ ) . "/admin";
 
-define( 'SG_SHIP_AND_WEIGH_PLUGIN_ROOT', plugin_dir_path( __FILE__ ) );
+    // Setup menu
+    if( is_admin() ) {
+        require_once( $admin_assets_root .
+            '/class-sg-ship-and-weigh-admin-api.php'
+        );
+        require_once( $admin_assets_root .
+            '/class-sg-ship-and-weigh-admin-menu.php'
+        );
+        require_once( $admin_assets_root .
+            '/class-sg-ship-and-weigh-admin-settings.php'
+        );
 
-require_once SG_SHIP_AND_WEIGH_PLUGIN_ROOT
-             . 'includes/admin/sg-ship-and-weigh-admin-functions.php';
+        new SG_Ship_And_Weigh_Admin_Menu( $admin_assets_root );
+
+        (new SG_Ship_And_Weigh_Admin_API())->add_routes();
+    }
+});
