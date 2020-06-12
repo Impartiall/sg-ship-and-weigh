@@ -31,7 +31,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
     public function __construct( $assets_root ) {
         $this->assets_root = $assets_root;
 
-        add_action( 'admin_enqueue_scripts', array( $this, 'register_assests' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
 
         add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
     }
