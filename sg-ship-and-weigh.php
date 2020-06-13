@@ -16,7 +16,7 @@
  * Text Domain:       sg-ship-and-weigh
  * Domain Path:       /languages
  */
-defined( 'abspath' ) or die( 'Direct access blocked.' );
+defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
 // add_action( 'init', function() {
 //                         // or plugin_dir_url (?)
 //     $admin_assets_root = plugin_dir_path( __FILE__ ) . "admin";
