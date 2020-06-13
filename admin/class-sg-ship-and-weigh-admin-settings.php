@@ -1,10 +1,11 @@
 <?php
-defined( 'abspath' ) or die( 'Direct access blocked.' );
 /**
  * Handle reading and writing settings
  * 
  * @since 1.0.0
  */
+defined( 'abspath' ) or die( 'Direct access blocked.' );
+
 class SG_Ship_And_Weigh_Admin_Settings {
     /**
      * Option key to save settings

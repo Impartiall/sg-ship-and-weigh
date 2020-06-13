@@ -1,10 +1,11 @@
 <?php
-defined( 'abspath' ) or die( 'Direct access blocked.' );
 /**
  * Add menus to the Admin Control Panel
  * 
  * @since 1.0.0
  */
+defined( 'abspath' ) or die( 'Direct access blocked.' );
+
 class SG_Ship_And_Weigh_Admin_Menu {
     /**
      * Menu slug

@@ -1,10 +1,11 @@
 <?php
-defined( 'abspath' ) or die( 'Direct access blocked.' );
 /**
  * Setup REST API
  * 
  * @since 1.0.0
  */
+defined( 'abspath' ) or die( 'Direct access blocked.' );
+
 class SG_Ship_And_Weigh_Admin_API {
     /**
      * Add routes
