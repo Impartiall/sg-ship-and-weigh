@@ -16,7 +16,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
      */
     protected $slug = 'ship-and-weigh-menu';
     /**
-     * Root directory of the plugin
+     * Root directory of the admin includes and assets
      * 
      * @since 1.0.0
      * 
