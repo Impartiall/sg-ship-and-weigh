@@ -43,8 +43,8 @@ class SG_Ship_And_Weigh_Admin_Menu {
      * @uses "admin_enqueue_scripts" action
      */
     public function register_assets() {
-        wp_register_script( $this->slug, $this->assets_root . '/js/admin.js', array( 'jquery' ) );
-        wp_register_style( $this->slug, $this->assets_root . '/css/admin.css' );
+        wp_register_script( $this->slug, $this->assets_root . '/js/script.js', array( 'jquery' ) );
+        wp_register_style( $this->slug, $this->assets_root . '/css/style.css' );
         wp_localize_script( $this->slug, 'SHIP_AND_WEIGH', array(
             'strings' => array(
                 'saved' => __( 'Settings Saved', 'text-domain' ),
