@@ -86,6 +86,6 @@ class SG_Ship_And_Weigh_Admin_Menu {
      */
     public function render_settings_menu() {
         $this->enqueue_assets();
-        include( $this->assets_root . '/pages/settings_menu.php' );
+        include( $this->assets_root . '/pages/sg-ship-and-weigh-settings-menu.php' );
     }
 }
