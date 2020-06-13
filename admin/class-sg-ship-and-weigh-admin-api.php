@@ -24,13 +24,13 @@ class SG_Ship_And_Weigh_Admin_API {
                         'industry' => array(
                             'type' => 'string',
                             'required' => false,
-                            'sanitize_callback' => 'sanatize_text_field'
+                            'sanitize_callback' => 'sanatize_text_field',
                         ),
                         'amount' => array(
                             'type' => int,
                             'required' => false,
-                            'sanatize_callback' => 'absint'
-                        )
+                            'sanatize_callback' => 'absint',
+                        ),
                     ),
                     'permissions_callback' => array( $this, 'permissions' )
                 )
@@ -40,7 +40,7 @@ class SG_Ship_And_Weigh_Admin_API {
                     'methods' => 'GET',
                     'callback' => array( $this, 'get_settings' ),
                     'args' => array(),
-                    'permissions_callback' => array( $this, 'permissions' )
+                    'permissions_callback' => array( $this, 'permissions' ),
                 )
             );
     }
@@ -64,7 +64,7 @@ class SG_Ship_And_Weigh_Admin_API {
     public function update_settings( WP_REST_Request $request ) {
         $settings = array(
             'industry' => $request->get_param( 'industry' ),
-            'amount' => $request->get_param( 'amount' )
+            'amount' => $request->get_param( 'amount' ),
         );
         SG_Ship_And_Weigh_Admin_Settings::save_settings( $settings );
         return rest_ensure_response(

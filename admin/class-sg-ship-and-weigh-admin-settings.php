@@ -23,7 +23,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
      */
     protected static $defaults = array(
         'industry' => 'lumber',
-        'amount' => 42
+        'amount' => 42,
     );
     /**
      * Get saved settings

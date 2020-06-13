@@ -47,12 +47,12 @@ class SG_Ship_And_Weigh_Admin_Menu {
         wp_localize_script( $this->slug, 'SHIP_AND_WEIGH', array(
             'strings' => array(
                 'saved' => __( 'Settings Saved', 'text-domain' ),
-                'error' => __( 'Error', 'text-domain' )
+                'error' => __( 'Error', 'text-domain' ),
             ),
             'api'     => array(
                 'url'   => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/settings' ) ),
-                'nonce' => wp_create_nonce( 'wp_rest' )
-            )
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+            ),
         ) );
     }
     /**
