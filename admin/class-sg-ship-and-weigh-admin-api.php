@@ -1,4 +1,5 @@
 <?php
+defined( 'abspath' ) or die( 'Direct access blocked.' );
 /**
  * Setup REST API
  * 

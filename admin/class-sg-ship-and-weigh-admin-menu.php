@@ -1,4 +1,5 @@
 <?php
+defined( 'abspath' ) or die( 'Direct access blocked.' );
 /**
  * Add menus to the Admin Control Panel
  * 

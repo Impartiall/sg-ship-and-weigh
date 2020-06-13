@@ -1,4 +1,5 @@
 <?php
+defined( 'abspath' ) or die( 'Direct access blocked.' );
 /**
  * @link              author-uri
  * @since             1.0.0
