@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link              author-uri
  * @since             1.0.0
@@ -21,11 +20,12 @@ add_action( 'init', function() {
                         // or plugin_dir_url (?)
     $admin_assets_root = plugin_dir_path( __FILE__ ) . "admin";
 
+    require_once( $admin_assets_root .
+        '/class-sg-ship-and-weigh-admin-api.php'
+    );
+
     // Setup menu
     if( is_admin() ) {
-        require_once( $admin_assets_root .
-            '/class-sg-ship-and-weigh-admin-api.php'
-        );
         require_once( $admin_assets_root .
             '/class-sg-ship-and-weigh-admin-menu.php'
         );
@@ -34,7 +34,9 @@ add_action( 'init', function() {
         );
 
         new SG_Ship_And_Weigh_Admin_Menu( $admin_assets_root );
-
-        (new SG_Ship_And_Weigh_Admin_API())->add_routes();
     }
+});
+
+add_action( 'rest_api_init', function() {
+    (new SG_Ship_And_Weigh_Admin_API())->add_routes();
 });
