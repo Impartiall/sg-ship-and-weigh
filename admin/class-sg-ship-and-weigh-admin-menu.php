@@ -16,13 +16,13 @@ class SG_Ship_And_Weigh_Admin_Menu {
      */
     protected $slug = 'ship-and-weigh-menu';
     /**
-     * Root directory of the admin includes and assets
+     * URL of the admin includes and assets
      * 
      * @since 1.0.0
      * 
      * @var string
      */
-    protected $assets_root;
+    protected $assets_root_url;
     /**
      * SG_Ship_And_Weigh_Menu constructor
      * 
@@ -30,8 +30,8 @@ class SG_Ship_And_Weigh_Admin_Menu {
      * 
      * @param string $assets_root Root directory of the includes
      */
-    public function __construct( $assets_root ) {
-        $this->assets_root = $assets_root;
+    public function __construct( $assets_root_url ) {
+        $this->assets_root_url = $assets_root_url;
 
         add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
 
@@ -43,8 +43,8 @@ class SG_Ship_And_Weigh_Admin_Menu {
      * @uses "admin_enqueue_scripts" action
      */
     public function register_assets() {
-        wp_register_script( $this->slug, $this->assets_root . '/js/script.js', array( 'jquery' ) );
-        wp_register_style( $this->slug, $this->assets_root . '/css/style.css' );
+        wp_register_script( $this->slug, $this->assets_root_url . '/js/script.js', array( 'jquery' ) );
+        wp_register_style( $this->slug, $this->assets_root_url . '/css/style.css' );
         wp_localize_script( $this->slug, 'SHIP_AND_WEIGH', array(
             'strings' => array(
                 'saved' => __( 'Settings Saved', 'text-domain' ),
@@ -88,6 +88,6 @@ class SG_Ship_And_Weigh_Admin_Menu {
      */
     public function render_settings_menu() {
         $this->enqueue_assets();
-        include( $this->assets_root . '/pages/sg-ship-and-weigh-settings-menu.php' );
+        include( $this->assets_root_url . '/pages/sg-ship-and-weigh-settings-menu.php' );
     }
 }

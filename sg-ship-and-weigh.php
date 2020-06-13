@@ -26,24 +26,39 @@ defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
 class SG_Ship_And_Weigh {
 
     /**
+     * Filepath of the admin directory
      * 
+     * @since 1.0.0
+     * 
+     * @var string
      */
-    protected string $admin_root;
+    protected string $admin_root_path;
+
+    /**
+     * Site URL of the admin directory
+     * 
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected string $admin_root_url;
 
     public function __construct() {
-        $this->admin_root = plugin_dir_path( __FILE__ ) . 'admin';
+        $this->admin_root_path = plugin_dir_path( __FILE__ ) . 'admin/';
+        $this->admin_root_url = plugin_dir_url( __FILE__ ) . 'admin/';
+
         $this->includes();
         $this->init_hooks();
     }
 
     protected function includes() {
-        require_once( $this->admin_root
+        require_once( $this->admin_root_path
             . '/class-sg-ship-and-weigh-admin-api.php'
         );
-        require_once( $this->admin_root
+        require_once( $this->admin_root_path
             . '/class-sg-ship-and-weigh-admin-menu.php'
         );
-        require_once( $this->admin_root
+        require_once( $this->admin_root_path
             . '/class-sg-ship-and-weigh-admin-settings.php'
         );
     }
@@ -54,7 +69,7 @@ class SG_Ship_And_Weigh {
     }
 
     public function init() {
-        new SG_Ship_And_Weigh_Admin_Menu( $this->admin_root );
+        new SG_Ship_And_Weigh_Admin_Menu( $this->admin_root_url );
     }
 
     public function init_api() {
