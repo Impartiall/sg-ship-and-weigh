@@ -17,34 +17,48 @@
  * Domain Path:       /languages
  */
 defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
-// add_action( 'init', function() {
-//                         // or plugin_dir_url (?)
-//     $admin_assets_root = plugin_dir_path( __FILE__ ) . "admin";
 
-//     require_once( $admin_assets_root .
-//         '/class-sg-ship-and-weigh-admin-api.php'
-//     );
-
-//     // Setup menu
-//     if( is_admin() ) {
-//         require_once( $admin_assets_root .
-//             '/class-sg-ship-and-weigh-admin-menu.php'
-//         );
-//         require_once( $admin_assets_root .
-//             '/class-sg-ship-and-weigh-admin-settings.php'
-//         );
-
-//         new SG_Ship_And_Weigh_Admin_Menu( $admin_assets_root );
-//     }
-// });
-
-// add_action( 'rest_api_init', function() {
-//     (new SG_Ship_And_Weigh_Admin_API())->add_routes();
-// });
-
+/**
+ * Handle plugin inludes, actions, and activation
+ * 
+ * @since 1.0.0
+ */
 class SG_Ship_And_Weigh {
+
+    /**
+     * 
+     */
+    protected string $admin_root;
+
     public function __construct() {
-        add_action( 'init', '' );
+        $this->admin_root = plugin_dir_path( __FILE__ ) . 'admin';
+        $this->includes();
+        $this->init_hooks();
+    }
+
+    protected function includes() {
+        require_once( $this->admin_root
+            . '/class-sg-ship-and-weigh-admin-api.php'
+        );
+        require_once( $this->admin_root
+            . '/class-sg-ship-and-weigh-admin-menu.php'
+        );
+        require_once( $this->admin_root
+            . '/class-sg-ship-and-weigh-admin-settings.php'
+        );
+    }
+
+    protected function init_hooks() {
+        add_action( 'init', array( $this, 'init' ) );
+        add_action( 'rest_api_init', array( $this, 'init_api' ) );
+    }
+
+    public function init() {
+        new SG_Ship_And_Weigh_Admin_Menu( $this->admin_root );
+    }
+
+    public function init_api() {
+        ( new SG_Ship_And_Weigh_Admin_API() )->add_routes();
     }
 
     public function activate() {
@@ -55,3 +69,11 @@ class SG_Ship_And_Weigh {
         flush_rewrite_rules();
     }
 }
+
+if ( class_exists( 'SG_Ship_And_Weigh' ) ) {
+    $sgShipAndWeigh = new SG_Ship_and_Weigh();
+}
+
+register_activation_hook( __FILE__, array( $sgShipAndWeigh, 'activate' ) );
+
+register_deactivation_hook( __FILE__, array( $sgShipAndWeigh, 'deactivate' ) );
