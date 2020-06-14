@@ -119,7 +119,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
     public function add_shipping_menu() {
         add_menu_page(
             'Generate Label - Ship and Weigh',
-            'Generate Label',
+            'Ship and Weigh',
             'manage_options',
             $this->shipping_slug,
             array( $this, 'load_shipping_menu' ),
