@@ -9,6 +9,37 @@ defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
 class SG_Ship_And_Weigh_Admin_API {
 
     /**
+     * Specification for allowed settings and their defaults,
+     * types, and sanatize callbacks
+     * 
+     * @since 1.0.0
+     * 
+     * @var array
+     */
+    protected array $settings_spec;
+
+    /**
+     * Instance of the SG_Ship_And_Weigh_Admin_Settings class
+     * 
+     * @since 1.0.0
+     * 
+     * @var SG_Ship_And_Weigh_Admin_Settings
+     */
+    protected SG_Ship_And_Weigh_Admin_Settings $settingsObject;
+
+    /**
+     * SG_Ship_And_Weigh_Admin_API constructor
+     * 
+     * @since 1.0.0
+     * 
+     * @param array $settings_spec Specification of plugin settings
+     */
+    public function __construct( $settings_spec ) {
+        $this->settings_spec = settings_spec;
+        $this->settingsObject = new SG_Ship_And_Weigh_Admin_Settings( $settings_spec );
+    }
+
+    /**
      * Add API routes
      * 
      * @since 1.0.0
@@ -70,9 +101,9 @@ class SG_Ship_And_Weigh_Admin_API {
             'industry' => $request->get_param( 'industry' ),
             'amount' => $request->get_param( 'amount' ),
         );
-        SG_Ship_And_Weigh_Admin_Settings::save_settings( $settings );
+        $this->settingsObject->save_settings( $settings );
         return rest_ensure_response(
-            SG_Ship_And_Weigh_Admin_Settings::get_settings()
+            $this->settingsObject->get_settings()
         )->set_status( 201 );
     }
 
@@ -85,7 +116,7 @@ class SG_Ship_And_Weigh_Admin_API {
      */
     public function get_settings( WP_REST_Request $request ) {
         return rest_ensure_response(
-            SG_Ship_And_Weigh_Admin_Settings::get_settings()
+            $this->settingsObject->get_settings()
         );
     }
 }

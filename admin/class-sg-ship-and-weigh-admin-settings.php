@@ -15,7 +15,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
      * 
      * @var string
      */
-    protected static $option_key = '_sg_ship_and_weigh_settings';
+    protected $option_key = '_sg_ship_and_weigh_settings';
 
     /**
      * Default settings
@@ -24,10 +24,31 @@ class SG_Ship_And_Weigh_Admin_Settings {
      * 
      * @var array
      */
-    protected static $defaults = array(
+    protected $defaults = array(
         'industry' => 'lumber',
         'amount' => 42,
     );
+
+    /**
+     * Specification for allowed settings and their defaults,
+     * types, and sanatize callbacks
+     * 
+     * @since 1.0.0
+     * 
+     * @var array
+     */
+    protected array $settings_spec;
+
+    /**
+     * SG_Ship_And_Weigh_Admin_API constructor
+     * 
+     * @since 1.0.0
+     * 
+     * @param array $settings_spec Specification of plugin settings
+     */
+    public function __construct( $settings_spec ) {
+        $this->settings_spec = settings_spec;
+    }
 
     /**
      * Get saved settings
@@ -36,12 +57,13 @@ class SG_Ship_And_Weigh_Admin_Settings {
      * 
      * @return array
      */
-    public static function get_settings() {
-        $saved = get_option( self::$option_key, array() );
+    public function get_settings() {
+        $saved = get_option( $this->option_key, array() );
         if ( ! is_array( $saved ) || empty( $saved )) {
-            return self::$defaults;
+            return $this->defaults;
         }
-        return wp_parse_args( $saved, self::$defaults );
+        // Merge settings with defaults
+        return wp_parse_args( $saved, $this->defaults );
     }
 
     /**
@@ -53,13 +75,13 @@ class SG_Ship_And_Weigh_Admin_Settings {
      * 
      * @param array $settings
      */
-    public static function save_settings( array $settings ) {
+    public function save_settings( array $settings ) {
         // Remove un-whitelisted indices before saving
         foreach ( $settings as $key => $setting ) {
-            if ( ! array_key_exists( $setting, self::$defaults ) ) {
+            if ( ! array_key_exists( $setting, $this->defaults ) ) {
                 unset( $settings[ $key ] );
             }
         }
-        update_option( self::$option_key, $settings );
+        update_option( $this->option_key, $settings );
     }
 }
