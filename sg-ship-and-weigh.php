@@ -43,6 +43,11 @@ class SG_Ship_And_Weigh {
      */
     protected string $admin_root_url;
 
+    /**
+     * SG_Ship_And_Weigh constructor
+     * 
+     * @since 1.0.0
+     */
     public function __construct() {
         $this->admin_root_path = plugin_dir_path( __FILE__ ) . 'admin/';
         $this->admin_root_url = plugin_dir_url( __FILE__ ) . 'admin/';
@@ -51,6 +56,11 @@ class SG_Ship_And_Weigh {
         $this->init_hooks();
     }
 
+    /**
+     * Include necessary files useing require_once()
+     * 
+     * @since 1.0.0
+     */
     protected function includes() {
         require_once( $this->admin_root_path
             . '/class-sg-ship-and-weigh-admin-api.php'
@@ -63,23 +73,48 @@ class SG_Ship_And_Weigh {
         );
     }
 
+    /**
+     * Initialize plugin hooks
+     * 
+     * @since 1.0.0
+     */
     protected function init_hooks() {
         add_action( 'init', array( $this, 'init' ) );
         add_action( 'rest_api_init', array( $this, 'init_api' ) );
     }
 
+    /**
+     * Initialize classes
+     * 
+     * @since 1.0.0
+     */
     public function init() {
         new SG_Ship_And_Weigh_Admin_Menu( $this->admin_root_url, $this->admin_root_path );
     }
 
+    /**
+     * Initialize API classes
+     * 
+     * @since 1.0.0
+     */
     public function init_api() {
         ( new SG_Ship_And_Weigh_Admin_API() )->add_routes();
     }
 
+    /**
+     * Flush rewrite rules on activation
+     * 
+     * @since 1.0.0
+     */
     public function activate() {
         flush_rewrite_rules();
     }
 
+    /**
+     * Flush rewrite rules on deactivation
+     * 
+     * @since 1.0.0
+     */
     public function deactivate() {
         flush_rewrite_rules();
     }

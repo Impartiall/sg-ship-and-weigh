@@ -7,8 +7,9 @@
 defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
 
 class SG_Ship_And_Weigh_Admin_API {
+
     /**
-     * Add routes
+     * Add API routes
      * 
      * @since 1.0.0
      */
@@ -45,6 +46,7 @@ class SG_Ship_And_Weigh_Admin_API {
                 )
             );
     }
+
     /**
      * Check request permissions
      * 
@@ -55,6 +57,7 @@ class SG_Ship_And_Weigh_Admin_API {
     public function permissions() {
         return current_user_can( 'manage_options' );
     }
+
     /**
      * Update settings via API
      * 
@@ -72,6 +75,7 @@ class SG_Ship_And_Weigh_Admin_API {
             SG_Ship_And_Weigh_Admin_Settings::get_settings()
         )->set_status( 201 );
     }
+
     /**
      * Get settings via API
      * 

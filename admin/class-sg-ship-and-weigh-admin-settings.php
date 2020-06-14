@@ -7,6 +7,7 @@
 defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
 
 class SG_Ship_And_Weigh_Admin_Settings {
+
     /**
      * Option key to save settings
      * 
@@ -15,6 +16,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
      * @var string
      */
     protected static $option_key = '_sg_ship_and_weigh_settings';
+
     /**
      * Default settings
      * 
@@ -26,6 +28,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
         'industry' => 'lumber',
         'amount' => 42,
     );
+
     /**
      * Get saved settings
      * 
@@ -40,6 +43,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
         }
         return wp_parse_args( $saved, self::$defaults );
     }
+
     /**
      * Save settings
      * 
