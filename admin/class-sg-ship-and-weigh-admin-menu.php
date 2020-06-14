@@ -38,10 +38,12 @@ class SG_Ship_And_Weigh_Admin_Menu {
      * 
      * @param string $assets_root Root directory of the includes
      */
-    public function __construct( $assets_root_url ) {
-        $this->assets_root_url = $assets_root_url;
 
-        add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
+    protected $assets_root_path;
+
+    public function __construct( $assets_root_url, $assets_root_path ) {
+        $this->assets_root_url = $assets_root_url;
+        $this->assets_root_path = $assets_root_path;
 
         add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
         add_action( 'admin_menu', array( $this, 'add_shipping_menu' ) );
@@ -64,8 +66,8 @@ class SG_Ship_And_Weigh_Admin_Menu {
             $slug,
             function() use ( $slug, $page_url, $script_url, 
                              $style_url, $object_name, $object ) {
-                enqueue_assets( $slug, $script_url, $style_url, $object_name, $object );
-                include( $this->assets_root_url . $page_url );
+                $this->enqueue_assets( $slug, $script_url, $style_url, $object_name, $object );
+                include( $this->assets_root_path . $page_url );
             }
         );
     }
@@ -74,7 +76,10 @@ class SG_Ship_And_Weigh_Admin_Menu {
      * 
      * @uses "admin_enqueue_scripts" action
      */
-    public function enqueue_assets( string $slug, $script_url, $style_url ) {
+    public function enqueue_assets(
+        string $slug, string $script_url, string $style_url,
+        string $object_name, array $object
+    ) {
         wp_enqueue_script( $slug, $this->assets_root_url . $script_url, array( 'jquery' ) );
         wp_enqueue_style( $slug, $this->assets_root_url . $style_url );
         wp_localize_script( $slug, $object_name, $object );

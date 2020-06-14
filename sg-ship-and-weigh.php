@@ -69,7 +69,7 @@ class SG_Ship_And_Weigh {
     }
 
     public function init() {
-        new SG_Ship_And_Weigh_Admin_Menu( $this->admin_root_url );
+        new SG_Ship_And_Weigh_Admin_Menu( $this->admin_root_url, $this->admin_root_path );
     }
 
     public function init_api() {
