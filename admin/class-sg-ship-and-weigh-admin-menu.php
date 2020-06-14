@@ -8,13 +8,21 @@ defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
 
 class SG_Ship_And_Weigh_Admin_Menu {
     /**
-     * Menu slug
+     * Settings menu slug
      * 
      * @since 1.0.0
      * 
      * @var string
      */
-    protected $slug = 'ship-and-weigh-menu';
+    protected $settings_slug = 'sg-ship-and-weigh-settings-menu';
+    /**
+     * Shipping menu slug
+     * 
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected $shipping_slug = 'sg-ship-and-weigh-shipping-menu';
     /**
      * URL of the admin includes and assets
      * 
@@ -36,58 +44,67 @@ class SG_Ship_And_Weigh_Admin_Menu {
         add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
 
         add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
+        add_action( 'admin_menu', array( $this, 'add_shipping_menu' ) );
+    }
+
+    /**
+     * Create a menu page with all associated scripts and styles
+     * 
+     * @since 1.0.0
+     */
+    public function create_new_admin_page(
+        string $slug, array $menu, string $page_url,
+        string $script_url, string $style_url,
+        string $object_name, array $object
+    ) {
+        $page = add_menu_page(
+            $menu['page_title'],
+            $menu['menu_title'],
+            $menu['capability'],
+            $slug,
+            function() use ( $slug, $page_url, $script_url, 
+                             $style_url, $object_name, $object ) {
+                enqueue_assets( $slug, $script_url, $style_url, $object_name, $object );
+                include( $this->assets_root_url . $page_url );
+            }
+        );
     }
     /**
      * Register CSS and JS for page
      * 
      * @uses "admin_enqueue_scripts" action
      */
-    public function register_assets() {
-        wp_register_script( $this->slug, $this->assets_root_url . '/js/script.js', array( 'jquery' ) );
-        wp_register_style( $this->slug, $this->assets_root_url . '/css/style.css' );
-        wp_localize_script( $this->slug, 'SHIP_AND_WEIGH', array(
-            'strings' => array(
-                'saved' => __( 'Settings Saved', 'text-domain' ),
-                'error' => __( 'Error', 'text-domain' ),
-            ),
-            'api'     => array(
-                'url'   => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/settings' ) ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-            ),
-        ) );
+    public function enqueue_assets( string $slug, $script_url, $style_url ) {
+        wp_enqueue_script( $slug, $this->assets_root_url . $script_url, array( 'jquery' ) );
+        wp_enqueue_style( $slug, $this->assets_root_url . $style_url );
+        wp_localize_script( $slug, $object_name, $object );
     }
-    /**
-     * Add settings menu
-     * 
-     * @since 1.0.0
-     * 
-     * @uses "admin_menu" action
-     */
-    public function add_settings_menu() {
-        add_menu_page(
-            __( 'Ship and Weigh Settings', 'text-domain'),
-            __( 'Ship and Weigh Settings', 'text-domain'),
-            'manage_options',
-            $this->slug,
-            array( $this, 'render_settings_menu' )
-        );
-    }
-    /**
-     * Enqueue CSS and JS for page
-     */
-    public function enqueue_assets() {
-        if ( ! wp_script_is( $this->slug, 'registered' ) ) {
-            $this->register_assets();
-        }
 
-        wp_enqueue_script( $this->slug );
-        wp_enqueue_style( $this->slug );
-    }
     /**
      * Render plugin settings menu
      */
-    public function render_settings_menu() {
-        $this->enqueue_assets();
-        include( $this->assets_root_url . '/pages/sg-ship-and-weigh-settings-menu.php' );
+    public function add_settings_menu() {
+        $this->create_new_admin_page(
+            'sg-ship-and-weigh-settings',
+            array(
+                'page_title' => 'Settings - Ship and Weigh',
+                'menu_title' => 'Ship and Weigh Settings',
+                'capability' => 'manage_options'
+            ),
+            'pages/sg-ship-and-weigh-settings-menu.php',
+            'js/script.js',
+            'css/style.css',
+            'SHIP_AND_WEIGH',
+            array(
+                'strings' => array(
+                    'saved' => __( 'Settings Saved', 'text-domain' ),
+                    'error' => __( 'Error', 'text-domain' ),
+                ),
+                'api'     => array(
+                    'url'   => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/settings' ) ),
+                    'nonce' => wp_create_nonce( 'wp_rest' ),
+                ),
+            )
+        );
     }
 }
