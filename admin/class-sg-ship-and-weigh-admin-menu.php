@@ -144,8 +144,8 @@ class SG_Ship_And_Weigh_Admin_Menu {
                 'capability' => 'manage_options'
             ),
             'pages/sg-ship-and-weigh-settings-menu.php',
-            'js/script.js',
-            'css/style.css',
+            'js/sg-ship-and-weigh-settings-menu.js',
+            'css/sg-ship-and-weigh-settings-menu.css',
             'SHIP_AND_WEIGH',
             array(
                 'strings' => array(
