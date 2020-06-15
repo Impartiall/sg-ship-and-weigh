@@ -60,7 +60,7 @@ class SG_Ship_And_Weigh_Admin_API {
                             'sanitize_callback' => 'sanatize_text_field',
                         ),
                         'amount' => array(
-                            'type' => int,
+                            'type' => 'int',
                             'required' => false,
                             'sanatize_callback' => 'absint',
                         ),
