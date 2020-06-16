@@ -53,20 +53,9 @@ class SG_Ship_And_Weigh_Admin_API {
                      * @TODO factor out settings which exist in three places
                      * to one database entry (from here and admin-settings)
                      */
-                    'args' => array(
-                        'industry' => array(
-                            'type' => 'string',
-                            'required' => false,
-                            'sanitize_callback' => 'sanatize_text_field',
-                        ),
-                        'amount' => array(
-                            'type' => 'int',
-                            'required' => false,
-                            'sanatize_callback' => 'absint',
-                        ),
-                    ),
+                    'args' => $this->get_post_args(),
                     'permissions_callback' => array( $this, 'permissions' )
-                )
+                ),
             );
             register_rest_route( 'sg-ship-and-weigh-api/v1', '/settings',
                 array(
@@ -76,6 +65,45 @@ class SG_Ship_And_Weigh_Admin_API {
                     'permissions_callback' => array( $this, 'permissions' ),
                 )
             );
+    }
+
+    /**
+     * Return POST argument array based on specification
+     * 
+     * @since 1.0.0
+     * 
+     * @return array
+     */
+    public function get_post_args() {
+        $post_args = array();
+        foreach ( $this->settings_spec as $key => $values ) {
+            $array[ $key ] = array(
+                'type' => $values[ 'type' ],
+                'required' => false,
+                'sanatize_callback' => $values[ 'sanatize_callback' ],
+            );
+        }
+
+        return $post_args;
+    }
+
+    /**
+     * Return an array of settings to be passed to save_settings
+     * from a POST request
+     * 
+     * @since 1.0.0
+     * 
+     * @param WP_REST_Request $request
+     * 
+     * @return array
+     */
+    public function get_settings_from_post( WP_REST_Request $request ) {
+        $settings = array();
+        foreach ( array_keys( $this->settings_spec ) as $key ) {
+            $settings[ $key ] = $request->get_param( $key );
+        }
+
+        return $settings;
     }
 
     /**
@@ -97,10 +125,8 @@ class SG_Ship_And_Weigh_Admin_API {
      * @param WP_REST_Request $request
      */
     public function update_settings( WP_REST_Request $request ) {
-        $settings = array(
-            'industry' => $request->get_param( 'industry' ),
-            'amount' => $request->get_param( 'amount' ),
-        );
+        $settings = $this->get_settings_from_post( $request );
+
         $this->settingsObject->save_settings( $settings );
         return rest_ensure_response(
             $this->settingsObject->get_settings()
