@@ -46,7 +46,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
     public function __construct( $settings_spec ) {
         $this->settings_spec = settings_spec;
 
-        set_defaults( $settings_spec );
+        set_defaults();
     }
 
     /**
@@ -57,7 +57,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
      * @param array $settings_spec Specification of plugin settings
      */
     public function set_defaults() {
-        foreach ( $settings_spec as $key => $values ) {
+        foreach ( $this->settings_spec as $key => $values ) {
             $this->defaults[ $key ] = $values[ 'default' ];
         }
     }
