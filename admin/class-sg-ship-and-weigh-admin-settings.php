@@ -24,10 +24,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
      * 
      * @var array
      */
-    protected $defaults = array(
-        'industry' => 'lumber',
-        'amount' => 42,
-    );
+    protected array $defaults;
 
     /**
      * Specification for allowed settings and their defaults,
@@ -48,6 +45,21 @@ class SG_Ship_And_Weigh_Admin_Settings {
      */
     public function __construct( $settings_spec ) {
         $this->settings_spec = settings_spec;
+
+        set_defaults( $settings_spec );
+    }
+
+    /**
+     * Modify the defaults attribute according to the specification
+     * 
+     * @since 1.0.0
+     * 
+     * @param array $settings_spec Specification of plugin settings
+     */
+    public function set_defaults() {
+        foreach ( $settings_spec as $key => $values ) {
+            $this->defaults[ $key ] = $values[ 'default' ];
+        }
     }
 
     /**
