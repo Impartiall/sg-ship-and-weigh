@@ -42,17 +42,24 @@ class SG_Ship_And_Weigh_Settings_Specification {
      * 
      * @since 1.0.0
      * 
-     * @param string $type The type of the setting
+     * @param string $name Name of the setting to be displayed in HTML
      * @param mixed $default The default value for the setting
+     * @param string $type The type of the setting
+     * @param string $html_type The type for the corresponding HTML input
      * @param string sanatize_callback
      *     The callback with which to sanatize input to this setting
      * 
      * @return array
      */
-    public static function get_setting_specification( string $type, mixed $default, string $sanatize_callback ) {
+    public static function get_setting_specification(
+        string $name, mixed $default, string $type,
+        string $input_type, string $sanatize_callback
+    ) {
         return array(
-            'type' => $type,
+            'name' => __( $name, 'text-domain' ),
             'default' => $default,
+            'type' => $type,
+            'html_type' => $html_type,
             'sanatize_callback' => $sanatize_callback,
         );
     }
