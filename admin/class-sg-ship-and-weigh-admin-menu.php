@@ -108,6 +108,10 @@ class SG_Ship_And_Weigh_Admin_Menu {
                 ),
             ),
         );
+
+        // Include other frameworks
+        wp_enqueue_script( $shipping_slug, 'https://cdn.jsdelivr.net/npm/vue' );
+
         include( $this->assets_root_path . 'pages/sg-ship-and-weigh-shipping-menu.php' );
     }
 
