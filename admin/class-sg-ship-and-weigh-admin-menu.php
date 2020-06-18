@@ -78,15 +78,19 @@ class SG_Ship_And_Weigh_Admin_Menu {
      * @param string $script_url URL from assets_root_url to the page script
      * @param string $style_url URL from assets_root_url to the page stylesheet
      * @param string $object_name JS object name to be passed to wp_localize_script()
-     * @param string $object JS object to be passed to wp_localize_script() 
+     * @param string $object JS object to be passed to wp_localize_script()
+     * @param string (default [ 'jquery' ]) $script_deps Array of script dependencies
+     * @param string (default []) $style_deps Array of style dependencies
      */
     public function enqueue_assets(
         string $slug,
         string $script_url, string $style_url,
-        string $object_name, array $object
+        string $object_name, array $object,
+        array $script_deps = [ 'jquery' ],
+        array $style_deps = []
     ) {
-        wp_enqueue_script( $slug, $this->assets_root_url . $script_url, array( 'jquery' ) );
-        wp_enqueue_style( $slug, $this->assets_root_url . $style_url );
+        wp_enqueue_script( $slug, $this->assets_root_url . $script_url, $script_deps );
+        wp_enqueue_style( $slug, $this->assets_root_url . $style_url, $style_deps );
         wp_localize_script( $slug, $object_name, $object );
     }
 
@@ -132,6 +136,9 @@ class SG_Ship_And_Weigh_Admin_Menu {
      * @since 1.0.0
      */
     public function load_settings_menu() {
+        // Register dependencies
+        wp_register_script( 'vuejs', 'https://cdn.jsdelivr.net/npm/vue' );
+
         $this->enqueue_assets(
             $this->settings_slug,
             'js/sg-ship-and-weigh-settings-menu.js',
@@ -147,11 +154,8 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     'nonce' => wp_create_nonce( 'wp_rest' ),
                 ),
             ),
+            $script_deps = [ 'jquery', 'vuejs' ],
         );
-
-        // Include other frameworks
-        wp_enqueue_script( $shipping_slug, 'https://cdn.jsdelivr.net/npm/vue' );
-
         include( $this->assets_root_path . 'pages/sg-ship-and-weigh-settings-menu.php' );
     }
 
@@ -170,6 +174,4 @@ class SG_Ship_And_Weigh_Admin_Menu {
             array( $this, 'load_settings_menu' ),
         );
     }
-
-
 }
