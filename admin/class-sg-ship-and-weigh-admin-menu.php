@@ -112,6 +112,12 @@ class SG_Ship_And_Weigh_Admin_Menu {
      * @since 1.0.0
      */
     public function load_shipping_menu() {
+        // Register dependencies
+        wp_register_script(
+            $this->shipping_slug . '-vuejs',
+            'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',
+        );
+
         $this->enqueue_assets(
             $this->shipping_slug,
             'js/sg-ship-and-weigh-shipping-menu.js',
@@ -123,6 +129,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     'error' => __( 'Error', 'text-domain' ),
                 ),
             ),
+            $script_deps = [ 'jquery', $this->shipping_slug . '-vuejs' ],
         );
         include( $this->assets_root_path . 'pages/sg-ship-and-weigh-shipping-menu.php' );
     }
@@ -149,7 +156,10 @@ class SG_Ship_And_Weigh_Admin_Menu {
      */
     public function load_settings_menu() {
         // Register dependencies
-        wp_register_script( $this->settings_slug . '-vuejs', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js' );
+        wp_register_script(
+            $this->settings_slug . '-vuejs',
+            'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',
+        );
 
         $this->enqueue_assets(
             $this->settings_slug,
