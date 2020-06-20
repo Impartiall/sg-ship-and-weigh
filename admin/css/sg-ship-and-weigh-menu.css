@@ -12,6 +12,10 @@ form label {
     text-align: left;
 }
 
+form select {
+    width: 20%;
+}
+
 form label.suffix-label {
     float: none
 }
