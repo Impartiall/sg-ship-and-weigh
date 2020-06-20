@@ -7,18 +7,7 @@ let app = new Vue({
 
 jQuery( $ => {
     $( '#recipient-name' ).select2({
+        placeholder: 'Select or add a recipient',
         tags: true,
-        data: {
-             "results": [
-                {
-                    "id": 1,
-                    "text": 'option1',
-                },
-                {
-                    "id": 2,
-                    "text": 'option2'
-                },
-             ]
-        },
     });
 });
