@@ -81,7 +81,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
     /**
      * Save settings
      * 
-     * Array keys must be whitelisted (keys of self::$defaults)
+     * Array keys must be whitelisted (keys of $this->defaults)
      * 
      * @since 1.0.0
      * 
