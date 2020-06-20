@@ -13,7 +13,7 @@ form label {
     text-align: left;
 }
 
-form input, form textarea {
+form input, form textarea, form select {
     margin-bottom: 20px;
 }
 
