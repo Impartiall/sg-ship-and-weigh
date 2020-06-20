@@ -1,5 +1,5 @@
 <div id="root" class="wrap">
-    <form>
+    <form id="shipping-form">
         <ul>
             <li>
                 <label for="sender-address">Sender Info</label>
@@ -15,11 +15,11 @@
             </li>
             <li>
                 <label for="recipient-address">Recipient Address</label>
-                <select name="recipient-address" id="recipient-address"></select>
+                <textarea name="recipient-address" id="recipient-address"></textarea>
             </li>
             <li>
                 <label for="recipient-email">Recipient Email</label>
-                <select name="recipient-email" id="recipient-email"></select>
+                <input type="email" name="recipient-email" id="recipient-email"></input>
             </li>
             <li>
                 <label>Weight Type</label>
