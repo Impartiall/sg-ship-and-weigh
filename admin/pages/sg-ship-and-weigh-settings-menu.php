@@ -1,17 +1,19 @@
-<div class="wrap">
-    <form id="apex-form">
-        <div>
-            <label for="industry">
-                <?php esc_html_e( 'Industry', 'text-domain' ); ?>
-            </label>
-            <input id="industry" type="text" />
-        </div>
-        <div>
-            <label for="amount">
-                <?php esc_html_e( 'Amount', 'text-domain' ); ?>
-            </label>
-            <input id="amount" type="number" min="0" max="100" />
-        </div>
-        <?php submit_button( __( 'Save', 'text-domain' ) ); ?>
+<div id="root" class="wrap">
+    <form id="sg-ship-and-weigh-form">
+        <ul>
+            <li v-for="(setting_data, setting) in settings">
+                <label :for="setting">{{ setting_data.name }}</label>
+                <input :type="setting_data.html_type" :value="setting_data.value">
+            </li>
+            <li>
+                <label for="x"> Test</label>
+                <input type="text">
+            </li>
+            <li>
+                <label for="y">test area</label>
+                <textarea name="y" id="" cols="30" rows="10"></textarea>
+            </li>
+        </ul>
+        <button type="submit" class="button button-primary">Submit</button>
     </form>
 </div>
