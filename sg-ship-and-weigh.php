@@ -44,6 +44,16 @@ class SG_Ship_And_Weigh {
     protected string $admin_root_url;
 
     /**
+     * Specification for allowed settings and their defaults,
+     * types, and sanatize callbacks
+     * 
+     * @since 1.0.0
+     * 
+     * @var array
+     */
+    protected array $settings_spec;
+
+    /**
      * SG_Ship_And_Weigh constructor
      * 
      * @since 1.0.0
@@ -54,6 +64,8 @@ class SG_Ship_And_Weigh {
 
         $this->includes();
         $this->init_hooks();
+
+        $this->settings_spec = SG_Ship_And_Weigh_Settings_Specification::get_settings_specification();
     }
 
     /**
@@ -70,6 +82,9 @@ class SG_Ship_And_Weigh {
         );
         require_once( $this->admin_root_path
             . '/class-sg-ship-and-weigh-admin-settings.php'
+        );
+        require_once( $this->admin_root_path
+            . '/class-sg-ship-and-weigh-settings-specification.php'
         );
     }
 
@@ -89,7 +104,7 @@ class SG_Ship_And_Weigh {
      * @since 1.0.0
      */
     public function init() {
-        new SG_Ship_And_Weigh_Admin_Menu( $this->admin_root_url, $this->admin_root_path );
+        new SG_Ship_And_Weigh_Admin_Menu( $this->admin_root_url, $this->admin_root_path, $this->settings_spec );
     }
 
     /**
@@ -98,7 +113,7 @@ class SG_Ship_And_Weigh {
      * @since 1.0.0
      */
     public function init_api() {
-        ( new SG_Ship_And_Weigh_Admin_API() )->add_routes();
+        ( new SG_Ship_And_Weigh_Admin_API( $this->settings_spec ) )->add_routes();
     }
 
     /**
