@@ -3,7 +3,7 @@
         <ul>
             <li v-for="(setting_data, setting) in settings">
                 <label :for="setting">{{ setting_data.name }}</label>
-                <input :type="setting_data.html_type" :value="setting_data.value">
+                <input :type="setting_data.html_type" :value="setting_data.value" :name="setting" :id="setting">
             </li>
             <li>
                 <label for="x"> Test</label>
