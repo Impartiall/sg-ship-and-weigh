@@ -115,7 +115,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
         $this->enqueue_assets(
             $this->shipping_slug,
             'js/sg-ship-and-weigh-shipping-menu.js',
-            'css/sg-ship-and-weigh-shipping-menu.css',
+            'css/sg-ship-and-weigh-menu.css',
             'SHIP_AND_WEIGH',
             array(
                 'strings' => array(
@@ -154,7 +154,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
         $this->enqueue_assets(
             $this->settings_slug,
             'js/sg-ship-and-weigh-settings-menu.js',
-            'css/sg-ship-and-weigh-settings-menu.css',
+            'css/sg-ship-and-weigh-menu.css',
             'SHIP_AND_WEIGH',
             array(
                 'strings'  => array(
