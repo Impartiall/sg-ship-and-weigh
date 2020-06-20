@@ -90,7 +90,7 @@ class SG_Ship_And_Weigh_Admin_Settings {
     public function save_settings( array $settings ) {
         // Remove un-whitelisted indices before saving
         foreach ( $settings as $key => $setting ) {
-            if ( ! array_key_exists( $setting, $this->defaults ) ) {
+            if ( ! array_key_exists( $key, $this->defaults ) ) {
                 unset( $settings[ $key ] );
             }
         }
