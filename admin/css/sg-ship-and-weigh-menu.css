@@ -1,6 +1,5 @@
 form {
-    width: 420px;
-
+    width: 100%;
     margin: 25px;
     padding: 15px;
     font-size: 15px;
@@ -13,7 +12,11 @@ form label {
     text-align: left;
 }
 
-form input, form textarea, form select {
+form label.suffix-label {
+    float: none
+}
+
+form li {
     margin-bottom: 20px;
 }
 
