@@ -43,10 +43,10 @@ class SG_Ship_And_Weigh_Admin_Settings {
      * 
      * @param array $settings_spec Specification of plugin settings
      */
-    public function __construct( $settings_spec ) {
-        $this->settings_spec = settings_spec;
+    public function __construct( array $settings_spec ) {
+        $this->settings_spec = $settings_spec;
 
-        set_defaults();
+        $this->set_defaults();
     }
 
     /**
