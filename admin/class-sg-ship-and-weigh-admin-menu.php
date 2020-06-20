@@ -149,7 +149,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
      */
     public function load_settings_menu() {
         // Register dependencies
-        wp_register_script( 'vuejs', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js' );
+        wp_register_script( $this->settings_slug . '-vuejs', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js' );
 
         $this->enqueue_assets(
             $this->settings_slug,
@@ -167,7 +167,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
                 ),
                 'settings_spec' => $this->get_vue_settings_spec(),
             ),
-            $script_deps = [ 'jquery', 'vuejs' ],
+            $script_deps = [ 'jquery', $this->settings_slug . '-vuejs' ],
         );
         include( $this->assets_root_path . 'pages/sg-ship-and-weigh-settings-menu.php' );
     }
