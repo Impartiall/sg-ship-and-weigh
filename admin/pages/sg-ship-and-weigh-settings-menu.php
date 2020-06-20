@@ -1,5 +1,5 @@
 <div id="root" class="wrap">
-    <form>
+    <form id="settings-form">
         <ul>
             <li v-for="(setting_data, setting) in settings">
                 <label :for="setting">{{ setting_data.name }}</label>
