@@ -11,15 +11,16 @@ jQuery( $ => {
         tags: true,
         ajax: {
             url: SHIP_AND_WEIGH.api.recipients_url,
+            type: 'GET',
             beforeSend: xhr => {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
             delay: 250,
-        },
-        processResults: data => {
-            return {
-                results: data,
-            }
+            processResults: data => {
+                return {
+                    results: data,
+                };
+            },
         },
     });
 });
