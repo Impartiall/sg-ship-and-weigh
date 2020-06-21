@@ -28,6 +28,15 @@ class SG_Ship_And_Weigh_Admin_API {
     protected SG_Ship_And_Weigh_Admin_Settings $settingsObject;
 
     /**
+     * Instance of the SG_Ship_And_Weigh_Shipping_Settings class
+     * 
+     * @since 1.0.0
+     * 
+     * @var SG_Ship_And_Weigh_Admin_Settings
+     */
+    protected SG_Ship_And_Weigh_Shipping_Settings $shippingObject;
+
+    /**
      * SG_Ship_And_Weigh_Admin_API constructor
      * 
      * @since 1.0.0
@@ -37,6 +46,7 @@ class SG_Ship_And_Weigh_Admin_API {
     public function __construct( array $settings_spec ) {
         $this->settings_spec = $settings_spec;
         $this->settingsObject = new SG_Ship_And_Weigh_Admin_Settings( $settings_spec );
+        $this->shippingObject = new SG_Ship_And_Weigh_Shipping_Settings();
     }
 
     /**
@@ -59,7 +69,45 @@ class SG_Ship_And_Weigh_Admin_API {
                     'callback' => array( $this, 'get_settings' ),
                     'args' => array(),
                     'permissions_callback' => array( $this, 'permissions' ),
-                )
+                ),
+            );
+
+            register_rest_route( 'sg-ship-and-weigh-api/v1', '/recipients',
+                array(
+                    'methods' => 'POST',
+                    'callback' => array( $this, 'add_recipient' ),
+                    'args' => array(
+                        'name' => array(
+                            'type' => 'string',
+                            'required' => true,
+                            'sanatize_callback' => 'sanatize_text_field',
+                        ),
+                        'email' => array(
+                            'type' => 'string',
+                            'required' => true,
+                            'sanatize_callback' => 'sanatize_email',
+                        ),
+                        'country' => array(
+                            'type' => 'string',
+                            'required' => true,
+                            'sanatize_callback' => 'sanatize_text_field',
+                        ),
+                        'address' => array(
+                            'type' => 'string',
+                            'required' => true,
+                            'sanatize_callback' => 'sanatize_textarea_field',
+                        ),
+                    ),
+                    'permissions_callback' => array( $this, 'permissions' ),
+                ),
+            );
+            register_rest_route( 'sg-ship-and-weigh-api/v1', '/recipients',
+                array(
+                    'methods' => 'GET',
+                    'callback' => array( $this, 'get_recipients' ),
+                    'args' => array(),
+                    'permissions_callback' => array( $this, 'permisssions' ),
+                ),
             );
     }
 
@@ -114,7 +162,7 @@ class SG_Ship_And_Weigh_Admin_API {
     }
 
     /**
-     * Update settings via API
+     * Update settings
      * 
      * @since 1.0.0
      * 
@@ -130,7 +178,7 @@ class SG_Ship_And_Weigh_Admin_API {
     }
 
     /**
-     * Get settings via API
+     * Get settings
      * 
      * @since 1.0.0
      * 
@@ -139,6 +187,32 @@ class SG_Ship_And_Weigh_Admin_API {
     public function get_settings( WP_REST_Request $request ) {
         return rest_ensure_response(
             $this->settingsObject->get_settings()
+        );
+    }
+
+    /**
+     * Add a recipient
+     * 
+     * @since 1.0.0
+     * 
+     * @param WP_REST_Request $request
+     */
+    public function add_recipient( WP_REST_Request $request ) {
+        $recipient = $request->get_params();
+
+        error_log( print_r( $recipient, true ) );
+    }
+
+    /**
+     * Get recipients
+     * 
+     * @since 1.0.0
+     * 
+     * @param WP_REST_Request $request
+     */
+    public function get_recipients( WP_REST_Request $request ) {
+        return rest_ensure_response(
+            $this->shippingObject->get_recipients()
         );
     }
 }

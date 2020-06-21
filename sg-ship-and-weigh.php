@@ -86,6 +86,9 @@ class SG_Ship_And_Weigh {
         require_once( $this->admin_root_path
             . '/class-sg-ship-and-weigh-settings-specification.php'
         );
+        require_once( $this->admin_root_path
+            . '/class-sg-ship-and-weigh-shipping-settings.php'
+        );
     }
 
     /**
