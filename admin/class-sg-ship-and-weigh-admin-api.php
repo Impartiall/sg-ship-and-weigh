@@ -215,7 +215,7 @@ class SG_Ship_And_Weigh_Admin_API {
         $recipients = array();
         foreach ( $this->shippingObject->get_recipients() as $i => $values ) {
             $recipients[ $i ] = array(
-                'id' => $i,
+                'id' => $values[ 'name' ],
                 'text' => $values[ 'name' ],
                 'email' => $values[ 'email' ],
                 'country' => $values[ 'country' ],
