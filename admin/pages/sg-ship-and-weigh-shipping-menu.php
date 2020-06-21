@@ -15,11 +15,11 @@
             </li>
             <li>
                 <label for="recipient-address">Recipient Address</label>
-                <textarea name="recipient-address" id="recipient-address"></textarea>
+                <textarea name="recipient-address" id="recipient-address" v-model="recipient.address"></textarea>
             </li>
             <li>
                 <label for="recipient-email">Recipient Email</label>
-                <input type="email" name="recipient-email" id="recipient-email"></input>
+                <input type="email" name="recipient-email" id="recipient-email" v-model="recipient.email">
             </li>
             <li>
                 <label>Weight Type</label>
