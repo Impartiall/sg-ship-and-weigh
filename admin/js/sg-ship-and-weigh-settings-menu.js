@@ -10,7 +10,7 @@ jQuery( $ => {
     $.ajax({
         method: 'GET',
         url: SHIP_AND_WEIGH.api.url,
-        beforeSend: ( xhr ) => {
+        beforeSend: xhr => {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
     }).then( response => {
@@ -33,7 +33,7 @@ jQuery( $ => {
         $.ajax({
             method: 'POST',
             url: SHIP_AND_WEIGH.api.url,
-            beforeSend: ( xhr ) => {
+            beforeSend: xhr => {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
             data: data,
