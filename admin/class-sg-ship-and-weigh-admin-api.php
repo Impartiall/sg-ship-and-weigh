@@ -211,8 +211,19 @@ class SG_Ship_And_Weigh_Admin_API {
      * @param WP_REST_Request $request
      */
     public function get_recipients( WP_REST_Request $request ) {
+        // Format recipients object for Select2
+        $recipients = array();
+        foreach ( $this->shippingObject->get_recipients() as $i => $values ) {
+            $recipients[ $i ] = array(
+                'id' => $i,
+                'text' => $values[ 'name' ],
+                'email' => $values[ 'email' ],
+                'country' => $values[ 'country' ],
+                'address' => $values[ 'address' ],
+            );
+        }
         return rest_ensure_response(
-            $this->shippingObject->get_recipients()
+            $recipients
         );
     }
 }
