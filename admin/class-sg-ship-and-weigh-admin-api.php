@@ -49,11 +49,7 @@ class SG_Ship_And_Weigh_Admin_API {
                 array(
                     'methods' => 'POST',
                     'callback' => array( $this, 'update_settings' ),
-                    /**
-                     * @TODO factor out settings which exist in three places
-                     * to one database entry (from here and admin-settings)
-                     */
-                    'args' => $this->get_post_args(),
+                    'args' => $this->get_settings_post_args(),
                     'permissions_callback' => array( $this, 'permissions' )
                 ),
             );
@@ -74,7 +70,7 @@ class SG_Ship_And_Weigh_Admin_API {
      * 
      * @return array
      */
-    public function get_post_args() {
+    public function get_settings_post_args() {
         $post_args = array();
         foreach ( $this->settings_spec as $key => $values ) {
             $array[ $key ] = array(
