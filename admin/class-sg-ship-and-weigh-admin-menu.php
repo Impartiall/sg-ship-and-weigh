@@ -137,6 +137,10 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     'saved' => __( 'Settings Saved', 'text-domain' ),
                     'error' => __( 'Error', 'text-domain' ),
                 ),
+                'api'     => array(
+                    'recipients_url' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/recipients' ) ),
+                    'nonce'          => wp_create_nonce( 'wp_rest' ),
+                ),
             ),
             $script_deps = [ 'jquery', $this->shipping_slug . '-vuejs', $this->shipping_slug . '-select2' ],
             $style_deps = [ $this->shipping_slug . '-select2' ],
