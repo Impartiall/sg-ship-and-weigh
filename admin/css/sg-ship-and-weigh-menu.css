@@ -24,6 +24,6 @@ form li {
     margin-bottom: 20px;
 }
 
-form button {
-    font-size: 15px !important;
+form #add-recipient {
+    margin-left: 15px;
 }

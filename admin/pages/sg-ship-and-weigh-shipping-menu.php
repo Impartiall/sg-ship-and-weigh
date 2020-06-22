@@ -8,6 +8,8 @@
             <li>
                 <label for="recipient-name">Recipient</label>
                 <select name="recipient-name" id="recipient-name"></select>
+
+                <button class="button button-secondary" id="add-recipient">Add to database</button>
             </li>
             <li>
                 <label for="recipient-country">Recipient Country</label>
