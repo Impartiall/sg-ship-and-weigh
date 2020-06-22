@@ -9,6 +9,7 @@ jQuery( $ => {
                 country: '',
                 address: '',
             },
+            feedback: '',
         },
         watch: {
             'recipient.name': _ => {
@@ -56,6 +57,31 @@ jQuery( $ => {
     });
     $( '#recipient-country' ).on( 'select2:close', () => {
         app.$data.recipient.country = $( '#recipient-country' ).select2( 'data' )[0].id;
+    });
+
+    $( '#add-recipient' ).on( 'click', e => {
+        e.preventDefault();
+        $.ajax({
+            method: 'POST',
+            url: SHIP_AND_WEIGH.api.recipients_url,
+            beforeSend: xhr => {
+                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+            },
+            data: {
+                name: app.$data.recipient.name,
+                email: app.$data.recipient.email,
+                country: app.$data.recipient.country,
+                address: app.$data.recipient.address,
+            },
+            error: response => {
+                app.$data.feedback = SHIP_AND_WEIGH.strings.error;
+                if ( response.hasOwnProperty( 'message' ) ) {
+                    app.$data.feedback = response.message;
+                }
+            },
+        }).then( response => {
+            app.$data.feedback = SHIP_AND_WEIGH.strings.recipient_added
+        });
     });
 });
 
