@@ -34,19 +34,24 @@
                 <input type="radio" name="weight-type" id="decimal-pounds" v-model="weight_type" value="decimal-pounds">
                 <label for="decimal-pounds" class="suffix-label">Decimal Pounds</label>
             </li>
-            <li>
+            <li id="weight">
                 <label>Weight</label>
-                <div v-show="weight_type === 'pounds-and-ounces'">
+                <span v-show="weight_type === 'pounds-and-ounces'">
                     <input type="number" name="weight" id="weight-pounds">
                     <label for="weight-pounds" class="suffix-label">lbs.</label>
 
                     <input type="number" name="weight" id="weight-ounces">
                     <label for="weight-ounces" class="suffix-label">oz.</label>
-                </div>
-                <div v-show="weight_type === 'decimal-pounds'">
+                </span>
+                <span v-show="weight_type === 'decimal-pounds'">
                     <input type="number" name="weight" id="weight-decimal-pounds"></input>
                     <label for="weight-decimal-pounds" class="suffix-label">lbs.</label>
-                </div>
+                </span>
+                <span id="weigh-options">
+                    <button class="button" id="weigh-button">Weigh</button>
+                    <input type="checkbox" name="weigh-live" id="weigh-live">
+                    <label class="suffix-label" for="weigh-live">Live update</label>
+                </span>
             </li>
             <li>
                 <label for="service">Service</label>

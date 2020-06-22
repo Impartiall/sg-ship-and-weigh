@@ -31,3 +31,7 @@ form #add-recipient {
 form #weight-pounds, form #weight-ounces {
     width: 15%;
 }
+
+form #weigh-button {
+    margin-right: 10px;
+}
