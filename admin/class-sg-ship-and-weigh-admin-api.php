@@ -103,6 +103,19 @@ class SG_Ship_And_Weigh_Admin_API {
             );
             register_rest_route( 'sg-ship-and-weigh-api/v1', '/recipients',
                 array(
+                    'methods' => 'DELETE',
+                    'callback' => array( $this, 'remove_recipient' ),
+                    'args' => array(
+                        'uuid' => array(
+                            'type' => 'string',
+                            'required' => true,
+                            'sanatize_callback' => 'sanatize_text_field',
+                        ),
+                    ),
+                ),
+            );
+            register_rest_route( 'sg-ship-and-weigh-api/v1', '/recipients',
+                array(
                     'methods' => 'GET',
                     'callback' => array( $this, 'get_recipients' ),
                     'args' => array(),
@@ -202,7 +215,7 @@ class SG_Ship_And_Weigh_Admin_API {
 
         $this->shippingObject->add_recipient( $recipient );
         return rest_ensure_response(
-            $this->settingsObject->get_settings()
+            $this->shippingObject->get_recipients()
         )->set_status( 201 );
     }
 
@@ -218,6 +231,7 @@ class SG_Ship_And_Weigh_Admin_API {
         $recipients = array();
         foreach ( $this->shippingObject->get_recipients() as $i => $values ) {
             $recipients[ $i ] = array(
+                'uuid' => $values[ 'uuid' ],
                 'id' => $values[ 'name' ],
                 'text' => $values[ 'name' ],
                 'email' => $values[ 'email' ],
@@ -228,5 +242,21 @@ class SG_Ship_And_Weigh_Admin_API {
         return rest_ensure_response(
             $recipients
         );
+    }
+
+    /**
+     * Remove a recipient
+     * 
+     * @since 1.0.0
+     * 
+     * @param WP_REST_Request $request
+     */
+    public function remove_recipient( WP_REST_Request $request ) {
+        $uuid = $request->get_param( 'uuid' );
+
+        $this->shippingObject->remove_recipient( $uuid );
+        return rest_ensure_response(
+            $this->shippingObject->get_recipients()
+        )->set_status( 201 );
     }
 }

@@ -25,6 +25,7 @@ class SG_Ship_And_Weigh_Shipping_Settings {
      * @var array
      */
     protected array $recipient_required_keys = [
+        'uuid',
         'name',
         'email',
         'country',
@@ -58,6 +59,25 @@ class SG_Ship_And_Weigh_Shipping_Settings {
         }
 
         $recipients[] = $recipient;
+        update_option( $this->option_key . 'recipients', $recipients );
+    }
+
+    /**
+     * Remove a recipient by id
+     * 
+     * @since 1.0.0
+     * 
+     * @param string $uuid The uuid of the recipient to be removed
+     */
+    public function remove_recipient( string $uuid ) {
+        $recipients = $this->get_recipients();
+
+        foreach ( $recipients as $key => $values ) {
+            if ( $values[ 'uuid' ] = $uuid ) {
+                unset( $recipients[ $key ] );
+            }
+        }
+
         update_option( $this->option_key . 'recipients', $recipients );
     }
 }
