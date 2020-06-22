@@ -39,7 +39,7 @@ class SG_Ship_And_Weigh_Shipping_Settings {
      * @return array
      */
     public function get_recipients() {
-        $recipients = get_option( $option_key . 'recipients', array() );
+        $recipients = get_option( $this->option_key . 'recipients', array() );
         return $recipients;
     }
 
