@@ -67,4 +67,5 @@
         </ul>
         <button type="submit" class="button button-primary">Submit</button>
     </form>
+    <p>{{ feedback }}</p>
 </div>
