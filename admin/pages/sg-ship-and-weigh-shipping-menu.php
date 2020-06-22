@@ -11,7 +11,9 @@
             </li>
             <li>
                 <label for="recipient-country">Recipient Country</label>
-                <select name="recipient-country" id="recipient-country"></select>
+                <select name="recipient-country" id="recipient-country">
+                    <option></option>
+                </select>
             </li>
             <li>
                 <label for="recipient-address">Recipient Address</label>
