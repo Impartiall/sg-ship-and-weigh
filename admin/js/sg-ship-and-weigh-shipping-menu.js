@@ -12,7 +12,7 @@ jQuery( $ => {
         },
         watch: {
             'recipient.name': _ => {
-                let { email, country, address } = jQuery( '#recipient-name' ).select2( 'data' );
+                let { email, country, address } = $( '#recipient-name' ).select2( 'data' );
                 let recipient = app.$data.recipient;
                 email = 'johndoe@gmail.com';
                 country = 'US';
@@ -23,8 +23,8 @@ jQuery( $ => {
                 recipient.address = address;
             },
             'recipient.country': code => {
-                jQuery( '#recipient-country' ).val( code );
-                jQuery( '#recipient-country' ).trigger( 'change.select2' );
+                $( '#recipient-country' ).val( code );
+                $( '#recipient-country' ).trigger( 'change.select2' );
             },
         }
     });
