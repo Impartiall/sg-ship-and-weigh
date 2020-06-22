@@ -134,7 +134,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
             'SHIP_AND_WEIGH',
             array(
                 'strings' => array(
-                    'saved' => __( 'Settings Saved', 'text-domain' ),
+                    'recipient_added' => __( 'Recipient Added', 'text-domain' ),
                     'error' => __( 'Error', 'text-domain' ),
                 ),
                 'api'     => array(
