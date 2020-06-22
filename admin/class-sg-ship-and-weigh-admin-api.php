@@ -199,8 +199,7 @@ class SG_Ship_And_Weigh_Admin_API {
      */
     public function add_recipient( WP_REST_Request $request ) {
         $recipient = $request->get_params();
-
-        error_log( print_r( $recipient, true ) );
+        $this->shippingObject->add_recipient( $recipient );
     }
 
     /**
