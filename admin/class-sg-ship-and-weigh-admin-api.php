@@ -199,7 +199,11 @@ class SG_Ship_And_Weigh_Admin_API {
      */
     public function add_recipient( WP_REST_Request $request ) {
         $recipient = $request->get_params();
+
         $this->shippingObject->add_recipient( $recipient );
+        return rest_ensure_response(
+            $this->settingsObject->get_settings()
+        )->set_status( 201 );
     }
 
     /**
