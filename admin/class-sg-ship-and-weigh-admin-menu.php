@@ -135,6 +135,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
             array(
                 'strings' => array(
                     'recipient_added' => __( 'Recipient Added', 'text-domain' ),
+                    'recipient_removed' => __( 'Recipient Removed', 'text-domain' ),
                     'error' => __( 'Error', 'text-domain' ),
                 ),
                 'api'     => array(
