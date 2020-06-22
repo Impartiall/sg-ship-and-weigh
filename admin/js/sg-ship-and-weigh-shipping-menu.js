@@ -1,34 +1,34 @@
-let app = new Vue({
-    el: '#root',
-    data: {
-        weight_type: 'pounds_and_ounces', // Or 'decimal_pounds'
-        recipient: {
-            name: '',
-            email: '',
-            country: '',
-            address: '',
-        },
-    },
-    watch: {
-        'recipient.name': _ => {
-            let { email, country, address } = jQuery( '#recipient-name' ).select2( 'data' );
-            let recipient = app.$data.recipient;
-            email = 'johndoe@gmail.com';
-            country = 'US';
-            address = 'MA ...';
-
-            recipient.email = email;
-            recipient.country = country;
-            recipient.address = address;
-        },
-        'recipient.country': code => {
-            jQuery( '#recipient-country' ).val( code );
-            jQuery( '#recipient-country' ).trigger( 'change.select2' );
-        },
-    }
-});
-
 jQuery( $ => {
+    let app = new Vue({
+        el: '#root',
+        data: {
+            weight_type: 'pounds_and_ounces', // Or 'decimal_pounds'
+            recipient: {
+                name: '',
+                email: '',
+                country: '',
+                address: '',
+            },
+        },
+        watch: {
+            'recipient.name': _ => {
+                let { email, country, address } = jQuery( '#recipient-name' ).select2( 'data' );
+                let recipient = app.$data.recipient;
+                email = 'johndoe@gmail.com';
+                country = 'US';
+                address = 'MA ...';
+    
+                recipient.email = email;
+                recipient.country = country;
+                recipient.address = address;
+            },
+            'recipient.country': code => {
+                jQuery( '#recipient-country' ).val( code );
+                jQuery( '#recipient-country' ).trigger( 'change.select2' );
+            },
+        }
+    });
+
     $( '#recipient-name' ).select2({
         placeholder: 'Select or add a recipient',
         tags: true,
