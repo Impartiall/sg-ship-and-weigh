@@ -27,3 +27,7 @@ form li {
 form #add-recipient {
     margin-left: 15px;
 }
+
+form #weight-pounds, form #weight-ounces {
+    width: 15%;
+}
