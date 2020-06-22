@@ -74,6 +74,7 @@ jQuery( $ => {
 
     $( '#add-recipient' ).on( 'click', e => {
         e.preventDefault();
+
         $.ajax({
             method: 'POST',
             url: SHIP_AND_WEIGH.api.recipients_url,
@@ -81,6 +82,7 @@ jQuery( $ => {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
             data: {
+                uuid: uuidv4(),
                 name: app.$data.recipient.name,
                 email: app.$data.recipient.email,
                 country: app.$data.recipient.country,
