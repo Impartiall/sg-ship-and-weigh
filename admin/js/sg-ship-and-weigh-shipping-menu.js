@@ -12,10 +12,10 @@ let app = new Vue({
     },
     watch: {
         'recipient.name': _ => {
-            let { email, country, address } = jQuery( '#recipient-name' ).select2( 'data' );
+            let { email, country, address } = jQuery( '#recipient-name' ).select2( 'data' )[ 0 ];
             let recipient = app.$data.recipient;
 
-            recipient.email = email;
+            app.$data.recipient.email = email;
             recipient.country = country;
             recipient.address = address;
         },
@@ -45,7 +45,7 @@ jQuery( $ => {
         },
     });
     $( '#recipient-name' ).on( 'select2:close', () => {
-        app.$data.recipient.name = $( '#recipient-name' ).select2( 'data' )[0].id;
+        app.$data.recipient.name = $( '#recipient-name' ).select2( 'data' )[ 0 ].id;
     });
 
     $( '#recipient-country' ).select2({
@@ -53,7 +53,7 @@ jQuery( $ => {
         data: countries,
     });
     $( '#recipient-country' ).on( 'select2:close', () => {
-        app.$data.recipient.country = $( '#recipient-country' ).select2( 'data' )[0].id;
+        app.$data.recipient.country = $( '#recipient-country' ).select2( 'data' )[ 0 ].id;
     });
 
     $( '#add-recipient' ).on( 'click', e => {
