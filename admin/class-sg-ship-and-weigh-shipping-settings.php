@@ -73,7 +73,7 @@ class SG_Ship_And_Weigh_Shipping_Settings {
         $recipients = $this->get_recipients();
 
         foreach ( $recipients as $key => $values ) {
-            if ( $values[ 'uuid' ] = $uuid ) {
+            if ( $values[ 'uuid' ] === $uuid ) {
                 unset( $recipients[ $key ] );
             }
         }
