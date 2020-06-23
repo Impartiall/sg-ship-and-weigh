@@ -229,8 +229,8 @@ class SG_Ship_And_Weigh_Admin_API {
     public function get_recipients( WP_REST_Request $request ) {
         // Format recipients object for Select2
         $recipients = array();
-        foreach ( $this->shippingObject->get_recipients() as $i => $values ) {
-            $recipients[ $i ] = array(
+        foreach ( $this->shippingObject->get_recipients() as $values ) {
+            $recipients[] = array(
                 'uuid' => $values[ 'uuid' ],
                 'id' => $values[ 'name' ],
                 'text' => $values[ 'name' ],
