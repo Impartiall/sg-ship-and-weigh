@@ -77,6 +77,11 @@ class SG_Ship_And_Weigh_Admin_API {
                     'methods' => 'POST',
                     'callback' => array( $this, 'add_recipient' ),
                     'args' => array(
+                        'uuid' => array(
+                            'type' => 'string',
+                            'required' => true,
+                            'sanatize_callback' => 'sanatize_text_field',
+                        ),
                         'name' => array(
                             'type' => 'string',
                             'required' => true,
@@ -233,7 +238,13 @@ class SG_Ship_And_Weigh_Admin_API {
             $recipients[] = array(
                 'uuid' => $values[ 'uuid' ],
                 'id' => $values[ 'name' ],
-                'text' => $values[ 'name' ],
+                'text' => sprintf(
+                    '%s (%s, %s, %s)',
+                    $values[ 'name' ],
+                    $values[ 'email' ],
+                    $values[ 'address' ],
+                    $values[ 'country' ],
+                ),
                 'email' => $values[ 'email' ],
                 'country' => $values[ 'country' ],
                 'address' => $values[ 'address' ],
