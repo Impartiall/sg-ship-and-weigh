@@ -54,9 +54,13 @@ jQuery( $ => {
             $removeButton.on( 'mouseup', e => {
                 e.stopPropagation();
                 removeRecipient( recipient.uuid );
+                // Refresh options
+                $( '#recipient-name' ).empty();
             });
 
-            $option.append( $removeButton );
+            if ( recipient.uuid ) {
+                $option.append( $removeButton );
+            }
             return $option;
         },
     });
@@ -117,6 +121,8 @@ jQuery( $ => {
             },
         }).then( response => {
             app.$data.feedback = SHIP_AND_WEIGH.strings.recipient_removed;
+            // Trigger select2 to update
+            // set recipient_name value
         });
     };
 });
