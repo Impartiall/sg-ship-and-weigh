@@ -143,6 +143,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     'recipients_url' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/recipients' ) ),
                     'nonce'          => wp_create_nonce( 'wp_rest' ),
                 ),
+                'debug'   => WP_DEBUG,
             ),
             $script_deps = [
                 'jquery',
@@ -196,6 +197,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     'nonce' => wp_create_nonce( 'wp_rest' ),
                 ),
                 'settings_spec' => $this->get_vue_settings_spec(),
+                'debug'    => WP_DEBUG,
             ),
             $script_deps = [ 'jquery', $this->settings_slug . '-vuejs' ],
         );
