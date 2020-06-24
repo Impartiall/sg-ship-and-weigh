@@ -60,8 +60,7 @@ jQuery( $ => {
                     xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
                 },
                 error: response => {
-                    debug( `An error occured while loading options for #recipient-name:` );
-                    if ( DEBUG ) 
+                    if ( DEBUG ) console.log( `An error occured while loading options for #recipient-name: ${ response.message }` );
                     callback();
                     app.$data.feedback = SHIP_AND_WEIGH.strings.error;
                     if ( response.hasOwnProperty( 'message' ) ) {
