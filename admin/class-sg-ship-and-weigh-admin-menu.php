@@ -128,7 +128,8 @@ class SG_Ship_And_Weigh_Admin_Menu {
             'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js',
         );
         wp_register_style(
-            $this->shipping_slug . '-selectize'
+            $this->shipping_slug . '-selectize',
+            'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css',
         );
 
         $this->enqueue_assets(
@@ -155,7 +156,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
                 $this->shipping_slug . '-uuidjs',
             ],
             $style_deps = [
-                $this->shipping_slug . '-selectize'
+                $this->shipping_slug . '-selectize',
             ],
         );
         include( $this->assets_root_path . 'pages/sg-ship-and-weigh-shipping-menu.php' );
