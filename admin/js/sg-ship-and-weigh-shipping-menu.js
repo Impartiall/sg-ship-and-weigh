@@ -31,7 +31,8 @@ let app = new Vue({
 });
 
 jQuery( $ => {
-    $( '#recipient-name' ).selectize({
+    let $recipientNameSelect = $( '#recipient-name' ).selectize({
+        preload: true,
         create: true,
         labelField: 'name',
         valueField: 'text',
@@ -40,19 +41,18 @@ jQuery( $ => {
             item: ( item, escape ) => {
                 return `<div>
                     <span class="name">${ escape( item.name ) }</span>
-                    <span class="text">(${ escape( item.text ) })</span>
+                    ${ item.text !== item.name ? `<span class="text">(${ escape( item.text ) })</span>` : '' }
                 </div>`
             },
             option: ( item, escape ) => {
                 return `<div>
                     <span class="name">${ escape( item.name ) }</span>
-                    <span class="text">${ escape( item.text ) }</span>
+                    ${ item.text !== item.name ? `<span class="text">${ escape( item.text ) }</span>` : '' }
                 </div>`
             },
         },
         load: ( query, callback ) => {
             if ( DEBUG ) console.log( 'Loading options for #recipient-name ...' );
-            if ( !query.length ) return callback();
             $.ajax({
                 url: SHIP_AND_WEIGH.api.recipients_url,
                 type: 'GET',
@@ -73,11 +73,12 @@ jQuery( $ => {
                         console.table( data );
                     }
                     callback( data );
-                    app.$data.feedback = SHIP_AND_WEIGH.strings.recipient_added;
                 },
             });
         }
     });
+    let recipientNameSelect = $recipientNameSelect[0].selectize;
+    recipientNameSelect.refreshOptions();
 
     $( '#add-recipient' ).on( 'click', e => {
         e.preventDefault();
