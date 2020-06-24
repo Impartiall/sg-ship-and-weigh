@@ -44,11 +44,17 @@ jQuery( $ => {
             },
         },
         templateResult: recipient => {
-            let $option = $(
-                `<span>${ recipient.text }</span>`
+            let $option = $( `<span></span>` );
+            let $optionName = $(
+                `<div>${ recipient.name || recipient.text }</div>`
+            );
+            let $optionInfo = $(
+                `<span style="white-space: nowrap;text-overflow: ellipsis;">
+                ${ recipient.email }, ${ recipient.address }, ${ recipient.country }
+                </span>`
             );
             let $removeButton = $(
-                '<span class="remove-button dashicons dashicons-no" style="float: right;"></span>'
+                '<span class="dashicons dashicons-no" style="display: inline-end;"></span>'
             );
 
             $removeButton.on( 'mouseup', e => {
@@ -58,7 +64,9 @@ jQuery( $ => {
                 $( '#recipient-name' ).empty();
             });
 
+            $option.append( $optionName );
             if ( recipient.uuid ) {
+                $option.append( $optionInfo );
                 $option.append( $removeButton );
             }
             return $option;

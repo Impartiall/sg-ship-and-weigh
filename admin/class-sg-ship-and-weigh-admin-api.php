@@ -245,6 +245,7 @@ class SG_Ship_And_Weigh_Admin_API {
                     $values[ 'address' ],
                     $values[ 'country' ],
                 ),
+                'name' => $values[ 'name' ],
                 'email' => $values[ 'email' ],
                 'country' => $values[ 'country' ],
                 'address' => $values[ 'address' ],
