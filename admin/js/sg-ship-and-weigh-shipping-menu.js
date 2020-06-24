@@ -19,8 +19,8 @@ let app = new Vue({
             recipient.country = country;
             recipient.address = address;
         },
-        'recipient.country': code => {
-            jQuery( '#recipient-country' ).val( code );
+        'recipient.country': countryCode => {
+            jQuery( '#recipient-country' ).val( countryCode );
             jQuery( '#recipient-country' ).trigger( 'change.select2' );
         },
     }
