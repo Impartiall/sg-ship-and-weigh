@@ -14,7 +14,6 @@
             <li>
                 <label for="recipient-country">Recipient Country</label>
                 <select name="recipient-country" id="recipient-country">
-                    <option></option>
                 </select>
             </li>
             <li>
