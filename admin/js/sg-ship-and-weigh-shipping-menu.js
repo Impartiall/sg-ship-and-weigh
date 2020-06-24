@@ -1,3 +1,5 @@
+const debug = SHIP_AND_WEIGH.debug;
+
 let app = new Vue({
     el: '#root',
     data: {
