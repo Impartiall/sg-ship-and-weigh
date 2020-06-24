@@ -15,7 +15,7 @@ let app = new Vue({
             let { email, country, address } = jQuery( '#recipient-name' ).select2( 'data' )[ 0 ];
             let recipient = app.$data.recipient;
 
-            app.$data.recipient.email = email;
+            recipient.email = email;;
             recipient.country = country;
             recipient.address = address;
         },
