@@ -1,9 +1,4 @@
 const DEBUG = SHIP_AND_WEIGH.debug;
-const debug = message => {
-    if ( DEBUG ) {
-        console.log( message );
-    }
-}
 
 let app = new Vue({
     el: '#root',
@@ -56,7 +51,7 @@ jQuery( $ => {
             },
         },
         load: ( query, callback ) => {
-            console.log( 'Loading options for #recipient-name' );
+            if ( DEBUG ) console.log( 'Loading options for #recipient-name ...' );
             if ( !query.length ) return callback();
             $.ajax({
                 url: SHIP_AND_WEIGH.api.recipients_url,
@@ -65,6 +60,8 @@ jQuery( $ => {
                     xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
                 },
                 error: response => {
+                    debug( `An error occured while loading options for #recipient-name:` );
+                    if ( DEBUG ) 
                     callback();
                     app.$data.feedback = SHIP_AND_WEIGH.strings.error;
                     if ( response.hasOwnProperty( 'message' ) ) {
@@ -72,7 +69,10 @@ jQuery( $ => {
                     }
                 },
                 success: data => {
-                    console.log( data );
+                    if ( DEBUG ) {
+                        console.log( `Options succesfully loaded for #recipient-name:` );
+                        console.table( data );
+                    }
                     callback( data );
                     app.$data.feedback = SHIP_AND_WEIGH.strings.recipient_added;
                 },
