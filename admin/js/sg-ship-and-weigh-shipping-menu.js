@@ -1,4 +1,9 @@
-const debug = SHIP_AND_WEIGH.debug;
+const DEBUG = SHIP_AND_WEIGH.debug;
+const debug = message => {
+    if ( DEBUG ) {
+        console.log( message );
+    }
+}
 
 let app = new Vue({
     el: '#root',
