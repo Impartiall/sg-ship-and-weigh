@@ -29,62 +29,92 @@ let app = new Vue({
 });
 
 jQuery( $ => {
-    $( '#recipient-name' ).select2({
-        placeholder: 'Select or add a recipient',
-        tags: true,
-        ajax: {
-            url: SHIP_AND_WEIGH.api.recipients_url,
-            type: 'GET',
-            beforeSend: xhr => {
-                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
-            },
-            delay: 250,
-            processResults: data => {
-                return {
-                    results: data,
-                };
-            },
-        },
-        templateResult: recipient => {
-            let $option = $( `<span></span>` );
-            let $optionName = $(
-                `<div>${ recipient.name || recipient.text }</div>`
-            );
-            let $optionInfo = $(
-                `<span style="white-space: nowrap;text-overflow: ellipsis;">
-                ${ recipient.email }, ${ recipient.address }, ${ recipient.country }
-                </span>`
-            );
-            let $removeButton = $(
-                '<span class="dashicons dashicons-no" style="display: inline-end;"></span>'
-            );
-
-            $removeButton.on( 'mouseup', e => {
-                e.stopPropagation();
-                removeRecipient( recipient.uuid );
-                // Refresh options
-                $( '#recipient-name' ).empty();
-            });
-
-            $option.append( $optionName );
-            if ( recipient.uuid ) {
-                $option.append( $optionInfo );
-                $option.append( $removeButton );
+    $( '#recipient-name' ).selectize({
+        valueField: 'url',
+        labelField: 'name',
+        searchField: 'name',
+        create: false,
+        render: {
+            option: function(item, escape) {
+                return '<div>' +
+                    '<span class="title">' +
+                        '<span class="name"><i class="icon ' + (item.fork ? 'fork' : 'source') + '"></i>' + escape(item.name) + '</span>' +
+                        '<span class="by">' + escape(item.username) + '</span>' +
+                    '</span>' +
+                    '<span class="description">' + escape(item.description) + '</span>' +
+                    '<ul class="meta">' +
+                        (item.language ? '<li class="language">' + escape(item.language) + '</li>' : '') +
+                        '<li class="watchers"><span>' + escape(item.watchers) + '</span> watchers</li>' +
+                        '<li class="forks"><span>' + escape(item.forks) + '</span> forks</li>' +
+                    '</ul>' +
+                '</div>';
             }
-            return $option;
         },
+        score: function(search) {
+            var score = this.getScoreFunction(search);
+            return function(item) {
+                return score(item) * (1 + Math.min(item.watchers / 100, 1));
+            };
+        },
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            $.ajax({
+                url: 'https://api.github.com/legacy/repos/search/' + encodeURIComponent(query),
+                type: 'GET',
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(res.repositories.slice(0, 10));
+                }
+            });
+        }
     });
-    $( '#recipient-name' ).on( 'select2:close', () => {
-        app.$data.recipient.uuid = $( '#recipient-name' ).select2( 'data' )[ 0 ].uuid;
-    });
-
-    $( '#recipient-country' ).select2({
-        placeholder: 'Select a destination country',
-        data: countries,
-    });
-    $( '#recipient-country' ).on( 'select2:close', () => {
-        app.$data.recipient.country = $( '#recipient-country' ).select2( 'data' )[ 0 ].id;
-    });
+    
+    // .selectize({
+    //     persistent: false,
+    //     labelField: 'name',
+    //     valueField: 'text',
+    //     searchField: [ 'name', 'text' ],
+    //     create: true,
+    //     render: {
+    //         item: ( item, escape ) => {
+    //             return `<div>
+    //                 <span class="name">${ escape( item.name ) }</span>
+    //                 <span class="text">(${ escape( item.text ) })</span>
+    //             </div>`
+    //         },
+    //         option: ( item, escape ) => {
+    //             return `<div>
+    //                 <span class="name">${ escape( item.name ) }</span>
+    //                 <span class="text">${ escape( item.text ) }</span>
+    //             </div>`
+    //         },
+    //     },
+    //     load: ( query, callback ) => {
+    //         console.log( 'Loading options for #recipient-name' );
+    //         if ( !query.length ) return callback();
+    //         $.ajax({
+    //             url: SHIP_AND_WEIGH.api.recipients_url,
+    //             type: 'GET',
+    //             beforeSend: xhr => {
+    //                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+    //             },
+    //             error: response => {
+    //                 callback();
+    //                 app.$data.feedback = SHIP_AND_WEIGH.strings.error;
+    //                 if ( response.hasOwnProperty( 'message' ) ) {
+    //                     app.$data.feedback = response.message;
+    //                 }
+    //             },
+    //             success: data => {
+    //                 console.log( data );
+    //                 callback( data );
+    //                 app.$data.feedback = SHIP_AND_WEIGH.strings.recipient_added;
+    //             },
+    //         });
+    //     }
+    // });
 
     $( '#add-recipient' ).on( 'click', e => {
         e.preventDefault();
