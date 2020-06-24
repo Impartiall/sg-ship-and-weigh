@@ -3,6 +3,7 @@ let app = new Vue({
     data: {
         weight_type: 'pounds_and_ounces', // Or 'decimal_pounds'
         recipient: {
+            uuid: '',
             name: '',
             email: '',
             country: '',
@@ -12,10 +13,11 @@ let app = new Vue({
     },
     watch: {
         'recipient.name': () => {
-            let { email, country, address } = jQuery( '#recipient-name' ).select2( 'data' )[ 0 ];
+            let { name, email, country, address } = jQuery( '#recipient-name' ).select2( 'data' )[ 0 ];
             let recipient = app.$data.recipient;
 
-            recipient.email = email;;
+            recipient.name = name;
+            recipient.email = email;
             recipient.country = country;
             recipient.address = address;
         },
@@ -73,7 +75,7 @@ jQuery( $ => {
         },
     });
     $( '#recipient-name' ).on( 'select2:close', () => {
-        app.$data.recipient.name = $( '#recipient-name' ).select2( 'data' )[ 0 ].id;
+        app.$data.recipient.uuid = $( '#recipient-name' ).select2( 'data' )[ 0 ].uuid;
     });
 
     $( '#recipient-country' ).select2({
@@ -86,6 +88,11 @@ jQuery( $ => {
 
     $( '#add-recipient' ).on( 'click', e => {
         e.preventDefault();
+
+        if ( app.$data.recipient.uuid ) {
+            // Remove existing recipient so that data will be updated
+            removeRecipient( uuid );
+        }
 
         $.ajax({
             method: 'POST',
