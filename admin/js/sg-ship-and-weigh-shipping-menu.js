@@ -1,30 +1,27 @@
 const DEBUG = SHIP_AND_WEIGH.debug;
+const debug = {};
+if ( DEBUG ) {
+    debug.bold = 'font-weight: bold;';
+}
+
+let data = {
+    weight_type: 'pounds_and_ounces', // TODO: get from settings
+    recipient: {
+        uuid: '',
+        name: '',
+        email: '',
+        country: '',
+        address: '',
+    },
+    feedback: '',
+};
 
 let app = new Vue({
     el: '#root',
-    data: {
-        weight_type: 'pounds_and_ounces', // Or 'decimal_pounds'
-        recipient: {
-            uuid: '',
-            name: '',
-            email: '',
-            country: '',
-            address: '',
-        },
-        feedback: '',
-    },
+    data: data,
     watch: {
-        'recipient.name': () => {
-            let { name, email, country, address } = jQuery( '#recipient-name' ).select2( 'data' )[ 0 ];
-            let recipient = app.$data.recipient;
-
-            recipient.name = name;
-            recipient.email = email;
-            recipient.country = country;
-            recipient.address = address;
-        },
-        'recipient.country': countryCode => {
-            jQuery( '#recipient-country' ).val( countryCode );
+        'recipient.country': country => {
+            jQuery( '#recipient-country' ).val( country );
             jQuery( '#recipient-country' ).trigger( 'change.select2' );
         },
     }
@@ -45,49 +42,97 @@ jQuery( $ => {
                 </div>`
             },
             option: ( item, escape ) => {
-                return `<div>
+                let $option = $(`<div>
                     <span class="name">${ escape( item.name ) }</span>
-                    ${ item.text !== item.name ? `<span class="text">${ escape( item.text ) }</span>` : '' }
-                </div>`
+                </div>`);
+                let $description = $(
+                    `<span class="text">${ escape( item.text ) }</span>`
+                );
+                let $removeButton = $(
+                    `<span class="dashicons dashicons-no"></span>`
+                );
+
+                $removeButton.on( 'mousedown', e => {
+                    e.stopPropagation();
+
+                    removeRecipient( item.id );
+                });
+
+                if ( item.text !== item.name ) {
+                    $option.append( $description );
+                    $option.append( $removeButton );
+                }
+
+                return $option;
             },
         },
         load: ( query, callback ) => {
-            if ( DEBUG ) console.log( 'Loading options for #recipient-name ...' );
+            if ( DEBUG ) {
+                console.log( '%cGetting options for #recipient-name', debug.bold );
+            }
+
             $.ajax({
+                method: 'GET',
                 url: SHIP_AND_WEIGH.api.recipients_url,
-                type: 'GET',
                 beforeSend: xhr => {
                     xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
                 },
                 error: response => {
-                    if ( DEBUG ) console.log( `An error occured while loading options for #recipient-name: ${ response.message }` );
                     callback();
-                    app.$data.feedback = SHIP_AND_WEIGH.strings.error;
-                    if ( response.hasOwnProperty( 'message' ) ) {
-                        app.$data.feedback = response.message;
+
+                    // TODO: display feedback
+
+                    if ( DEBUG ) {
+                        console.log( '%cAn error occured while getting options for #recipient-name', debug.bold );
+                        console.log( response.message );
                     }
                 },
                 success: data => {
+                    callback( data );
+
+                    // TODO: display feedback
+
                     if ( DEBUG ) {
-                        console.log( `Options succesfully loaded for #recipient-name:` );
+                        console.log( '%cOptions retrieved successfully for #recipient-name', debug.bold );
                         console.table( data );
                     }
-                    callback( data );
                 },
             });
-        }
+        },
+        onChange: value => {
+            setRecipientData( recipientNameControl.options[ value ] );
+        },
     });
-    let recipientNameSelect = $recipientNameSelect[0].selectize;
-    recipientNameSelect.refreshOptions();
+    let recipientNameControl = $recipientNameSelect[ 0 ].selectize;
 
     $( '#add-recipient' ).on( 'click', e => {
         e.preventDefault();
 
-        if ( app.$data.recipient.uuid ) {
-            // Remove existing recipient so that data will be updated
+        // Remove old recipient if new one has the same uuid
+        if ( data.recipient.uuid ) {
             removeRecipient( uuid );
         }
 
+        addRecipient( data.recipient );
+    });
+
+    const setRecipientData = ({ id, name, email, country, address }) => {
+        data.recipient.uuid = id;
+        data.recipient.name = name;
+        data.recipient.email = email;
+        data.recipient.country = country;
+        data.recipient.address = address;
+    }
+
+    const addRecipient = ( recipient ) => {
+        console.log( '%cAdding recipient', debug.bold );
+        let data = {
+            ...recipient,
+            uuid: uuidv4(),
+        };
+        console.log( data );
+
+        let uuid = uuidv4();
         $.ajax({
             method: 'POST',
             url: SHIP_AND_WEIGH.api.recipients_url,
@@ -95,24 +140,32 @@ jQuery( $ => {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
             data: {
-                uuid: uuidv4(),
-                name: app.$data.recipient.name,
-                email: app.$data.recipient.email,
-                country: app.$data.recipient.country,
-                address: app.$data.recipient.address,
+                uuid: uuid,
+                ...recipient,
             },
             error: response => {
-                app.$data.feedback = SHIP_AND_WEIGH.strings.error;
-                if ( response.hasOwnProperty( 'message' ) ) {
-                    app.$data.feedback = response.message;
+                // TODO: display feedback
+
+                if ( DEBUG ) {
+                    console.log( `%cAn error occured while adding recipient with uuid ${ uuid }`, debug.bold );
+                    console.log( response.message );
                 }
             },
-        }).then( response => {
-            app.$data.feedback = SHIP_AND_WEIGH.strings.recipient_added;
-        });
-    });
+            success: response => {
+                // TODO: display feedback
 
-    let removeRecipient = uuid => {
+                if ( DEBUG ) {
+                    console.log( '%cRecipient added successfully', debug.bold );
+                }
+            }
+        });
+    }
+
+    const removeRecipient = uuid => {
+        if ( DEBUG ) {
+            console.log( `%cRemoving recipient ${ uuid }`, debug.bold );
+        }
+
         $.ajax({
             method: 'DELETE',
             url: SHIP_AND_WEIGH.api.recipients_url,
@@ -123,15 +176,22 @@ jQuery( $ => {
                 uuid: uuid,
             },
             error: response => {
-                app.$data.feedback = SHIP_AND_WEIGH.strings.error;
-                if ( response.hasOwnProperty( 'message' ) ) {
-                    app.$data.feedback = response.message;
+                // TODO: display message
+
+                if ( DEBUG ) {
+                    console.log( `%cAn error occured while removing recipient with uuid ${ uuid }`, debug.bold );
+                    console.log( response.message );
                 }
             },
-        }).then( response => {
-            app.$data.feedback = SHIP_AND_WEIGH.strings.recipient_removed;
-            // Trigger select2 to update
-            // set recipient_name value
+            success: response => {
+                // TODO: display feedback
+
+                // Update dropdown
+
+                if ( DEBUG ) {
+                    console.log( '%cRecipient removed successfully', debug.bold );
+                }
+            }
         });
     };
 });
