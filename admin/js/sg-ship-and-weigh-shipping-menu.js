@@ -30,9 +30,51 @@ jQuery( $ => {
         }
     });
 
+    const recipientNameLoad = ( query, callback ) => {
+        recipientNameControl.clearOptions();
+
+        if ( DEBUG ) {
+            console.log( '%cGetting options for #recipient-name', debug.bold );
+        }
+
+        $.ajax({
+            method: 'GET',
+            url: SHIP_AND_WEIGH.api.recipients_url,
+            beforeSend: xhr => {
+                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+            },
+            error: response => {
+                callback();
+
+                // TODO: display feedback
+
+                if ( DEBUG ) {
+                    console.log( '%cAn error occured while getting options for #recipient-name', debug.bold );
+                    console.log( response.message );
+                }
+            },
+            success: data => {
+                callback( data );
+
+                // TODO: display feedback
+
+                if ( DEBUG ) {
+                    console.log( '%cOptions retrieved successfully for #recipient-name', debug.bold );
+                    console.table( data );
+                }
+            },
+        });
+    }
+    const recipientNameReload = () => {
+        recipientNameControl.load( ( callback ) => {
+            recipientNameLoad( null, callback );
+        });
+    }
+
     let $recipientNameSelect = $( '#recipient-name' ).selectize({
         preload: true,
         create: true,
+        persist: false,
         labelField: 'name',
         valueField: 'text',
         searchField: [ 'name', 'text' ],
@@ -57,7 +99,7 @@ jQuery( $ => {
                 $removeButton.on( 'mousedown', e => {
                     e.stopPropagation();
 
-                    removeRecipient( item.id );
+                    removeRecipient( item.id ).then( recipientNameReload );
                 });
 
                 if ( item.text !== item.name ) {
@@ -68,41 +110,20 @@ jQuery( $ => {
                 return $option;
             },
         },
-        load: ( query, callback ) => {
+        load: recipientNameLoad,
+        onChange: value => {
+            let recipient = recipientNameControl.options[ value ];
             if ( DEBUG ) {
-                console.log( '%cGetting options for #recipient-name', debug.bold );
+                console.log( '%c#recipient-name selected:', debug.bold );
+                console.log( recipient );
             }
 
-            $.ajax({
-                method: 'GET',
-                url: SHIP_AND_WEIGH.api.recipients_url,
-                beforeSend: xhr => {
-                    xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
-                },
-                error: response => {
-                    callback();
+            setRecipientData( recipient );
 
-                    // TODO: display feedback
-
-                    if ( DEBUG ) {
-                        console.log( '%cAn error occured while getting options for #recipient-name', debug.bold );
-                        console.log( response.message );
-                    }
-                },
-                success: data => {
-                    callback( data );
-
-                    // TODO: display feedback
-
-                    if ( DEBUG ) {
-                        console.log( '%cOptions retrieved successfully for #recipient-name', debug.bold );
-                        console.table( data );
-                    }
-                },
-            });
-        },
-        onChange: value => {
-            setRecipientData( recipientNameControl.options[ value ] );
+            if ( DEBUG ) {
+                console.log( '%cSet recipient data', debug.bold );
+                console.log( data.recipient );
+            }
         },
     });
     let recipientNameControl = $recipientNameSelect[ 0 ].selectize;
@@ -126,6 +147,11 @@ jQuery( $ => {
         },
         onChange: value => {
             data.recipient.address.country = value;
+
+            if ( DEBUG ) {
+                console.log( `%cSet recipient country to '${ value }'`, debug.bold );
+                console.log( data.recipient );
+            }
         }
     });
     let recipientCountryControl = $recipientCountrySelect[ 0 ].selectize;
@@ -133,31 +159,35 @@ jQuery( $ => {
     $( '#add-recipient' ).on( 'click', e => {
         e.preventDefault();
 
-        // Remove old recipient if new one has the same uuid
+        // Remove old recipient if new one has a uuid
         if ( data.recipient.uuid ) {
             removeRecipient( uuid );
         }
 
-        addRecipient( data.recipient );
+        addRecipient( data.recipient ).then( recipientNameReload );
     });
 
-    const setRecipientData = ({ id, name, email, country }) => {
+    const setRecipientData = ({ id, name, email, address }) => {
         data.recipient.uuid = id;
         data.recipient.name = name;
         data.recipient.email = email;
-        data.recipient.address.country = country;
+        // Default address to itself
+        data.recipient.address = address || data.recipient.address;
     }
 
-    const addRecipient = ( recipient ) => {
-        console.log( '%cAdding recipient', debug.bold );
+    const addRecipient = recipient => {
         let data = {
             ...recipient,
             uuid: uuidv4(),
         };
-        console.log( data );
+
+        if ( DEBUG ) {
+            console.log( '%cAdding recipient', debug.bold );
+            console.log( data );
+        }
 
         let uuid = uuidv4();
-        $.ajax({
+        return $.ajax({
             method: 'POST',
             url: SHIP_AND_WEIGH.api.recipients_url,
             beforeSend: xhr => {
@@ -171,6 +201,8 @@ jQuery( $ => {
                     console.log( `%cAn error occured while adding recipient with uuid ${ uuid }`, debug.bold );
                     console.log( response.message );
                 }
+
+                return Promise.resolve();
             },
             success: response => {
                 // TODO: display feedback
@@ -178,6 +210,8 @@ jQuery( $ => {
                 if ( DEBUG ) {
                     console.log( '%cRecipient added successfully', debug.bold );
                 }
+
+                return Promise.resolve();
             }
         });
     }
@@ -187,7 +221,7 @@ jQuery( $ => {
             console.log( `%cRemoving recipient ${ uuid }`, debug.bold );
         }
 
-        $.ajax({
+        return $.ajax({
             method: 'DELETE',
             url: SHIP_AND_WEIGH.api.recipients_url,
             beforeSend: xhr => {
@@ -203,6 +237,8 @@ jQuery( $ => {
                     console.log( `%cAn error occured while removing recipient with uuid ${ uuid }`, debug.bold );
                     console.log( response.message );
                 }
+
+                return Promise.resolve();
             },
             success: response => {
                 // TODO: display feedback
@@ -212,6 +248,8 @@ jQuery( $ => {
                 if ( DEBUG ) {
                     console.log( '%cRecipient removed successfully', debug.bold );
                 }
+
+                return Promise.resolve();
             }
         });
     };
