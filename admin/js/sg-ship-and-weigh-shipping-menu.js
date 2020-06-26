@@ -19,6 +19,8 @@ let data = {
     feedback: '',
 };
 
+const defaultAddress = JSON.parse( JSON.stringify( data.recipient.address ) );
+
 jQuery( $ => {
     let app = new Vue({
         el: '#root',
@@ -171,8 +173,10 @@ jQuery( $ => {
         data.recipient.uuid = id;
         data.recipient.name = name;
         data.recipient.email = email;
-        // Default address to itself
-        data.recipient.address = address || data.recipient.address;
+        // Default address to its original state
+        for ( [ key, value ] of Object.entries( address || defaultAddress ) ) {
+            data.recipient.address[ key ] = value;
+        }
     }
 
     const addRecipient = recipient => {
