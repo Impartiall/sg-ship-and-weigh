@@ -108,8 +108,8 @@ jQuery( $ => {
     let recipientNameControl = $recipientNameSelect[ 0 ].selectize;
 
     $( '#recipient-country' ).selectize({
-        labelField: 'id',
-        valueField: 'text',
+        labelField: 'text',
+        valueField: 'id',
         searchField: [ 'text' ],
         options: countries,
         render: {
@@ -123,6 +123,9 @@ jQuery( $ => {
                     <span class="name">${ escape( item.text ) }</span>
                 </div>`;
             },
+        },
+        onChange: value => {
+            data.recipient.country = value;
         }
     });
 
