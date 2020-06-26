@@ -240,10 +240,8 @@ class SG_Ship_And_Weigh_Admin_API {
             $recipients[] = array(
                 'id' => $values[ 'uuid' ],
                 'text' => sprintf(
-                    '%s (%s, %s, %s)',
-                    $values[ 'name' ],
-                    $values[ 'email' ],
-                    $values[ 'address' ],
+                    '%s',
+                    $values[ 'address' ][ 'country' ],
                 ),
                 'name' => $values[ 'name' ],
                 'email' => $values[ 'email' ],
