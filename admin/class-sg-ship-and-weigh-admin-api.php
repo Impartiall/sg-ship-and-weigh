@@ -92,15 +92,12 @@ class SG_Ship_And_Weigh_Admin_API {
                             'required' => true,
                             'sanatize_callback' => 'sanatize_email',
                         ),
-                        'country' => array(
-                            'type' => 'string',
-                            'required' => true,
-                            'sanatize_callback' => 'sanatize_text_field',
-                        ),
                         'address' => array(
-                            'type' => 'string',
+                            'type' => 'string[]',
                             'required' => true,
-                            'sanatize_callback' => 'sanatize_textarea_field',
+                            'sanatize_callback' => function ( $address ) {
+                                return array_map( 'esc_attr', $address );
+                            },
                         ),
                     ),
                     'permissions_callback' => array( $this, 'permissions' ),
@@ -218,6 +215,11 @@ class SG_Ship_And_Weigh_Admin_API {
     public function add_recipient( WP_REST_Request $request ) {
         $recipient = $request->get_params();
 
+        if ( WP_DEBUG ) {
+            error_log( 'SG Ship and Weigh: Adding recipient' );
+            error_log( print_r( $recipient, true ) );
+        }
+
         $this->shippingObject->add_recipient( $recipient );
         return rest_ensure_response(
             $this->shippingObject->get_recipients()
@@ -242,11 +244,9 @@ class SG_Ship_And_Weigh_Admin_API {
                     $values[ 'name' ],
                     $values[ 'email' ],
                     $values[ 'address' ],
-                    $values[ 'country' ],
                 ),
                 'name' => $values[ 'name' ],
                 'email' => $values[ 'email' ],
-                'country' => $values[ 'country' ],
                 'address' => $values[ 'address' ],
             );
         }

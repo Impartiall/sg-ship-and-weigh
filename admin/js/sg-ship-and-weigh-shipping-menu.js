@@ -12,24 +12,24 @@ let data = {
         uuid: '',
         name: '',
         email: '',
-        country: '',
-        address: '',
+        address: {
+            country: '',
+        },
     },
     feedback: '',
 };
 
-let app = new Vue({
-    el: '#root',
-    data: data,
-    watch: {
-        'recipient.country': country => {
-            jQuery( '#recipient-country' ).val( country );
-            jQuery( '#recipient-country' ).trigger( 'change.select2' );
-        },
-    }
-});
-
 jQuery( $ => {
+    let app = new Vue({
+        el: '#root',
+        data: data,
+        watch: {
+            'recipient.address.country': country => {
+                recipientCountryControl.setValue( country );
+            },
+        }
+    });
+
     let $recipientNameSelect = $( '#recipient-name' ).selectize({
         preload: true,
         create: true,
@@ -107,7 +107,7 @@ jQuery( $ => {
     });
     let recipientNameControl = $recipientNameSelect[ 0 ].selectize;
 
-    $( '#recipient-country' ).selectize({
+    let $recipientCountrySelect = $( '#recipient-country' ).selectize({
         labelField: 'text',
         valueField: 'id',
         searchField: [ 'text' ],
@@ -125,9 +125,10 @@ jQuery( $ => {
             },
         },
         onChange: value => {
-            data.recipient.country = value;
+            data.recipient.address.country = value;
         }
     });
+    let recipientCountryControl = $recipientCountrySelect[ 0 ].selectize;
 
     $( '#add-recipient' ).on( 'click', e => {
         e.preventDefault();
@@ -140,12 +141,11 @@ jQuery( $ => {
         addRecipient( data.recipient );
     });
 
-    const setRecipientData = ({ id, name, email, country, address }) => {
+    const setRecipientData = ({ id, name, email, country }) => {
         data.recipient.uuid = id;
         data.recipient.name = name;
         data.recipient.email = email;
-        data.recipient.country = country;
-        data.recipient.address = address;
+        data.recipient.address.country = country;
     }
 
     const addRecipient = ( recipient ) => {
@@ -163,10 +163,7 @@ jQuery( $ => {
             beforeSend: xhr => {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
-            data: {
-                uuid: uuid,
-                ...recipient,
-            },
+            data: data,
             error: response => {
                 // TODO: display feedback
 

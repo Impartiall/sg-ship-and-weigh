@@ -28,7 +28,6 @@ class SG_Ship_And_Weigh_Shipping_Settings {
         'uuid',
         'name',
         'email',
-        'country',
         'address',
     ];
 
