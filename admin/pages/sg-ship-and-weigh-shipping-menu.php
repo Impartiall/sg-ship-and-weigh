@@ -1,37 +1,35 @@
 <div id="root" class="wrap">
     <form id="shipping-form">
         <ul>
-            <li>
-                <label for="sender-address">Sender Info</label>
-                <select name="sender-address" id="sender-address"></select>
-            </li>
-            <li>
-                <label for="recipient-name">Recipient</label>
-                <select name="recipient-name" id="recipient-name"></select>
+            <li id="recipient-address">
+                <li>
+                    <label for="sender-address">Sender Info</label>
+                    <select name="sender-address" id="sender-address"></select>
+                </li>
+                <li>
+                    <label for="name">Recipient</label>
+                    <select name="name" id="recipient-name"></select>
 
-                <button class="button button-secondary" id="add-recipient">Add to database</button>
-            </li>
-            <li>
-                <label for="recipient-country">Recipient Country</label>
-                <select name="recipient-country" id="recipient-country">
-                </select>
-            </li>
-            <li>
-                <label for="recipient-address">Recipient Address</label>
-                <textarea name="recipient-address" id="recipient-address" v-model="recipient.address"></textarea>
-            </li>
-            <li>
-                <label for="recipient-email">Recipient Email</label>
-                <input type="email" name="recipient-email" id="recipient-email" v-model="recipient.email">
-            </li>
-            <li>
-                <label>Weight Type</label>
+                    <button class="button button-secondary" id="add-recipient">Add to database</button>
+                </li>
+                <li>
+                    <label for="country">Recipient Country</label>
+                    <select name="country" id="recipient-country">
+                    </select>
+                </li>
+                <li>
+                    <label for="email">Recipient Email</label>
+                    <input type="email" name="email" id="recipient-email" v-model="recipient.email">
+                </li>
+                <li>
+                    <label>Weight Type</label>
 
-                <input type="radio" name="weight-type" id="pounds-and-ounces" v-model="weight_type" value="pounds-and-ounces">
-                <label for="pounds-and-ounces" class="suffix-label">Pounds & Ounces</label>
-    
-                <input type="radio" name="weight-type" id="decimal-pounds" v-model="weight_type" value="decimal-pounds">
-                <label for="decimal-pounds" class="suffix-label">Decimal Pounds</label>
+                    <input type="radio" name="weight-type" id="pounds-and-ounces" v-model="weight_type" value="pounds-and-ounces">
+                    <label for="pounds-and-ounces" class="suffix-label">Pounds & Ounces</label>
+        
+                    <input type="radio" name="weight-type" id="decimal-pounds" v-model="weight_type" value="decimal-pounds">
+                    <label for="decimal-pounds" class="suffix-label">Decimal Pounds</label>
+                </li>
             </li>
             <li id="weight">
                 <label>Weight</label>
