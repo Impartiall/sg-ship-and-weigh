@@ -32,7 +32,7 @@ class SG_Ship_And_Weigh_EasyPost_API {
     public function add_routes() {
         register_rest_route( 'sg-ship-and-weigh-api/v1', '/easyPost/verify-address',
             array(
-                'methods' => 'POST',
+                'methods' => 'GET',
                 'callback' => array( $this, verify_address ),
                 'args' => get_verification_args(),
                 'permissions_callback' => array( $this, 'permissions' ),
@@ -57,7 +57,9 @@ class SG_Ship_And_Weigh_EasyPost_API {
      * @param WP_REST_Request
      */
     public function verify_address( WP_REST_Request $request ) {
-        SG_Ship_And_Weigh_EasyPost_Functions::verify_address( $request->get_params() );
+        return rest_ensure_response(
+            SG_Ship_And_Weigh_EasyPost_Functions::verify_address( $request->get_params() )
+        );
     }
 
     /**
@@ -74,5 +76,7 @@ class SG_Ship_And_Weigh_EasyPost_API {
                 'sanatize_callback' => 'sanatize_text_field',
             );
         }
+
+        return $verification_args;
     }
 }
