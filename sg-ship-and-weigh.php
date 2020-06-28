@@ -136,7 +136,6 @@ class SG_Ship_And_Weigh {
     protected function get_easypost_api_key() {
         $file = fopen( $this->easypost_api_key_file, 'r' );
         $API_KEY = fgets( $file );
-        error_log( $API_KEY );
         fclose( $file );
 
         return $API_KEY;
