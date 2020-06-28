@@ -53,6 +53,15 @@ class SG_Ship_And_Weigh {
     protected string $admin_root_url;
 
     /**
+     * EasyPost API key file
+     * 
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected string $easypost_api_key_file = 'C:\\secrets\\easypost-api-test-key.txt';
+
+    /**
      * Specification for allowed settings and their defaults,
      * types, and sanatize callbacks
      * 
@@ -120,6 +129,20 @@ class SG_Ship_And_Weigh {
     }
 
     /**
+     * Retrieve EasyPost API secret key from a file
+     * 
+     * @since 1.0.0
+     */
+    protected function get_easypost_api_key() {
+        $file = fopen( $this->easypost_api_key_file, 'r' );
+        $API_KEY = fgets( $file );
+        error_log( $API_KEY );
+        fclose( $file );
+
+        return $API_KEY;
+    }
+
+    /**
      * Initialize classes
      * 
      * @since 1.0.0
@@ -135,7 +158,7 @@ class SG_Ship_And_Weigh {
      */
     public function init_api() {
         ( new SG_Ship_And_Weigh_Admin_API( $this->settings_spec ) )->add_routes();
-        ( new SG_Ship_And_Weigh_EasyPost_API() )->add_routes();
+        ( new SG_Ship_And_Weigh_EasyPost_API( $this->get_easypost_api_key() ) )->add_routes();
     }
 
     /**
