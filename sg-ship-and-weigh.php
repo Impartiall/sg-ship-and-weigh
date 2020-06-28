@@ -26,6 +26,15 @@ defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
 class SG_Ship_And_Weigh {
 
     /**
+     * Filepath of the functions directory
+     * 
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected string $functions_root_path;
+
+    /**
      * Filepath of the admin directory
      * 
      * @since 1.0.0
@@ -59,6 +68,7 @@ class SG_Ship_And_Weigh {
      * @since 1.0.0
      */
     public function __construct() {
+        $this->functions_root_path = plugin_dir_path( __FILE__ ) . 'functions/';
         $this->admin_root_path = plugin_dir_path( __FILE__ ) . 'admin/';
         $this->admin_root_url = plugin_dir_url( __FILE__ ) . 'admin/';
 
@@ -74,6 +84,14 @@ class SG_Ship_And_Weigh {
      * @since 1.0.0
      */
     protected function includes() {
+        require_once( $this->functions_root_path
+            . '/easypost-api/class-sg-ship-and-weigh-easypost-api.php'
+        );
+        require_once( $this->functions_root_path
+            . '/easypost-api/class-sg-ship-and-weigh-easypost-functions.php'
+        );
+        // Require easypost client php
+
         require_once( $this->admin_root_path
             . '/class-sg-ship-and-weigh-admin-api.php'
         );
@@ -117,6 +135,7 @@ class SG_Ship_And_Weigh {
      */
     public function init_api() {
         ( new SG_Ship_And_Weigh_Admin_API( $this->settings_spec ) )->add_routes();
+        ( new SG_Ship_And_Weigh_EasyPost_API() )->add_routes();
     }
 
     /**

@@ -32,7 +32,7 @@ class SG_Ship_And_Weigh_Admin_API {
      * 
      * @since 1.0.0
      * 
-     * @var SG_Ship_And_Weigh_Admin_Settings
+     * @var SG_Ship_And_Weigh_Shipping_Settings
      */
     protected SG_Ship_And_Weigh_Shipping_Settings $shippingObject;
 
