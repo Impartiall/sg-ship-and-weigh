@@ -13,6 +13,11 @@ let data = {
         name: '',
         email: '',
         address: {
+            street1: '',
+            street2: '',
+            city: '',
+            state: '',
+            zip: '',
             country: '',
         },
     },

@@ -13,29 +13,29 @@
                     <button class="button button-secondary" id="add-recipient">Add to database</button>
                 </li>
                 <li>
-                    <label for="recipient-line-1">Address Line 1</label>
-                    <input type="text" name="recipient-line-1" id="recipient-line-1" v-model="recipient.address.line_1">
+                    <label for="recipient-street1">Address Line 1</label>
+                    <input type="text" name="recipient-street1" id="recipient-street1" v-model="recipient.address.street1">
                 </li>
                 <li>
-                    <label for="recipient-line-2">Address Line 2</label>
-                    <input type="text" name="recipient-line-2" id="recipient-line-2" v-model="recipient.address.line_2">
+                    <label for="recipient-street2">Address Line 2</label>
+                    <input type="text" name="recipient-street2" id="recipient-street2" v-model="recipient.address.street2">
                 </li>
                 <li>
-                    <label for="recipient-country">Country</label>
+                    <label for="recipient-country">Country / Territory</label>
                     <select name="recipient-country" id="recipient-country">
                     </select>
                 </li>
                 <li>
-                    <label for="recipient-postal">Postal Code</label>
-                    <input type="text" name="recipient-postal" id="recipient-postal" v-model="recipient.address.postal">
+                    <label for="recipient-zip">Postal Code</label>
+                    <input type="text" name="recipient-zip" id="recipient-zip" v-model="recipient.address.zip">
                 </li>
                 <li>
-                    <label for="recipient-city-town">City / Town</label>
-                    <input type="text" name="recipient-city-town" id="recipient-city-town" v-model="recipient.address.city_town">
+                    <label for="recipient-city">City / Town</label>
+                    <input type="text" name="recipient-city" id="recipient-city" v-model="recipient.address.city">
                 </li>
                 <li>
-                    <label for="recipient-state-province-county">State / Province / County</label>
-                    <select name="recipient-state-province-county" id="recipient-state-province-county" v-model="recipient.address.city_town">
+                    <label for="recipient-state">State / Province / County</label>
+                    <select name="recipient-state" id="recipient-state" v-model="recipient.address.state">
                     </select>
                 </li>
                 <li>
