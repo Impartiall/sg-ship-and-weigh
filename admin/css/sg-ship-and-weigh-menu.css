@@ -12,8 +12,16 @@ form label {
     text-align: left;
 }
 
-form select {
-    width: 20%;
+form input, textarea, select {
+    width: 30%;
+    max-width: 300px;
+}
+
+form .selectize-control {
+    display: inline-block;
+    width: 30%;
+    max-width: 300px !important;
+    border-color: #303030 !important;
 }
 
 form label.suffix-label {

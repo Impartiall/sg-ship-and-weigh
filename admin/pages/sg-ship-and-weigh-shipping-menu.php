@@ -7,18 +7,43 @@
                     <select name="sender-address" id="sender-address"></select>
                 </li>
                 <li>
-                    <label for="name">Recipient</label>
+                    <label for="name">Name / Company</label>
                     <select name="name" id="recipient-name"></select>
 
                     <button class="button button-secondary" id="add-recipient">Add to database</button>
                 </li>
                 <li>
-                    <label for="country">Recipient Country</label>
-                    <select name="country" id="recipient-country">
+                    <label for="recipient-line-1">Address Line 1</label>
+                    <input type="text" name="recipient-line-1" id="recipient-line-1" v-model="recipient.address.line_1">
+                </li>
+                <li>
+                    <label for="recipient-line-2">Address Line 2</label>
+                    <input type="text" name="recipient-line-2" id="recipient-line-2" v-model="recipient.address.line_2">
+                </li>
+                <li>
+                    <label for="recipient-line-3">Address Line 3</label>
+                    <input type="text" name="recipient-line-3" id="recipient-line-3" v-model="recipient.address.line_3">
+                </li>
+                <li>
+                    <label for="recipient-country">Country</label>
+                    <select name="recipient-country" id="recipient-country">
                     </select>
                 </li>
                 <li>
-                    <label for="email">Recipient Email</label>
+                    <label for="recipient-postal">Postal Code</label>
+                    <input type="text" name="recipient-postal" id="recipient-postal" v-model="recipient.address.postal">
+                </li>
+                <li>
+                    <label for="recipient-city-town">City / Town</label>
+                    <input type="text" name="recipient-city-town" id="recipient-city-town" v-model="recipient.address.city_town">
+                </li>
+                <li>
+                    <label for="recipient-state-province-county">State / Province / County</label>
+                    <select name="recipient-state-province-county" id="recipient-state-province-county" v-model="recipient.address.city_town">
+                    </select>
+                </li>
+                <li>
+                    <label for="email">Email</label>
                     <input type="email" name="email" id="recipient-email" v-model="recipient.email">
                 </li>
                 <li>
