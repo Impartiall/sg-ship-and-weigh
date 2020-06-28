@@ -21,10 +21,6 @@
                     <input type="text" name="recipient-line-2" id="recipient-line-2" v-model="recipient.address.line_2">
                 </li>
                 <li>
-                    <label for="recipient-line-3">Address Line 3</label>
-                    <input type="text" name="recipient-line-3" id="recipient-line-3" v-model="recipient.address.line_3">
-                </li>
-                <li>
                     <label for="recipient-country">Country</label>
                     <select name="recipient-country" id="recipient-country">
                     </select>
