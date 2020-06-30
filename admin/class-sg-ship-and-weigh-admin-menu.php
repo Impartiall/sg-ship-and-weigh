@@ -144,7 +144,10 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     'error' => __( 'Error', 'text-domain' ),
                 ),
                 'api'     => array(
-                    'recipients_url' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/recipients' ) ),
+                    'url' => array(
+                        'recipients' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/recipients' ) ),
+                        'address_verification' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/easypost/verify-address' ) ),
+                    ),
                     'nonce'          => wp_create_nonce( 'wp_rest' ),
                 ),
                 'debug'   => WP_DEBUG,
