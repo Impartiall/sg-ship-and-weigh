@@ -46,7 +46,7 @@ jQuery( $ => {
 
         $.ajax({
             method: 'GET',
-            url: SHIP_AND_WEIGH.api.recipients_url,
+            url: SHIP_AND_WEIGH.api.url.recipients,
             beforeSend: xhr => {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
@@ -174,6 +174,33 @@ jQuery( $ => {
         addRecipient( data.recipient ).then( recipientNameReload );
     });
 
+    // Verify address
+    $( '#recipient-address' ).on( 'input', () => {
+        $.ajax({
+            method: 'GET',
+            url: SHIP_AND_WEIGH.api.url.address_verification,
+            beforeSend: xhr => {
+                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+            },
+            data: {
+                name: data.recipient.name,
+                ...data.recipient.address,
+            },
+            error: response => {
+                if ( DEBUG ) {
+                    console.log( '%cAn error ocurred while verifying recipeint address: ', debug.bold );
+                    console.log( response );
+                }
+            },
+            success: response => {
+                if ( DEBUG ) {
+                    console.log( '%cSuccesfully verified address', debug.bold );
+                    console.log( response );
+                }
+            }
+        });
+    });
+
     const setRecipientData = ({ id, name, email, address }) => {
         data.recipient.uuid = id;
         data.recipient.name = name;
@@ -198,7 +225,7 @@ jQuery( $ => {
         let uuid = uuidv4();
         return $.ajax({
             method: 'POST',
-            url: SHIP_AND_WEIGH.api.recipients_url,
+            url: SHIP_AND_WEIGH.api.url.recipients,
             beforeSend: xhr => {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
@@ -232,7 +259,7 @@ jQuery( $ => {
 
         return $.ajax({
             method: 'DELETE',
-            url: SHIP_AND_WEIGH.api.recipients_url,
+            url: SHIP_AND_WEIGH.api.url.recipients,
             beforeSend: xhr => {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
