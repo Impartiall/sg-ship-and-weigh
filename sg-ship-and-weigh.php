@@ -44,6 +44,15 @@ class SG_Ship_And_Weigh {
     protected string $admin_root_path;
 
     /**
+     * Filepath of the includes directory
+     * 
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected string $includes_root_path;
+
+    /**
      * Site URL of the admin directory
      * 
      * @since 1.0.0
@@ -77,6 +86,7 @@ class SG_Ship_And_Weigh {
      * @since 1.0.0
      */
     public function __construct() {
+        $this->includes_root_path = plugin_dir_path( __FILE__ ) . 'includes/';
         $this->functions_root_path = plugin_dir_path( __FILE__ ) . 'functions/';
         $this->admin_root_path = plugin_dir_path( __FILE__ ) . 'admin/';
         $this->admin_root_url = plugin_dir_url( __FILE__ ) . 'admin/';
@@ -99,7 +109,11 @@ class SG_Ship_And_Weigh {
         require_once( $this->functions_root_path
             . '/easypost-api/class-sg-ship-and-weigh-easypost-functions.php'
         );
+        
         // Require easypost client php
+        require_once( $this->includes_root_path
+            . "/easypost/autoload.php"
+        );
 
         require_once( $this->admin_root_path
             . '/class-sg-ship-and-weigh-admin-api.php'
