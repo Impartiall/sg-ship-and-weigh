@@ -200,93 +200,93 @@ jQuery( $ => {
             }
         });
     });
-
-    const setRecipientData = ({ id, name, email, address }) => {
-        data.recipient.uuid = id;
-        data.recipient.name = name;
-        data.recipient.email = email;
-        // Default address to its original state
-        for ( [ key, value ] of Object.entries( address || defaultAddress ) ) {
-            data.recipient.address[ key ] = value;
-        }
-    }
-
-    const addRecipient = recipient => {
-        let data = {
-            ...recipient,
-            uuid: uuidv4(),
-        };
-
-        if ( DEBUG ) {
-            console.log( '%cAdding recipient', debug.bold );
-            console.log( data );
-        }
-
-        let uuid = uuidv4();
-        return $.ajax({
-            method: 'POST',
-            url: SHIP_AND_WEIGH.api.url.recipients,
-            beforeSend: xhr => {
-                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
-            },
-            data: data,
-            error: response => {
-                // TODO: display feedback
-
-                if ( DEBUG ) {
-                    console.log( `%cAn error occured while adding recipient with uuid ${ uuid }`, debug.bold );
-                    console.log( response.message );
-                }
-
-                return Promise.resolve();
-            },
-            success: response => {
-                // TODO: display feedback
-
-                if ( DEBUG ) {
-                    console.log( '%cRecipient added successfully', debug.bold );
-                }
-
-                return Promise.resolve();
-            }
-        });
-    }
-
-    const removeRecipient = uuid => {
-        if ( DEBUG ) {
-            console.log( `%cRemoving recipient ${ uuid }`, debug.bold );
-        }
-
-        return $.ajax({
-            method: 'DELETE',
-            url: SHIP_AND_WEIGH.api.url.recipients,
-            beforeSend: xhr => {
-                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
-            },
-            data: {
-                uuid: uuid,
-            },
-            error: response => {
-                // TODO: display message
-
-                if ( DEBUG ) {
-                    console.log( `%cAn error occured while removing recipient with uuid ${ uuid }`, debug.bold );
-                    console.log( response.message );
-                }
-
-                return Promise.resolve();
-            },
-            success: response => {
-                // TODO: display feedback
-
-                // Update dropdown
-
-                if ( DEBUG ) {
-                    console.log( '%cRecipient removed successfully', debug.bold );
-                }
-
-                return Promise.resolve();
-            }
-        });
-    };
 });
+
+const setRecipientData = ({ id, name, email, address }) => {
+    data.recipient.uuid = id;
+    data.recipient.name = name;
+    data.recipient.email = email;
+    // Default address to its original state
+    for ( [ key, value ] of Object.entries( address || defaultAddress ) ) {
+        data.recipient.address[ key ] = value;
+    }
+}
+
+const addRecipient = recipient => {
+    let data = {
+        ...recipient,
+        uuid: uuidv4(),
+    };
+
+    if ( DEBUG ) {
+        console.log( '%cAdding recipient', debug.bold );
+        console.log( data );
+    }
+
+    let uuid = uuidv4();
+    return jQuery.ajax({
+        method: 'POST',
+        url: SHIP_AND_WEIGH.api.url.recipients,
+        beforeSend: xhr => {
+            xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+        },
+        data: data,
+        error: response => {
+            // TODO: display feedback
+
+            if ( DEBUG ) {
+                console.log( `%cAn error occured while adding recipient with uuid ${ uuid }`, debug.bold );
+                console.log( response.message );
+            }
+
+            return Promise.resolve();
+        },
+        success: response => {
+            // TODO: display feedback
+
+            if ( DEBUG ) {
+                console.log( '%cRecipient added successfully', debug.bold );
+            }
+
+            return Promise.resolve();
+        }
+    });
+}
+
+const removeRecipient = uuid => {
+    if ( DEBUG ) {
+        console.log( `%cRemoving recipient ${ uuid }`, debug.bold );
+    }
+
+    return jQuery.ajax({
+        method: 'DELETE',
+        url: SHIP_AND_WEIGH.api.url.recipients,
+        beforeSend: xhr => {
+            xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+        },
+        data: {
+            uuid: uuid,
+        },
+        error: response => {
+            // TODO: display message
+
+            if ( DEBUG ) {
+                console.log( `%cAn error occured while removing recipient with uuid ${ uuid }`, debug.bold );
+                console.log( response.message );
+            }
+
+            return Promise.resolve();
+        },
+        success: response => {
+            // TODO: display feedback
+
+            // Update dropdown
+
+            if ( DEBUG ) {
+                console.log( '%cRecipient removed successfully', debug.bold );
+            }
+
+            return Promise.resolve();
+        }
+    });
+};
