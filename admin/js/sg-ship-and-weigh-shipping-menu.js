@@ -176,31 +176,35 @@ jQuery( $ => {
 
     // Verify address
     $( '#recipient-address' ).on( 'input', () => {
-        $.ajax({
-            method: 'GET',
-            url: SHIP_AND_WEIGH.api.url.address_verification,
-            beforeSend: xhr => {
-                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
-            },
-            data: {
-                name: data.recipient.name,
-                ...data.recipient.address,
-            },
-            error: response => {
-                if ( DEBUG ) {
-                    console.log( '%cAn error ocurred while verifying recipeint address: ', debug.bold );
-                    console.log( response );
-                }
-            },
-            success: response => {
-                if ( DEBUG ) {
-                    console.log( '%cSuccesfully verified address', debug.bold );
-                    console.log( response );
-                }
-            }
-        });
+        verifyAddress();
     });
 });
+
+const verifyAddress = () => {
+    jQuery.ajax({
+        method: 'GET',
+        url: SHIP_AND_WEIGH.api.url.address_verification,
+        beforeSend: xhr => {
+            xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+        },
+        data: {
+            name: data.recipient.name,
+            ...data.recipient.address,
+        },
+        error: response => {
+            if ( DEBUG ) {
+                console.log( '%cAn error ocurred while verifying recipeint address: ', debug.bold );
+                console.log( response );
+            }
+        },
+        success: response => {
+            if ( DEBUG ) {
+                console.log( '%cSuccesfully verified address', debug.bold );
+                console.log( response );
+            }
+        }
+    });
+};
 
 const setRecipientData = ({ id, name, email, address }) => {
     data.recipient.uuid = id;
