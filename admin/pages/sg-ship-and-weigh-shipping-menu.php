@@ -1,11 +1,11 @@
 <div id="root" class="wrap">
     <form id="shipping-form">
         <ul>
-            <li id="recipient-address">
                 <li>
                     <label for="sender-address">Sender Info</label>
                     <select name="sender-address" id="sender-address"></select>
                 </li>
+            <li id="recipient-address">
                 <li>
                     <label for="name">Name / Company</label>
                     <select name="name" id="recipient-name"></select>
