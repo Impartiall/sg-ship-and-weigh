@@ -54,7 +54,7 @@ class SG_Ship_And_Weigh_EasyPost_API {
             array(
                 'methods' => 'GET',
                 'callback' => array( $this, verify_address ),
-                'args' => get_verification_args(),
+                'args' => $this->get_verification_args(),
                 'permissions_callback' => array( $this, 'permissions' ),
             ),
         );
