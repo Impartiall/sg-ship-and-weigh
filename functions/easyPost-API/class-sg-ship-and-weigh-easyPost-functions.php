@@ -28,6 +28,8 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
      */
     public function verify_address( array $address_params ) {
         $address_params[ 'verify' ] = array( 'delivery', 'zip4' );
-        return \EasyPost\Address::create( $address_params );
+        return rest_ensure_response(
+            \EasyPost\Address::create( $address_params )
+        );
     }
 }
