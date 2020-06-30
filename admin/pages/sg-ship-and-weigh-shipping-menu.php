@@ -38,6 +38,7 @@
                     <select name="recipient-state" id="recipient-state" v-model="recipient.address.state">
                     </select>
                 </li>
+            </li>
                 <li>
                     <label for="email">Email</label>
                     <input type="email" name="email" id="recipient-email" v-model="recipient.email">
@@ -51,7 +52,6 @@
                     <input type="radio" name="weight-type" id="decimal-pounds" v-model="weight_type" value="decimal-pounds">
                     <label for="decimal-pounds" class="suffix-label">Decimal Pounds</label>
                 </li>
-            </li>
             <li id="weight">
                 <label>Weight</label>
                 <span v-show="weight_type === 'pounds-and-ounces'">
