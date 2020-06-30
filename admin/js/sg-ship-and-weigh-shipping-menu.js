@@ -181,16 +181,23 @@ jQuery( $ => {
 });
 
 const verifyAddress = () => {
+    let requestData = {
+        name: data.recipient.name,
+        ...data.recipient.address,
+    }
+    
+    if ( DEBUG ) {
+        console.log( '%cVerifying address', debug.bold );
+        console.log( requestData );
+    }
+
     jQuery.ajax({
         method: 'GET',
         url: SHIP_AND_WEIGH.api.url.address_verification,
         beforeSend: xhr => {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
-        data: {
-            name: data.recipient.name,
-            ...data.recipient.address,
-        },
+        data: requestData,
         error: response => {
             if ( DEBUG ) {
                 console.log( '%cAn error ocurred while verifying recipeint address: ', debug.bold );
