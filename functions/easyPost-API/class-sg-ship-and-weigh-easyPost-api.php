@@ -53,7 +53,7 @@ class SG_Ship_And_Weigh_EasyPost_API {
         register_rest_route( 'sg-ship-and-weigh-api/v1', '/easypost/verify-address',
             array(
                 'methods' => 'GET',
-                'callback' => array( $this, verify_address ),
+                'callback' => array( $this, 'verify_address' ),
                 'args' => $this->get_verification_args(),
                 'permissions_callback' => array( $this, 'permissions' ),
             ),
