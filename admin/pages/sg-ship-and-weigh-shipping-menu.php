@@ -22,21 +22,21 @@
                     <input type="text" name="recipient-street2" id="recipient-street2" v-model="recipient.address.street2">
                 </li>
                 <li>
-                    <label for="recipient-country">Country / Territory</label>
-                    <select name="recipient-country" id="recipient-country">
-                    </select>
+                    <label for="recipient-city">City</label>
+                    <input type="text" name="recipient-city" id="recipient-city" v-model="recipient.address.city">
+                </li>
+                <li>
+                    <label for="recipient-state">State</label>
+                    <input type="text" name="recipient-state" id="recipient-state" v-model="recipient.address.state">
                 </li>
                 <li>
                     <label for="recipient-zip">Postal Code</label>
                     <input type="text" name="recipient-zip" id="recipient-zip" v-model="recipient.address.zip">
                 </li>
                 <li>
-                    <label for="recipient-city">City / Town</label>
-                    <input type="text" name="recipient-city" id="recipient-city" v-model="recipient.address.city">
-                </li>
-                <li>
-                    <label for="recipient-state">State / Province / County</label>
-                    <input type="text" name="recipient-state" id="recipient-state" v-model="recipient.address.state">
+                    <label for="recipient-country">Country</label>
+                    <select name="recipient-country" id="recipient-country">
+                    </select>
                 </li>
             </span>
             <li>

@@ -29,13 +29,20 @@ const defaultAddress = JSON.parse( JSON.stringify( data.recipient.address ) );
 
 const updateAddressFeedback = address => {
     if ( address.verifications.delivery.success ) {
-        data.recipient.address_feedback = formatAddressAsReadable( address );
-        
-        $feedback = jQuery( '#recipient-address-feedback' );
-        $feedback.off( 'click' );
-        $feedback.on( 'click', () => {
-            setRecipientAddress( address );
-        });
+        for ( [ field, value ] of Object.entries( data.recipient.address ) ) {
+            // Only display suggestion if current address does not match
+            if ( value !== address[ field ] ) {
+                data.recipient.address_feedback = formatAddressAsReadable( address );
+
+                $feedback = jQuery( '#recipient-address-feedback' );
+                $feedback.off( 'click' );
+                $feedback.on( 'click', () => {
+                    data.recipient.address_feedback = '';
+                    setRecipientAddress( address );
+                });
+            }
+        }
+
     } else {
         data.recipient.address_feedback = address.verifications.delivery.errors[ 0 ].message;
     }
@@ -173,6 +180,8 @@ jQuery( $ => {
         },
         onChange: value => {
             data.recipient.address.country = value;
+
+            verifyAddress();
 
             if ( DEBUG ) {
                 console.log( `%cSet recipient country to '${ value }'`, debug.bold );
