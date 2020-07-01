@@ -15,6 +15,7 @@
                 <li>
                     <label for="recipient-street1">Address Line 1</label>
                     <input type="text" name="recipient-street1" id="recipient-street1" v-model="recipient.address.street1">
+                    <a id="recipient-address-feedback">{{ recipient.address_feedback }}</a>
                 </li>
                 <li>
                     <label for="recipient-street2">Address Line 2</label>
@@ -35,8 +36,7 @@
                 </li>
                 <li>
                     <label for="recipient-state">State / Province / County</label>
-                    <select name="recipient-state" id="recipient-state" v-model="recipient.address.state">
-                    </select>
+                    <input name="recipient-state" id="recipient-state" v-model="recipient.address.state">
                 </li>
             </span>
             <li>

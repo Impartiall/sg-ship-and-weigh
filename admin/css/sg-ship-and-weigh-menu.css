@@ -28,6 +28,10 @@ form label.suffix-label {
     float: none
 }
 
+form a {
+    cursor: pointer;
+}
+
 form li {
     margin-bottom: 20px;
 }

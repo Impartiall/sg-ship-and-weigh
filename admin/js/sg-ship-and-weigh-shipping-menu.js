@@ -20,11 +20,30 @@ let data = {
             zip: '',
             country: '',
         },
+        address_feedback: '',
     },
     feedback: '',
 };
 
 const defaultAddress = JSON.parse( JSON.stringify( data.recipient.address ) );
+
+const updateAddressFeedback = address => {
+    if ( address.verifications.delivery.success ) {
+        data.recipient.address_feedback = formatAddressAsReadable( address );
+        
+        $feedback = jQuery( '#recipient-address-feedback' );
+        $feedback.off( 'click' );
+        $feedback.on( 'click', () => {
+            setRecipientAddress( address );
+        });
+    } else {
+        data.recipient.address_feedback = address.verifications.delivery.errors[ 0 ].message;
+    }
+};
+
+const formatAddressAsReadable = ({ street1, street2, city, state, zip, country }) => {
+    return `${ street1 }, ${ street2 ? street2 + ', ' : '' } ${ city }, ${ state }, ${ zip }, ${ country }`;
+}
 
 jQuery( $ => {
     let app = new Vue({
@@ -209,6 +228,8 @@ const verifyAddress = () => {
                 console.log( '%cSuccesfully verified address', debug.bold );
                 console.log( response );
             }
+
+            updateAddressFeedback( response );
         }
     });
 };
@@ -217,11 +238,15 @@ const setRecipientData = ({ id, name, email, address }) => {
     data.recipient.uuid = id;
     data.recipient.name = name;
     data.recipient.email = email;
-    // Default address to its original state
-    for ( [ key, value ] of Object.entries( address || defaultAddress ) ) {
-        data.recipient.address[ key ] = value;
-    }
+    setRecipientAddress( address );
 }
+
+const setRecipientAddress = address => {
+    // Default address to its original state
+    for ( [ key, value ] of Object.entries( defaultAddress ) ) {
+        data.recipient.address[ key ] = address[ key ] || value;
+    }
+};
 
 const addRecipient = recipient => {
     let data = {
