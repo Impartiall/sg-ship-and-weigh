@@ -36,7 +36,7 @@
                 </li>
                 <li>
                     <label for="recipient-state">State / Province / County</label>
-                    <input name="recipient-state" id="recipient-state" v-model="recipient.address.state">
+                    <input type="text" name="recipient-state" id="recipient-state" v-model="recipient.address.state">
                 </li>
             </span>
             <li>
