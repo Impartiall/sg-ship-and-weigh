@@ -77,8 +77,9 @@ class SG_Ship_And_Weigh_EasyPost_API {
      * @param WP_REST_Request
      */
     public function verify_address( WP_REST_Request $request ) {
+        $address = $request->get_params();
         return rest_ensure_response(
-            $this->easypostFunctions->verify_address( $request->get_params() )
+            $this->easypostFunctions->verify_address( $address )
         );
     }
 

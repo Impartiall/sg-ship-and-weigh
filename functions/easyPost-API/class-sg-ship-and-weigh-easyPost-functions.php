@@ -6,6 +6,13 @@
  */
 defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
 
+/**
+ * Helper getter class for EasyPost Address objects
+ */
+// class EasyPost_Address extends \EasyPost\Address {
+
+// }
+
 class SG_Ship_And_Weigh_EasyPost_Functions {
 
     /**
@@ -28,11 +35,9 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
      */
     public function verify_address( array $address_params ) {
         $address_params[ 'verify' ] = array( 'delivery', 'zip4' );
-        $address = \EasyPost\Address::create( $address_params );
+        $address = json_decode( \EasyPost\Address::create( $address_params ) );
 
         if ( WP_DEBUG ) {
-            error_log( 'Verifying address' );
-            error_log( print_r( $address_params, true ) );
             error_log( 'Verifications:' );
             error_log( print_r( $address, true ) );
         }
