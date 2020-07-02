@@ -28,7 +28,12 @@ form label.suffix-label {
     float: none
 }
 
-form a {
+form #recipient-address-feedback {
+    display: inline-block;
+    max-width: 38%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: pointer;
 }
 
