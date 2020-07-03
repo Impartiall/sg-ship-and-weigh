@@ -15,7 +15,7 @@
                 <li>
                     <label for="recipient-street1">Address Line 1</label>
                     <input type="text" name="recipient-street1" id="recipient-street1" v-model="recipient.address.street1">
-                    <a id="recipient-address-feedback">{{ recipient.address_feedback }}</a>
+                    <a id="address-feedback">{{ recipient.address_feedback }}</a>
                 </li>
                 <li>
                     <label for="recipient-street2">Address Line 2</label>
