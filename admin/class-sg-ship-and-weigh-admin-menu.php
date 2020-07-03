@@ -244,8 +244,6 @@ class SG_Ship_And_Weigh_Admin_Menu {
         $vue_settings_spec = array();
         foreach ( $this->settings_spec as $setting => $values ) {
             $vue_settings_spec[ $setting ] = array(
-                'name'      => $values[ 'name' ],
-                'html_type' => $values[ 'html_type' ],
                 'value'     => '',
             );
         }
