@@ -60,6 +60,12 @@ jQuery( $ => {
             'recipient.address.country': country => {
                 recipientCountryControl.setValue( country );
             },
+            recipient: {
+                deep: true,
+                handler() {
+                    verifyAddress();
+                },
+            },
         }
     });
 
@@ -181,8 +187,6 @@ jQuery( $ => {
         onChange: value => {
             data.recipient.address.country = value;
 
-            verifyAddress();
-
             if ( DEBUG ) {
                 console.log( `%cSet recipient country to '${ value }'`, debug.bold );
                 console.log( data.recipient );
@@ -200,11 +204,6 @@ jQuery( $ => {
         }
 
         addRecipient( data.recipient ).then( recipientNameReload );
-    });
-
-    // Verify address
-    $( '#recipient-address' ).on( 'input', () => {
-        verifyAddress();
     });
 });
 
