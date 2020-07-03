@@ -3,14 +3,12 @@
         <ul>
             <li>
                 <label for="name">Name / Company</label>
-                <select name="name" id="sender-name"></select>
-
-                <button class="button button-secondary" id="add-sender">Add to database</button>
+                <input type="text" name="name" id="sender-name" v-model="sender.name">
             </li>
             <li>
                 <label for="sender-street1">Address Line 1</label>
                 <input type="text" name="sender-street1" id="sender-street1" v-model="sender.address.street1">
-                <a id="sender-address-feedback">{{ sender.address_feedback }}</a>
+                <a id="address-feedback">{{ sender.address_feedback }}</a>
             </li>
             <li>
                 <label for="sender-street2">Address Line 2</label>
