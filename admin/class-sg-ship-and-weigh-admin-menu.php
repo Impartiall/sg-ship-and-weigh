@@ -192,6 +192,15 @@ class SG_Ship_And_Weigh_Admin_Menu {
             'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',
         );
 
+        wp_register_script(
+            $this->settings_slug . '-selectize',
+            'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js',
+        );
+        wp_register_style(
+            $this->settings_slug . '-selectize',
+            'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css',
+        );
+
         $this->enqueue_assets(
             $this->settings_slug,
             'js/sg-ship-and-weigh-settings-menu.js',
@@ -212,7 +221,14 @@ class SG_Ship_And_Weigh_Admin_Menu {
                 'settings_spec' => $this->get_vue_settings_spec(),
                 'debug'    => WP_DEBUG,
             ),
-            $script_deps = [ 'jquery', $this->settings_slug . '-vuejs' ],
+            $script_deps = [
+                'jquery',
+                $this->settings_slug . '-vuejs',
+                $this->settings_slug . '-selectize',
+            ],
+            $style_deps = [
+                $this->settings_slug . '-selectize',
+            ],
         );
         include( $this->assets_root_path . 'pages/sg-ship-and-weigh-settings-menu.php' );
     }
