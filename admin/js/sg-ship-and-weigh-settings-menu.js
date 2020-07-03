@@ -1,12 +1,26 @@
-let app = new Vue({
-    el: '#root',
-    data: {
-        settings: SHIP_AND_WEIGH.settings_spec,
-        feedback: '',
-    }
-});
+let data = {
+    sender: {
+        name: '',
+        address: {
+            street1: '',
+            street2: '',
+            city: '',
+            state: '',
+            zip: '',
+            country: '',
+        },
+        address_feedback: '',
+    },
+    settings: SHIP_AND_WEIGH.settings_spec,
+    feedback: '',
+};
 
 jQuery( $ => {
+    let app = new Vue({
+        el: '#root',
+        data: data,
+    });
+
     $.ajax({
         method: 'GET',
         url: SHIP_AND_WEIGH.api.url,
@@ -14,7 +28,7 @@ jQuery( $ => {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
     }).then( response => {
-            for ( let [ setting, setting_data ] of Object.entries( app.$data.settings ) ) {
+            for ( let [ setting, setting_data ] of Object.entries( data.settings ) ) {
                 if ( response.hasOwnProperty( setting ) ) {
                     setting_data.value = response.setting;
                 }
