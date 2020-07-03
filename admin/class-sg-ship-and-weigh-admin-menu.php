@@ -203,7 +203,10 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     'error' => __( 'Error', 'text-domain' ),
                 ),
                 'api'      => array(
-                    'url'   => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/settings' ) ),
+                    'url' => array(
+                        'settings'   => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/settings' ) ),
+                        'address_verification' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/easypost/verify-address' ) ),
+                    ),
                     'nonce' => wp_create_nonce( 'wp_rest' ),
                 ),
                 'settings_spec' => $this->get_vue_settings_spec(),
