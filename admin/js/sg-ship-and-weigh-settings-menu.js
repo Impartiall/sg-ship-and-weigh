@@ -126,11 +126,11 @@ jQuery( $ => {
     $( '#settings-form' ).on( 'submit', e => {
         e.preventDefault();
 
-        let data = {};
-        for ( let [ setting, setting_data ] of Object.entries( app.$data.settings ) ) {
-            data[setting] = setting_data.value;
+        let settings = {};
+        for ( let [ setting, setting_data ] of Object.entries( data.settings ) ) {
+            settings[setting] = setting_data.value;
         }
-        console.log(data);
+        console.log(settings);
 
         $.ajax({
             method: 'POST',
@@ -138,15 +138,15 @@ jQuery( $ => {
             beforeSend: xhr => {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
-            data: data,
+            data: settings,
             error: response => {
-                app.$data.feedback = SHIP_AND_WEIGH.strings.error;
+                data.feedback = SHIP_AND_WEIGH.strings.error;
                 if ( response.hasOwnProperty( 'message' ) ) {
-                    app.$data.feedback = response.message;
+                    data.feedback = response.message;
                 }
             },
         }).then( response => {
-                app.$data.feedback = SHIP_AND_WEIGH.strings.saved;
+                data.feedback = SHIP_AND_WEIGH.strings.saved;
         });
     });
 
