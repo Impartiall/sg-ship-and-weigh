@@ -28,7 +28,7 @@ form label.suffix-label {
     float: none
 }
 
-form #recipient-address-feedback {
+form #address-feedback {
     display: inline-block;
     max-width: 38%;
     white-space: nowrap;

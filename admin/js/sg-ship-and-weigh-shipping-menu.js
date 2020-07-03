@@ -34,7 +34,7 @@ const updateAddressFeedback = address => {
             if ( value !== address[ field ] ) {
                 data.recipient.address_feedback = formatAddressAsReadable( address );
 
-                $feedback = jQuery( '#recipient-address-feedback' );
+                $feedback = jQuery( '#address-feedback' );
                 $feedback.off( 'click' );
                 $feedback.on( 'click', () => {
                     data.recipient.address_feedback = '';
