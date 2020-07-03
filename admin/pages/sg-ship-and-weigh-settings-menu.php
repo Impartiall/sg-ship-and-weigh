@@ -1,5 +1,5 @@
 <div id="root" class="wrap">
-    <form>
+    <form id="settings-form">
         <ul>
             <li>
                 <label for="name">Name / Company</label>
@@ -31,15 +31,17 @@
                 <select name="sender-country" id="sender-country">
                 </select>
             </li>
-        </ul>
-    </form>
-    <form id="settings-form">
-        <ul>
-            <li v-for="(setting_data, setting) in settings">
-                <label :for="setting">{{ setting_data.name }}</label>
-                <input :type="setting_data.html_type" v-model="setting_data.value" :name="setting" :id="setting">
+            <li>
+                <label>Default Weight Mode</label>
+
+                <input type="radio" name="default-weight-mode" id="pounds-and-ounces" v-model="settings.default_weight_mode" value="pounds-and-ounces">
+                <label for="pounds-and-ounces" class="suffix-label">Pounds & Ounces</label>
+    
+                <input type="radio" name="default-weight-mode" id="decimal-pounds" v-model="settings.default_weight_mode" value="decimal-pounds">
+                <label for="decimal-pounds" class="suffix-label">Decimal Pounds</label>
             </li>
         </ul>
+
         <button type="submit" class="button button-primary">Submit</button>
     </form>
     <p>{{ feedback }}</p>
