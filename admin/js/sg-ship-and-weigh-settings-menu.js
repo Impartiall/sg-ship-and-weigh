@@ -116,9 +116,28 @@ jQuery( $ => {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
     }).then( response => {
-            for ( let [ setting, setting_data ] of Object.entries( data.settings ) ) {
-                if ( response.hasOwnProperty( setting ) ) {
-                    setting_data.value = response.setting;
+        if ( DEBUG ) {
+            console.log( '%cRetrieved settings', debug.bold );
+            console.log( response );
+        }
+            for ( let [ setting, default_data ] of Object.entries( SHIP_AND_WEIGH.settings_spec ) ) {
+                if ( Object.keys( data.sender.address ).includes( setting ) ) {
+                    data.sender.address[ setting ] = default_data.value;
+                    if ( response.hasOwnProperty( setting ) ) {
+                        console.log(setting, response[ setting ])
+                        data.sender.address[ setting ] = response[ setting ];
+                        console.log(data.sender.address[ setting ])
+                    }
+                } else if ( setting === "name" ) {
+                    data.sender.name = default_data.value;
+                    if ( response.hasOwnProperty( setting ) ) {
+                        data.sender.name = response[ setting ];
+                    }
+                } else {
+                    data.settings[ setting ] = default_data.value;
+                    if ( response.hasOwnProperty( setting ) ) {
+                        data.settings[ setting ] = response[ setting ];
+                    }
                 }
             }
     });
@@ -128,9 +147,17 @@ jQuery( $ => {
 
         let settings = {};
         for ( let [ setting, setting_data ] of Object.entries( data.settings ) ) {
-            settings[setting] = setting_data.value;
+            settings[setting] = setting_data;
         }
-        console.log(settings);
+        for (let [ setting, setting_data ] of Object.entries( data.sender.address ) ) {
+            settings[ setting ] = setting_data;
+        }
+        settings.name = data.sender.name;
+
+        if ( DEBUG ) {
+            console.log( '%cSaving settings', debug.bold );
+            console.log( settings );
+        }
 
         $.ajax({
             method: 'POST',
