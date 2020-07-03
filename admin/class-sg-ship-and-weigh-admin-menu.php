@@ -145,6 +145,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
                 ),
                 'api'     => array(
                     'url' => array(
+                        'settings'   => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/settings' ) ),
                         'recipients' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/recipients' ) ),
                         'address_verification' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/easypost/verify-address' ) ),
                     ),
