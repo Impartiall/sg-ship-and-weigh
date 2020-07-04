@@ -72,12 +72,12 @@
                 </span>
             </li>
             <li>
-                <label for="service">Service</label>
-                <select name="service" id="service"></select>
+                <label for="insurance">Insurance</label>
+                <input type="number" name="insurance" id="insurance">
             </li>
             <li>
-                <label for="insurance">Insurance</label>
-                <select name="insurance" id="insurance"></select>
+                <label for="service">Service</label>
+                <select name="service" id="service"></select>
             </li>
             <li>
                 <label for="tracking">Tracking</label>
