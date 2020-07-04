@@ -58,6 +58,36 @@ class SG_Ship_And_Weigh_EasyPost_API {
                 'permissions_callback' => array( $this, 'permissions' ),
             ),
         );
+        register_rest_route( 'sg-ship-and-weigh-api/v1', '/easypost/rates',
+            array(
+                'methods' => 'GET',
+                'callback' => array( $this, 'get_rates' ),
+                'args' => array(
+                    'to_address' => array(
+                        'type' => 'string[]',
+                        'required' => true,
+                        'sanatize_callback' => function ( $address ) {
+                            return array_map( 'esc_attr', $address );
+                        },
+                    ),
+                    'from_address' => array(
+                        'type' => 'string[]',
+                        'required' => true,
+                        'sanatize_callback' => function ( $address ) {
+                            return array_map( 'esc_attr', $address );
+                        },
+                    ),
+                    'weight' => array(
+                        'type' => 'float',
+                        'required' => true,
+                        'sanatize_callback' => function ( $weight ) {
+                            return filter_var( $weight, FILTER_SANATIZE_NUMBER_FLOAT );
+                        },
+                    ),
+                ),
+                'permissions_callback' => array( $this, 'permissions' ),
+            ),
+        );
     }
 
     /**
@@ -74,7 +104,7 @@ class SG_Ship_And_Weigh_EasyPost_API {
      * 
      * @since 1.0.0
      * 
-     * @param WP_REST_Request
+     * @param WP_REST_Request $request
      */
     public function verify_address( WP_REST_Request $request ) {
         $address = $request->get_params();
@@ -99,5 +129,19 @@ class SG_Ship_And_Weigh_EasyPost_API {
         }
 
         return $verification_args;
+    }
+
+    /**
+     * Get an array of shipment rates
+     * 
+     * @since 1.0.0
+     * 
+     * @param WP_REST_Request $request
+     */
+    public function get_rates( WP_REST_Request $request ) {
+        $shipment = $request->get_params();
+        return rest_ensure_response(
+            $this->easypostFunctions->get_rates( $shipment )
+        );
     }
 }

@@ -44,4 +44,30 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
 
         return $address;
     }
+
+    /**
+     * Rate a shipment
+     * 
+     * @since 1.0.0
+     * 
+     * @param array $shipment_params
+     */
+    public function get_rates( array $shipment_params ) {
+        error_log( print_r( $shipment_params[ 'to_address']));
+        $to_address = \EasyPost\Address::create( $shipment_params[ 'to_address' ] );
+        $from_address = \EasyPost\Address::create( $shipment_params[ 'from_address' ] );
+        $parcel = \EasyPost\Parcel::create(
+            array( 'weight' => $shipment_params[ 'weight' ] )
+        );
+
+        $shipment = \EasyPost\Shipment::create(
+            array(
+                'to_address' => $to_address,
+                'from_address' => $from_address,
+                'parcel' => $parcel,
+            )
+        );
+
+        return $shipment->get_rates();
+    }
 }
