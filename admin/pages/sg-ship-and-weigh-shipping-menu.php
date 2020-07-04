@@ -3,7 +3,7 @@
         <ul>
             <li>
                 <label for="sender-address">From</label>
-                <p name="sender-address" id="sender-address">{{ sender_address }}</p>
+                <p name="sender-address" id="sender-address">{{ sender_address_string }}</p>
             </li>
             <span id="recipient-address">
                 <li>
@@ -76,17 +76,17 @@
                 <input type="number" name="insurance" id="insurance">
             </li>
             <li>
-                <label for="service">Service</label>
-                <select name="service" id="service"></select>
+                <label for="rate">Service / Carrier / Rate</label>
+                <select name="rate" id="rate"></select>
             </li>
-            <li>
+            <!-- <li>
                 <label for="tracking">Tracking</label>
                 <select name="tracking" id="tracking"></select>
             </li>
             <li>
                 <label for="carrier">Carrier</label>
                 <select name="carrier" id="carrier"></select>
-            </li>
+            </li> -->
         </ul>
         <button type="submit" class="button button-primary">Submit</button>
     </form>
