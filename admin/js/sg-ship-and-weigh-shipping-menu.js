@@ -45,13 +45,13 @@ jQuery.ajax({
     error( response ) {
         if ( DEBUG ) {
             console.log( '%cAn error occured while retrieving settings', debug.bold );
-            console.log( response );
+            console.log( response.message );
         }
     },
     success( response ) {
         if ( DEBUG ) {
             console.log( '%cSuccesfully retrieved settings', debug.bold );
-            console.log( response );
+            console.log( response.message );
         };
 
         data.weight_mode = response.default_weight_mode;
@@ -104,7 +104,7 @@ const getRates = callback => {
         error( response ) {
             if ( DEBUG ) {
                 console.log( '%cAn error occurred while retrieving shipment rates', debug.bold );
-                console.log( response );
+                console.log( response.message );
             }
             
             callback();
@@ -112,7 +112,7 @@ const getRates = callback => {
         success( response ) {
             if ( DEBUG ) {
                 console.log( '%cSuccessfully loaded rates:', debug.bold );
-                console.log( response );
+                console.log( response.message );
             }
             
             callback( response );
@@ -331,13 +331,13 @@ const verifyAddress = () => {
         error: response => {
             if ( DEBUG ) {
                 console.log( '%cAn error ocurred while verifying recipeint address: ', debug.bold );
-                console.log( response );
+                console.log( response.message );
             }
         },
         success: response => {
             if ( DEBUG ) {
                 console.log( '%cSuccesfully verified address', debug.bold );
-                console.log( response );
+                console.log( response.message );
             }
 
             updateAddressFeedback( response );
