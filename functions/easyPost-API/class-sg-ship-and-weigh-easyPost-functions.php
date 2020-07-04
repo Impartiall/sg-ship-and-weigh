@@ -50,20 +50,19 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
      * 
      * @since 1.0.0
      * 
-     * @param array $shipment_params
+     * @param array $shipment_args
      */
-    public function get_rates( array $shipment_params ) {
-        error_log( print_r( $shipment_params[ 'to_address']));
-        $to_address = \EasyPost\Address::create( $shipment_params[ 'to_address' ] );
-        $from_address = \EasyPost\Address::create( $shipment_params[ 'from_address' ] );
-        $parcel = \EasyPost\Parcel::create(
-            array( 'weight' => $shipment_params[ 'weight' ] )
-        );
+    public function get_rates( array $shipment_args ) {
+        error_log( print_r( $shipment_args[ 'parcel' ], true ) );
+
+        $from_address = \EasyPost\Address::create( $shipment_args[ 'from_address' ] );
+        $to_address = \EasyPost\Address::create( $shipment_args[ 'to_address' ] );
+        $parcel = \EasyPost\Parcel::create( $shipment_args[ 'parcel' ] );
 
         $shipment = \EasyPost\Shipment::create(
             array(
-                'to_address' => $to_address,
                 'from_address' => $from_address,
+                'to_address' => $to_address,
                 'parcel' => $parcel,
             )
         );

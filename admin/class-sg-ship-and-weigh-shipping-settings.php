@@ -18,20 +18,6 @@ class SG_Ship_And_Weigh_Shipping_Settings {
     protected string $option_key = '_sg_ship_and_weigh_';
 
     /**
-     * Required attributes for recipients
-     * 
-     * @since 1.0.0
-     * 
-     * @var array
-     */
-    protected array $recipient_required_keys = [
-        'uuid',
-        'name',
-        'email',
-        'address',
-    ];
-
-    /**
      * Get an array of recipients and their addresses from the database
      * 
      * @since 1.0.0
@@ -53,8 +39,8 @@ class SG_Ship_And_Weigh_Shipping_Settings {
     public function add_recipient( array $recipient ) {
         $recipients = $this->get_recipients();
 
-        if ( ! ( array_keys( $recipient ) === $this->recipient_required_keys ) ) {
-            return 'Invalid recipient';
+        if ( ! ( array_key_exists( 'uuid', $recipient ) ) ) {
+            return new WP_Error( '400', 'Recipient must have a UUID' );
         }
 
         $recipients[] = $recipient;

@@ -3,7 +3,7 @@
         <ul>
             <li>
                 <label for="sender-address">From</label>
-                <p name="sender-address" id="sender-address">{{ sender_address_string }}</p>
+                <p name="sender-address" id="sender-address">{{ from_address_string }}</p>
             </li>
             <span id="recipient-address">
                 <li>
@@ -14,24 +14,24 @@
                 </li>
                 <li>
                     <label for="recipient-street1">Address Line 1</label>
-                    <input type="text" name="recipient-street1" id="recipient-street1" v-model="recipient.address.street1">
-                    <a id="address-feedback">{{ recipient.address_feedback }}</a>
+                    <input type="text" name="recipient-street1" id="recipient-street1" v-model="shipment.to_address.street1">
+                    <a id="address-feedback">{{ address_feedback }}</a>
                 </li>
                 <li>
                     <label for="recipient-street2">Address Line 2</label>
-                    <input type="text" name="recipient-street2" id="recipient-street2" v-model="recipient.address.street2">
+                    <input type="text" name="recipient-street2" id="recipient-street2" v-model="shipment.to_address.street2">
                 </li>
                 <li>
                     <label for="recipient-city">City</label>
-                    <input type="text" name="recipient-city" id="recipient-city" v-model="recipient.address.city">
+                    <input type="text" name="recipient-city" id="recipient-city" v-model="shipment.to_address.city">
                 </li>
                 <li>
                     <label for="recipient-state">State</label>
-                    <input type="text" name="recipient-state" id="recipient-state" v-model="recipient.address.state">
+                    <input type="text" name="recipient-state" id="recipient-state" v-model="shipment.to_address.state">
                 </li>
                 <li>
                     <label for="recipient-zip">Postal Code</label>
-                    <input type="text" name="recipient-zip" id="recipient-zip" v-model="recipient.address.zip">
+                    <input type="text" name="recipient-zip" id="recipient-zip" v-model="shipment.to_address.zip">
                 </li>
                 <li>
                     <label for="recipient-country">Country</label>
@@ -41,7 +41,7 @@
             </span>
             <li>
                 <label for="email">Email</label>
-                <input type="email" name="email" id="recipient-email" v-model="recipient.email">
+                <input type="email" name="email" id="recipient-email" v-model="shipment.to_address.email">
             </li>
             <li>
                 <label>Weight Mode</label>

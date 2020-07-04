@@ -63,26 +63,17 @@ class SG_Ship_And_Weigh_EasyPost_API {
                 'methods' => 'GET',
                 'callback' => array( $this, 'get_rates' ),
                 'args' => array(
-                    'to_address' => array(
-                        'type' => 'string[]',
+                    'shipment' => array(
+                        'type' => 'array[]',
                         'required' => true,
-                        'sanatize_callback' => function ( $address ) {
-                            return array_map( 'esc_attr', $address );
-                        },
-                    ),
-                    'from_address' => array(
-                        'type' => 'string[]',
-                        'required' => true,
-                        'sanatize_callback' => function ( $address ) {
-                            return array_map( 'esc_attr', $address );
-                        },
-                    ),
-                    'weight' => array(
-                        'type' => 'float',
-                        'required' => true,
-                        'sanatize_callback' => function ( $weight ) {
-                            return filter_var( $weight, FILTER_SANATIZE_NUMBER_FLOAT );
-                        },
+                        'sanatize_callback' => function ( $shipment ) {
+                            return array_map(
+                                function ( $field ) {
+                                    return array_map( 'esc_attr', $field );
+                                },
+                                $address
+                            );
+                        }
                     ),
                 ),
                 'permissions_callback' => array( $this, 'permissions' ),
@@ -108,6 +99,7 @@ class SG_Ship_And_Weigh_EasyPost_API {
      */
     public function verify_address( WP_REST_Request $request ) {
         $address = $request->get_params();
+
         return rest_ensure_response(
             $this->easypostFunctions->verify_address( $address )
         );
@@ -139,7 +131,14 @@ class SG_Ship_And_Weigh_EasyPost_API {
      * @param WP_REST_Request $request
      */
     public function get_rates( WP_REST_Request $request ) {
-        $shipment = $request->get_params();
+        $shipment = $request->get_param( 'shipment' );
+
+        if ( $shipment[ 'parcel' ][ 'weight' ] <= 0 ) {
+            return rest_ensure_response(
+                new WP_Error( '400', 'Invalid parcel weight. Parcel weight must be positive.' )
+            );
+        }
+
         return rest_ensure_response(
             $this->easypostFunctions->get_rates( $shipment )
         );

@@ -8,13 +8,13 @@ const countries = [{"id":"AF","text":"Afghanistan"},{"id":"AX","text":"Aland Isl
 
 let data = { // TODO: Structure data like easypost does:
              // shp: {to_adr:{},frm_adr:{},rate:{},etc.}
-    weight_mode: 'pounds_and_ounces',
-    sender_address: '',
-    recipient: {
-        uuid: '',
-        name: '',
-        email: '',
-        address: {
+    shipment: {
+        from_address: {},
+        to_address: {
+            uuid: '',
+            name: '',
+            company: '',
+            email: '',
             street1: '',
             street2: '',
             city: '',
@@ -22,10 +22,17 @@ let data = { // TODO: Structure data like easypost does:
             zip: '',
             country: '',
         },
-        address_feedback: '',
+        parcel: {
+            weight: 0.0,
+        },
+        rate: {
+            service: '',
+            carrier: '',
+            rate: '',
+        },
     },
-    weight: '',
-    rate: '',
+    address_feedback: '',
+    weight_mode: 'pounds_and_ounces',
     feedback: '',
 };
 
@@ -48,50 +55,41 @@ jQuery.ajax({
         };
 
         data.weight_mode = response.default_weight_mode;
-        data.sender_address = response;
+        data.shipment.from_address = response;
     },
 });
 
-const defaultAddress = JSON.parse( JSON.stringify( data.recipient.address ) );
+const defaultAddress = JSON.parse( JSON.stringify( data.shipment.to_address ) );
 
 const updateAddressFeedback = address => {
     if ( address.verifications.delivery.success ) {
-        for ( [ field, value ] of Object.entries( data.recipient.address ) ) {
+        for ( [ field, value ] of Object.entries( data.shipment.to_address ) ) {
             // Only display suggestion if current address does not match
             if ( value !== address[ field ] ) {
-                data.recipient.address_feedback = formatAddressAsReadable( address );
+                data.address_feedback = addressToString( address );
 
                 $feedback = jQuery( '#address-feedback' );
                 $feedback.off( 'click' );
                 $feedback.on( 'click', () => {
-                    data.recipient.address_feedback = '';
+                    data.address_feedback = '';
                     setRecipientAddress( address );
                 });
             }
         }
 
     } else {
-        data.recipient.address_feedback = address.verifications.delivery.errors[ 0 ].message;
+        data.address_feedback = address.verifications.delivery.errors[ 0 ].message;
     }
 };
 
-const formatAddressAsReadable = ({ name, street1, street2, city, state, zip, country }, showName = false) => {
+const addressToString = ({ name, street1, street2, city, state, zip, country }, showName = false) => {
     return `${ showName && name ? name + ', ' : '' }${ street1 }, ${ street2 ? street2 + ', ' : '' } ${ city }, ${ state }, ${ zip }, ${ country }`;
 }
 
 const getRates = callback => {
-    shipment = {
-        from_address: data.sender_address,
-        to_address: {
-            ...data.recipient.address,
-            name: data.recipient.name,
-        },
-        weight: data.weight,
-    }
-
     if ( DEBUG ) {
         console.log( '%cGetting rates', debug.bold );
-        console.log( shipment );
+        console.log( data.shipment );
     }
 
     jQuery.ajax({
@@ -100,13 +98,15 @@ const getRates = callback => {
         beforeSend( xhr ) {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
-        data: shipment,
+        data: {
+            shipment: data.shipment,
+        },
         error( response ) {
             if ( DEBUG ) {
                 console.log( '%cAn error occurred while retrieving shipment rates', debug.bold );
                 console.log( response );
             }
-
+            
             callback();
         },
         success( response ) {
@@ -114,20 +114,48 @@ const getRates = callback => {
                 console.log( '%cSuccessfully loaded rates:', debug.bold );
                 console.log( response );
             }
-
+            
             callback( response );
         },
     });
 };
 
 jQuery( $ => {
+    let app = new Vue({
+        el: '#root',
+        data: data,
+        watch: {
+            'shipment.to_address.country': country => {
+                recipientCountryControl.setValue( country );
+            },
+            'shipment.to_address': {
+                deep: true,
+                handler() {
+                    verifyAddress();
+                },
+            },
+            shipment: {
+                deep: true,
+                handler() {
+                    // Reload rates when form updates
+                    rateControl.load(getRates);
+                },
+            },
+        },
+        computed: {
+            from_address_string() {
+                return addressToString( this.shipment.from_address, showName = true );
+            },
+        },
+    });
+
     const recipientNameLoad = ( query, callback ) => {
         recipientNameControl.clearOptions();
-
+        
         if ( DEBUG ) {
             console.log( '%cGetting options for #recipient-name', debug.bold );
         }
-
+        
         $.ajax({
             method: 'GET',
             url: SHIP_AND_WEIGH.api.url.recipients,
@@ -167,13 +195,13 @@ jQuery( $ => {
         create: true,
         persist: false,
         labelField: 'name',
-        valueField: 'text',
-        searchField: [ 'name', 'text' ],
+        valueField: 'name',
+        searchField: 'name',
         render: {
             item: ( item, escape ) => {
                 return `<div>
                     <span class="name">${ escape( item.name ) }</span>
-                    ${ item.text !== item.name ? `<span class="text">(${ escape( item.text ) })</span>` : '' }
+                    ${ item.hasOwnProperty( 'uuid' ) ? `<span class="text">(${ escape( item.text ) })</span>` : '' }
                 </div>`
             },
             option: ( item, escape ) => {
@@ -181,19 +209,19 @@ jQuery( $ => {
                     <span class="name">${ escape( item.name ) }</span>
                 </div>`);
                 let $description = $(
-                    `<span class="text">${ escape( item.text ) }</span>`
+                    `<span class="text">${ escape( addressToString( item ) ) }</span>`
                 );
                 let $removeButton = $(
                     `<span class="dashicons dashicons-no"></span>`
                 );
 
-                $removeButton.on( 'mousedown', e => {
-                    e.stopPropagation();
+                if ( item.hasOwnProperty( 'uuid' ) ) {
+                    $removeButton.on( 'mousedown', e => {
+                        e.stopPropagation();
 
-                    removeRecipient( item.id ).then( recipientNameReload );
-                });
+                        removeRecipient( item.uuid ).then( recipientNameReload );
+                    });
 
-                if ( item.text !== item.name ) {
                     $option.append( $description );
                     $option.append( $removeButton );
                 }
@@ -213,7 +241,7 @@ jQuery( $ => {
 
             if ( DEBUG ) {
                 console.log( '%cSet recipient data', debug.bold );
-                console.log( data.recipient );
+                console.log( data.shipment.to_address );
             }
         },
     });
@@ -237,11 +265,11 @@ jQuery( $ => {
             },
         },
         onChange: value => {
-            data.recipient.address.country = value;
+            data.shipment.to_address.country = value;
 
             if ( DEBUG ) {
                 console.log( `%cSet recipient country to '${ value }'`, debug.bold );
-                console.log( data.recipient );
+                console.log( data.shipment.to_address );
             }
         }
     });
@@ -276,51 +304,21 @@ jQuery( $ => {
         e.preventDefault();
 
         // Remove old recipient if new one has a uuid
-        if ( data.recipient.uuid ) {
+        if ( data.shipment.to_address.uuid ) {
             removeRecipient( uuid );
         }
 
-        addRecipient( data.recipient ).then( recipientNameReload );
+        addRecipient( data.shipment.to_address ).then( recipientNameReload );
     });
 
-    let app = new Vue({
-        el: '#root',
-        data: data,
-        watch: {
-            'recipient.address.country': country => {
-                recipientCountryControl.setValue( country );
-            },
-            recipient: {
-                deep: true,
-                handler() {
-                    verifyAddress();
-                },
-            },
-            '$data':{
-                deep: true,
-                handler() {
-                    // Reload rates when form updates
-                    rateControl.load(getRates);
-                },
-            },
-        },
-        computed: {
-            sender_address_string() {
-                return formatAddressAsReadable( this.sender_address, showName = true );
-            },
-        },
-    });
 });
 
 const verifyAddress = () => {
-    let requestData = {
-        name: data.recipient.name,
-        ...data.recipient.address,
-    }
+    let request = data.shipment.to_address;
     
     if ( DEBUG ) {
         console.log( '%cVerifying address', debug.bold );
-        console.log( requestData );
+        console.log( request );
     }
 
     jQuery.ajax({
@@ -329,7 +327,7 @@ const verifyAddress = () => {
         beforeSend: xhr => {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
-        data: requestData,
+        data: request,
         error: response => {
             if ( DEBUG ) {
                 console.log( '%cAn error ocurred while verifying recipeint address: ', debug.bold );
@@ -348,21 +346,21 @@ const verifyAddress = () => {
 };
 
 const setRecipientData = ({ id, name, email, address }) => {
-    data.recipient.uuid = id;
-    data.recipient.name = name;
-    data.recipient.email = email;
+    data.shipment.to_address.uuid = id;
+    data.shipment.to_address.name = name;
+    data.shipment.to_address.email = email;
     setRecipientAddress( address );
 }
 
 const setRecipientAddress = address => {
     // Default address to its original state
     for ( [ key, value ] of Object.entries( defaultAddress ) ) {
-        data.recipient.address[ key ] = address[ key ] || value;
+        data.shipment.to_address[ key ] = address[ key ] || value;
     }
 };
 
 const addRecipient = recipient => {
-    let data = {
+    let address = {
         ...recipient,
         uuid: uuidv4(),
     };
@@ -379,7 +377,9 @@ const addRecipient = recipient => {
         beforeSend: xhr => {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
-        data: data,
+        data: {
+            to_address: address,
+        },
         error: response => {
             // TODO: display feedback
 

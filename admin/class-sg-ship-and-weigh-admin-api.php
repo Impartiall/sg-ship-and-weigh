@@ -77,22 +77,7 @@ class SG_Ship_And_Weigh_Admin_API {
                     'methods' => 'POST',
                     'callback' => array( $this, 'add_recipient' ),
                     'args' => array(
-                        'uuid' => array(
-                            'type' => 'string',
-                            'required' => true,
-                            'sanatize_callback' => 'sanatize_text_field',
-                        ),
-                        'name' => array(
-                            'type' => 'string',
-                            'required' => true,
-                            'sanatize_callback' => 'sanatize_text_field',
-                        ),
-                        'email' => array(
-                            'type' => 'string',
-                            'required' => true,
-                            'sanatize_callback' => 'sanatize_email',
-                        ),
-                        'address' => array(
+                        'to_address' => array(
                             'type' => 'string[]',
                             'required' => true,
                             'sanatize_callback' => function ( $address ) {
@@ -120,7 +105,6 @@ class SG_Ship_And_Weigh_Admin_API {
                 array(
                     'methods' => 'GET',
                     'callback' => array( $this, 'get_recipients' ),
-                    'args' => array(),
                     'permissions_callback' => array( $this, 'permisssions' ),
                 ),
             );
@@ -213,17 +197,16 @@ class SG_Ship_And_Weigh_Admin_API {
      * @param WP_REST_Request $request
      */
     public function add_recipient( WP_REST_Request $request ) {
-        $recipient = $request->get_params();
+        $recipient = $request->get_param( 'to_address' );
 
         if ( WP_DEBUG ) {
             error_log( 'SG Ship and Weigh: Adding recipient' );
             error_log( print_r( $recipient, true ) );
         }
 
-        $this->shippingObject->add_recipient( $recipient );
         return rest_ensure_response(
-            $this->shippingObject->get_recipients()
-        )->set_status( 201 );
+            $this->shippingObject->add_recipient( $recipient )
+        );
     }
 
     /**
@@ -234,27 +217,13 @@ class SG_Ship_And_Weigh_Admin_API {
      * @param WP_REST_Request $request
      */
     public function get_recipients( WP_REST_Request $request ) {
-        // Format recipients object for Select2
-        $recipients = array();
-        foreach ( $this->shippingObject->get_recipients() as $values ) {
-            $recipients[] = array(
-                'id' => $values[ 'uuid' ],
-                'text' => sprintf(
-                    '%s',
-                    $values[ 'address' ][ 'country' ],
-                ),
-                'name' => $values[ 'name' ],
-                'email' => $values[ 'email' ],
-                'address' => $values[ 'address' ],
-            );
-        }
         return rest_ensure_response(
-            $recipients
+            $this->shippingObject->get_recipients()
         );
     }
 
     /**
-     * Remove a recipient
+     * Remove a recipient by UUID
      * 
      * @since 1.0.0
      * 
@@ -263,9 +232,8 @@ class SG_Ship_And_Weigh_Admin_API {
     public function remove_recipient( WP_REST_Request $request ) {
         $uuid = $request->get_param( 'uuid' );
 
-        $this->shippingObject->remove_recipient( $uuid );
         return rest_ensure_response(
-            $this->shippingObject->get_recipients()
-        )->set_status( 201 );
+            $this->shippingObject->remove_recipient( $uuid )
+        );
     }
 }
