@@ -104,7 +104,7 @@ const getRates = callback => {
         error( response ) {
             if ( DEBUG ) {
                 console.log( '%cAn error occurred while retrieving shipment rates', debug.bold );
-                console.log( response.message );
+                console.log( response.responseJSON );
             }
             
             callback();
@@ -112,7 +112,7 @@ const getRates = callback => {
         success( response ) {
             if ( DEBUG ) {
                 console.log( '%cSuccessfully loaded rates:', debug.bold );
-                console.log( response.message );
+                console.log( response.responseJSON );
             }
             
             callback( response );
@@ -331,13 +331,13 @@ const verifyAddress = () => {
         error: response => {
             if ( DEBUG ) {
                 console.log( '%cAn error ocurred while verifying recipeint address: ', debug.bold );
-                console.log( response.message );
+                console.log( response );
             }
         },
         success: response => {
             if ( DEBUG ) {
                 console.log( '%cSuccesfully verified address', debug.bold );
-                console.log( response.message );
+                console.log( response );
             }
 
             updateAddressFeedback( response );
