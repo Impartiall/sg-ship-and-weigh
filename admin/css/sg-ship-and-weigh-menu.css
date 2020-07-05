@@ -21,7 +21,6 @@ form .selectize-control {
     display: inline-block;
     width: 30%;
     max-width: 300px !important;
-    border-color: #303030 !important;
 }
 
 form label.suffix-label {
@@ -35,6 +34,19 @@ form #address-feedback {
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
+}
+
+form .label {
+    text-transform: capitalize;
+}
+
+form .deleteButton {
+    float: right;
+}
+
+form .value {
+    display: block;
+    font-size: 10px;
 }
 
 form li {
