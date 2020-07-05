@@ -34,19 +34,19 @@ const verifyAddress = () => {
     jQuery.ajax({
         method: 'GET',
         url: SHIP_AND_WEIGH.api.url.address_verification,
-        beforeSend: xhr => {
+        beforeSend( xhr ) {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
         data: {
             address: data.from_address,
         },
-        error: response => {
+        error( response ) {
             if ( DEBUG ) {
                 console.log( '%cAn error ocurred while verifying recipeint address: ', debug.bold );
                 console.log( response );
             }
         },
-        success: response => {
+        success( response ) {
             if ( DEBUG ) {
                 console.log( '%cSuccesfully verified address', debug.bold );
                 console.log( response );
@@ -94,7 +94,7 @@ jQuery( $ => {
         el: '#root',
         data: data,
         watch: {
-            'from_address.country' : country => {
+            'from_address.country'( country ) {
                 senderCountryControl.setValue( country );
             },
             from_address: {
@@ -109,17 +109,24 @@ jQuery( $ => {
     $.ajax({
         method: 'GET',
         url: SHIP_AND_WEIGH.api.url.settings,
-        beforeSend: xhr => {
+        beforeSend( xhr ) {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
-    }).then( response => {
-        if ( DEBUG ) {
-            console.log( '%cRetrieved settings', debug.bold );
-            console.log( response );
-        }
+        error( response ) {
+            if ( DEBUG ) {
+                console.log( '%cAn error occurred while retrieving settings', debug.bold );
+                console.log( response );
+            }
+        },
+        success( response ) {
+            if ( DEBUG ) {
+                console.log( '%cRetrieved settings', debug.bold );
+                console.log( response );
+            }
 
-        data.from_address = response.from_address || defaultAddress;
-        data.default_weight_mode = response.default_weight_mode || "";
+            data.from_address = response.from_address || defaultAddress;
+            data.default_weight_mode = response.default_weight_mode || "";
+        },
     });
 
     $( '#settings-form' ).on( 'submit', e => {
@@ -138,18 +145,19 @@ jQuery( $ => {
         $.ajax({
             method: 'POST',
             url: SHIP_AND_WEIGH.api.url.settings,
-            beforeSend: xhr => {
+            beforeSend( xhr ) {
                 xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
             },
             data: settings,
-            error: response => {
+            error( response ) {
                 data.feedback = SHIP_AND_WEIGH.strings.error;
                 if ( response.hasOwnProperty( 'message' ) ) {
                     data.feedback = response.message;
                 }
             },
-        }).then( response => {
+            success( response ) {
                 data.feedback = SHIP_AND_WEIGH.strings.saved;
+            }
         });
     });
 
@@ -159,18 +167,18 @@ jQuery( $ => {
         searchField: [ 'text' ],
         options: countries,
         render: {
-            item: ( item, escape ) => {
+            item( item, escape ) {
                 return `<div>
                     <span class="name">${ escape( item.text ) }</span>
                 </div>`;
             },
-            option: ( item, escape ) => {
+            option( item, escape ) {
                 return `<div>
                     <span class="name">${ escape( item.text ) }</span>
                 </div>`;
             },
         },
-        onChange: value => {
+        onChange( value ) {
             data.from_address.country = value;
 
             if ( DEBUG ) {
