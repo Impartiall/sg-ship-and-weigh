@@ -67,9 +67,9 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
 
         if ( WP_DEBUG ) {
             error_log( 'Rates:' );
-            error_log( print_r( $shipment->rates, true ) );
+            error_log( print_r( json_decode( $shipment->rates ), true ) );
         }
 
-        return $shipment->rates;
+        return json_decode( $shipment->rates );
     }
 }
