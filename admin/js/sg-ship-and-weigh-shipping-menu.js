@@ -55,7 +55,7 @@ jQuery.ajax({
         };
 
         data.weight_mode = response.default_weight_mode;
-        data.shipment.from_address = response;
+        data.shipment.from_address = response.from_address;
     },
 });
 
@@ -314,11 +314,9 @@ jQuery( $ => {
 });
 
 const verifyAddress = () => {
-    let request = data.shipment.to_address;
-    
     if ( DEBUG ) {
         console.log( '%cVerifying address', debug.bold );
-        console.log( request );
+        console.log( data.shipment.to_address );
     }
 
     jQuery.ajax({
@@ -327,7 +325,9 @@ const verifyAddress = () => {
         beforeSend: xhr => {
             xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
         },
-        data: request,
+        data: {
+            'address': data.shipment.to_address
+        },
         error: response => {
             if ( DEBUG ) {
                 console.log( '%cAn error ocurred while verifying recipeint address: ', debug.bold );

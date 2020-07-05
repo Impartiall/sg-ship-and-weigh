@@ -9,22 +9,6 @@ defined( 'ABSPATH' ) or die( 'Direct access blocked.' );
 class SG_Ship_And_Weigh_EasyPost_API {
 
     /**
-     * Specification of verification args
-     * 
-     * @since 1.0.0
-     */
-    protected array $verification_args_spec = array(
-        'street1',
-        'street2',
-        'city',
-        'state',
-        'zip',
-        'country',
-        'name',
-        'company',
-    );
-
-    /**
      * Instance of the SG_Ship_And_Weigh_EasyPost class
      * 
      * @since 1.0.0
@@ -54,7 +38,15 @@ class SG_Ship_And_Weigh_EasyPost_API {
             array(
                 'methods' => 'GET',
                 'callback' => array( $this, 'verify_address' ),
-                'args' => $this->get_verification_args(),
+                'args' => array(
+                    'address' => array(
+                        'type' => 'string[]',
+                        'required' => true,
+                        'sanatize_callback' => function ( $address ) {
+                            return array_map( 'esc_attr', $address );
+                        },
+                    ),
+                ),
                 'permissions_callback' => array( $this, 'permissions' ),
             ),
         );
@@ -103,24 +95,6 @@ class SG_Ship_And_Weigh_EasyPost_API {
         return rest_ensure_response(
             $this->easypostFunctions->verify_address( $address )
         );
-    }
-
-    /**
-     * Generate an array of REST API arg specifications
-     * 
-     * @since 1.0.0
-     */
-    public function get_verification_args() {
-        $verification_args = array();
-        foreach ( $this->verification_args_spec as $arg ) {
-            $verification_args[ $arg ] = array(
-                'type' => 'string',
-                'required' => 'false',
-                'sanatize_callback' => 'sanatize_text_field',
-            );
-        }
-
-        return $verification_args;
     }
 
     /**

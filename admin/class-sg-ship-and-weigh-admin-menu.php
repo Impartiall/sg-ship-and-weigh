@@ -45,28 +45,16 @@ class SG_Ship_And_Weigh_Admin_Menu {
     protected string $assets_root_path;
 
     /**
-     * Specification for allowed settings and their defaults,
-     * types, and sanatize callbacks
-     * 
-     * @since 1.0.0
-     * 
-     * @var array
-     */
-    protected array $settings_spec;
-
-    /**
      * SG_Ship_And_Weigh_Admin_Menu constructor
      * 
      * @since 1.0.0
      * 
      * @param string $assets_root_url URL of the includes and assets
      * @param string $assets_root_path Path to the includes and assets
-     * @param array $settings_spec Specification of plugin settings
      */
-    public function __construct( string $assets_root_url, string $assets_root_path, array $settings_spec ) {
+    public function __construct( string $assets_root_url, string $assets_root_path ) {
         $this->assets_root_url = $assets_root_url;
         $this->assets_root_path = $assets_root_path;
-        $this->settings_spec = $settings_spec;
 
         $this->init_hooks();
     }
@@ -220,7 +208,6 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     ),
                     'nonce' => wp_create_nonce( 'wp_rest' ),
                 ),
-                'settings_spec' => $this->get_vue_settings_spec(),
                 'debug'    => WP_DEBUG,
             ),
             $script_deps = [
@@ -233,24 +220,6 @@ class SG_Ship_And_Weigh_Admin_Menu {
             ],
         );
         include( $this->assets_root_path . 'pages/sg-ship-and-weigh-settings-menu.php' );
-    }
-
-    /**
-     * Format $settings_spec for use in VueJS
-     * 
-     * @since 1.0.0
-     * 
-     * @return array
-     */
-    public function get_vue_settings_spec() {
-        $vue_settings_spec = array();
-        foreach ( $this->settings_spec as $setting => $values ) {
-            $vue_settings_spec[ $setting ] = array(
-                'value'     => '',
-            );
-        }
-
-        return $vue_settings_spec;
     }
 
     /**
