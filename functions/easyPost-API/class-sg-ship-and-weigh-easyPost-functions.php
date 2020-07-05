@@ -35,14 +35,14 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
      */
     public function verify_address( array $address_params ) {
         $address_params[ 'verify' ] = array( 'delivery', 'zip4' );
-        $address = json_decode( \EasyPost\Address::create( $address_params ) );
+        $address = \EasyPost\Address::create( $address_params );
 
         if ( WP_DEBUG ) {
             error_log( 'Verifications:' );
-            error_log( print_r( $address, true ) );
+            error_log( print_r( json_decode( $address ), true ) );
         }
 
-        return $address;
+        return json_decode( $address );
     }
 
     /**
@@ -53,8 +53,6 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
      * @param array $shipment_args
      */
     public function get_rates( array $shipment_args ) {
-        error_log( print_r( $shipment_args[ 'parcel' ], true ) );
-
         $from_address = \EasyPost\Address::create( $shipment_args[ 'from_address' ] );
         $to_address = \EasyPost\Address::create( $shipment_args[ 'to_address' ] );
         $parcel = \EasyPost\Parcel::create( $shipment_args[ 'parcel' ] );
@@ -67,6 +65,11 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
             )
         );
 
-        return $shipment->get_rates();
+        if ( WP_DEBUG ) {
+            error_log( 'Rates:' );
+            error_log( print_r( $shipment->rates, true ) );
+        }
+
+        return $shipment->rates;
     }
 }

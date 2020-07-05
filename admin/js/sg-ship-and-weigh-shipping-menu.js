@@ -113,7 +113,7 @@ const getRates = callback => {
         success( response ) {
             if ( DEBUG ) {
                 console.log( '%cSuccessfully loaded rates:', debug.bold );
-                console.log( response.responseJSON );
+                console.log( response );
             }
             
             callback( response );
