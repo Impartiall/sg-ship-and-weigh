@@ -55,14 +55,14 @@
             <li id="weight">
                 <label>Weight</label>
                 <span v-show="weight_mode === 'pounds-and-ounces'">
-                    <input type="number" name="weight" id="weight-pounds">
+                    <input type="text" name="weight" id="weight-pounds" v-model="weight.wholePounds">
                     <label for="weight-pounds" class="suffix-label">lbs.</label>
 
-                    <input type="number" name="weight" id="weight-ounces">
+                    <input type="text" name="weight" id="weight-ounces" v-model="weight.remainderOunces">
                     <label for="weight-ounces" class="suffix-label">oz.</label>
                 </span>
                 <span v-show="weight_mode === 'decimal-pounds'">
-                    <input type="number" name="weight" id="weight-decimal-pounds"></input>
+                    <input type="text" name="weight" id="weight-decimal-pounds" v-model="shipment.parcel.weight"></input>
                     <label for="weight-decimal-pounds" class="suffix-label">lbs.</label>
                 </span>
                 <span id="weigh-options">

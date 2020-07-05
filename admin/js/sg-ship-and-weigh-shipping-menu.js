@@ -31,6 +31,10 @@ let data = {
             rate: '',
         },
     },
+    weight: {
+        wholePounds: 0,
+        remainderOunces: 0,
+    },
     address_feedback: '',
     weight_mode: 'pounds_and_ounces',
     feedback: '',
@@ -163,6 +167,19 @@ jQuery( $ => {
                 handler() {
                     verifyAddress();
                 },
+            },
+            weight_mode( mode ) {
+                if ( mode === "pounds-and-ounces" ) {
+                    this.weight.wholePounds = Math.floor( parseFloat( this.shipment.parcel.weight ) );
+
+                    totalOunces = parseFloat( this.shipment.parcel.weight ) * 16;
+                    this.weight.remainderOunces = ( totalOunces % 16 ).toFixed( 3 );
+                } else { // mode === "decimal-pounds"
+                    this.shipment.parcel.weight = (
+                        parseInt( this.weight.wholePounds )
+                        + parseFloat( this.weight.remainderOunces) / 16
+                    ).toFixed( 3 );
+                }
             },
             shipment: {
                 deep: true,
