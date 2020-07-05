@@ -73,7 +73,7 @@ const updateAddressFeedback = address => {
                 $feedback.off( 'click' );
                 $feedback.on( 'click', () => {
                     data.address_feedback = '';
-                    setRecipientAddress( address );
+                    data.shipment.to_address = address;
                 });
             }
         }
@@ -186,6 +186,7 @@ jQuery( $ => {
         });
     }
     const recipientNameReload = () => {
+        recipientNameControl.clearOptions();
         recipientNameControl.load( ( callback ) => {
             recipientNameLoad( null, callback );
         });
@@ -196,27 +197,36 @@ jQuery( $ => {
         create: true,
         persist: false,
         labelField: 'name',
-        valueField: 'name',
+        valueField: 'uuid',
         searchField: 'name',
         render: {
             item( item, escape ) {
-                return `<div>
-                    <span class="name">${ escape( item.name ) }</span>
-                    ${ item.hasOwnProperty( 'uuid' ) ? `<span class="text">(${ escape( item.text ) })</span>` : '' }
-                </div>`
+                let $option = $(`<div>
+                    <span class="label">${ escape( item.name.toLowerCase() ) }</span>
+                </div>`);
+                let $description = $(
+                    `<span class="value">${ escape( addressToString( item ) ) }</span>`
+                );
+
+                if ( item.uuid ) {
+
+                    $option.append( $description );
+                }
+
+                return $option;
             },
             option( item, escape ) {
                 let $option = $(`<div>
-                    <span class="name">${ escape( item.name ) }</span>
+                    <span class="label">${ escape( item.name.toLowerCase() ) }</span>
                 </div>`);
                 let $description = $(
-                    `<span class="text">${ escape( addressToString( item ) ) }</span>`
+                    `<span class="value">${ escape( addressToString( item ) ) }</span>`
                 );
                 let $removeButton = $(
-                    `<span class="dashicons dashicons-no"></span>`
+                    `<span class="deleteButton dashicons dashicons-no"></span>`
                 );
 
-                if ( item.hasOwnProperty( 'uuid' ) ) {
+                if ( item.uuid ) {
                     $removeButton.on( 'mousedown', e => {
                         e.stopPropagation();
 
@@ -230,6 +240,9 @@ jQuery( $ => {
                 return $option;
             },
         },
+        create( input, callback ) {
+            callback({ uuid: "", name: input });
+        },
         load: recipientNameLoad,
         onChange( value ) {
             let recipient = recipientNameControl.options[ value ];
@@ -238,7 +251,9 @@ jQuery( $ => {
                 console.log( recipient );
             }
 
-            setRecipientData( recipient );
+            if ( recipient ) {
+                data.shipment.to_address = recipient;
+            }
 
             if ( DEBUG ) {
                 console.log( '%cSet recipient data', debug.bold );
@@ -256,12 +271,12 @@ jQuery( $ => {
         render: {
             item( item, escape ) {
                 return `<div>
-                    <span class="name">${ escape( item.text ) }</span>
+                    <span class="label">${ escape( item.text ) }</span>
                 </div>`;
             },
             option( item, escape ) {
                 return `<div>
-                    <span class="name">${ escape( item.text ) }</span>
+                    <span class="label">${ escape( item.text ) }</span>
                 </div>`;
             },
         },
@@ -344,20 +359,6 @@ const verifyAddress = () => {
             updateAddressFeedback( response );
         }
     });
-};
-
-const setRecipientData = ({ id, name, email, address }) => {
-    data.shipment.to_address.uuid = id;
-    data.shipment.to_address.name = name;
-    data.shipment.to_address.email = email;
-    setRecipientAddress( address );
-}
-
-const setRecipientAddress = address => {
-    // Default address to its original state
-    for ( [ key, value ] of Object.entries( defaultAddress ) ) {
-        data.shipment.to_address[ key ] = address[ key ] || value;
-    }
 };
 
 const addRecipient = recipient => {
