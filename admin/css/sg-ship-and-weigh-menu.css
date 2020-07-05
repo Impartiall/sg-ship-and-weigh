@@ -49,6 +49,15 @@ form .value {
     font-size: 10px;
 }
 
+form .rate {
+    margin-bottom: 10px;
+}
+
+form .delivery {
+    font-style: italic;
+    font-size: 14px;
+}
+
 form li {
     margin-bottom: 20px;
 }
