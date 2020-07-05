@@ -85,7 +85,17 @@ const updateAddressFeedback = address => {
 };
 
 const addressToString = ({ name, street1, street2, city, state, zip, country }, showName = false) => {
-    return `${ showName && name ? name + ', ' : '' }${ street1 }, ${ street2 ? street2 + ', ' : '' } ${ city }, ${ state }, ${ zip }, ${ country }`;
+    let address = `${ showName && name ? name + ', ' : '' }`;
+    if ( street1 ) {
+        address += street1;
+    }
+    for ( field of [ street2, city, state, zip, country ] ) {
+        if ( field ) {
+            address += ', ' + field;
+        }
+    }
+
+    return address;
 }
 
 const rateToElement = ({ carrier, service, rate, currency, delivery_days, delivery_date_guaranteed }) => {

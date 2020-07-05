@@ -62,13 +62,13 @@ const updateAddressFeedback = address => {
         for ( [ field, value ] of Object.entries( data.from_address ) ) {
             // Only display suggestion if current address does not match
             if ( value !== address[ field ] ) {
-                data.address_feedback = formatAddressAsReadable( address );
+                data.address_feedback = addressToString( address );
 
                 $feedback = jQuery( '#address-feedback' );
                 $feedback.off( 'click' );
                 $feedback.on( 'click', () => {
                     data.address_feedback = '';
-                    setSenderAddress( address );
+                    data.from_address = address;
                 });
             }
         }
@@ -78,16 +78,19 @@ const updateAddressFeedback = address => {
     }
 };
 
-const formatAddressAsReadable = ({ street1, street2, city, state, zip, country }) => {
-    return `${ street1 }, ${ street2 ? street2 + ', ' : '' } ${ city }, ${ state }, ${ zip }, ${ country }`;
-}
-
-const setSenderAddress = address => {
-    // Default address to its original state
-    for ( [ key, value ] of Object.entries( defaultAddress ) ) {
-        data.from_address[ key ] = address[ key ] || value;
+const addressToString = ({ name, street1, street2, city, state, zip, country }, showName = false) => {
+    let address = `${ showName && name ? name + ', ' : '' }`;
+    if ( street1 ) {
+        address += street1;
     }
-};
+    for ( field of [ street2, city, state, zip, country ] ) {
+        if ( field ) {
+            address += ', ' + field;
+        }
+    }
+
+    return address;
+}
 
 jQuery( $ => {
     let app = new Vue({
