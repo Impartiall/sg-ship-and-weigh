@@ -32,10 +32,11 @@ let data = {
         },
         insurance: '',
     },
-    weight: {
+    pounds_and_ounces: {
         wholePounds: 0,
         remainderOunces: 0,
     },
+    decimalPounds: 0,
     address_feedback: '',
     weight_mode: 'pounds_and_ounces',
     feedback: '',
@@ -170,23 +171,27 @@ jQuery( $ => {
                 },
             },
             // Continuously update parcel weight
-            weight: {
+            decimalPounds( pounds ) {
+                this.shipment.parcel.weight = parseFloat( pounds ) * 16;
+            },
+            // Continuously update decimal pounds
+            pounds_and_ounces: {
                 deep: true,
                 handler( weight ) {
-                    this.shipment.parcel.weight = (
+                    this.decimalPounds = (
                         parseInt( weight.wholePounds )
                         + parseFloat( weight.remainderOunces) / 16
-                    ).toFixed( 3 );
+                    ).toFixed( 6 );
                 },
             },
             // Update pounds and ounces on mode switch
             weight_mode( mode ) {
                 // If mode is switched to pounds-and-ounces
                 if ( mode === "pounds-and-ounces" ) {
-                    this.weight.wholePounds = Math.floor( parseFloat( this.shipment.parcel.weight ) );
+                    this.pounds_and_ounces.wholePounds = Math.floor( parseFloat( this.decimalPounds ) );
 
-                    totalOunces = parseFloat( this.shipment.parcel.weight ) * 16;
-                    this.weight.remainderOunces = ( totalOunces % 16 ).toFixed( 3 );
+                    totalOunces = parseFloat( this.decimalPounds ) * 16;
+                    this.pounds_and_ounces.remainderOunces = ( totalOunces % 16 ).toFixed( 2 );
                 }
             },
             'shipment.to_address': {
