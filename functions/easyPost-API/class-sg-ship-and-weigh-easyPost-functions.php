@@ -105,6 +105,8 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
             )
         );
 
+        // TODO: Implement email tracking
+
         /**
          * !!TEST MODE ONLY - REMOVE IN PRODUCTION!!
          */
