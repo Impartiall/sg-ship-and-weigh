@@ -119,7 +119,7 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
      * @param array $rate_args Array of attributes for the desired rate
      * @param \EasyPost\Shipment $shipment Shipment object to search
      */
-    protected function get_rate( array $rate_args, \EastPost\Shipment $shipment ) {
+    protected function get_rate( array $rate_args, \EasyPost\Shipment $shipment ) {
         foreach ( $shipment->rates as $rate ) {
             if ( $rate->carrier === $rate_args[ 'carrier' ]
                 && $rate->service === $rate_args[ 'service' ]
