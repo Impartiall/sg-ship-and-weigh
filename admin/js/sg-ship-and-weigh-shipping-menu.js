@@ -189,7 +189,14 @@ jQuery( $ => {
                     this.weight.remainderOunces = ( totalOunces % 16 ).toFixed( 3 );
                 }
             },
-            shipment: {
+            'shipment.to_address': {
+                deep: true,
+                handler() {
+                    // Reload rates when form updates
+                    rateControl.load(getRates);
+                },
+            },
+            'shipment.parcel': {
                 deep: true,
                 handler() {
                     // Reload rates when form updates
