@@ -169,17 +169,24 @@ jQuery( $ => {
                     verifyAddress();
                 },
             },
+            // Continuously update parcel weight
+            weight: {
+                deep: true,
+                handler( weight ) {
+                    this.shipment.parcel.weight = (
+                        parseInt( weight.wholePounds )
+                        + parseFloat( weight.remainderOunces) / 16
+                    ).toFixed( 3 );
+                },
+            },
+            // Update pounds and ounces on mode switch
             weight_mode( mode ) {
+                // If mode is switched to pounds-and-ounces
                 if ( mode === "pounds-and-ounces" ) {
                     this.weight.wholePounds = Math.floor( parseFloat( this.shipment.parcel.weight ) );
 
                     totalOunces = parseFloat( this.shipment.parcel.weight ) * 16;
                     this.weight.remainderOunces = ( totalOunces % 16 ).toFixed( 3 );
-                } else { // mode === "decimal-pounds"
-                    this.shipment.parcel.weight = (
-                        parseInt( this.weight.wholePounds )
-                        + parseFloat( this.weight.remainderOunces) / 16
-                    ).toFixed( 3 );
                 }
             },
             shipment: {
