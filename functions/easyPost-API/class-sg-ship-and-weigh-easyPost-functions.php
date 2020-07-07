@@ -120,6 +120,12 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
             error_log( 'Shipment purchased:' );
             error_log( print_r( $shipment, true ) );
         }
+
+        return array(
+            'id' => $shipment->id,
+            'label_url' => $shipment->label_url,
+            'tracking_url' => $shipment->tracker->public_url,
+        );
     }
 
     /**
