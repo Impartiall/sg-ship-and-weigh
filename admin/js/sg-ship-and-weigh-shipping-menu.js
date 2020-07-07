@@ -122,40 +122,6 @@ const rateToElement = ({ carrier, service, rate, currency, delivery_days, delive
     return $rate;
 }
 
-const getRates = callback => {
-    if ( DEBUG ) {
-        console.log( '%cGetting rates', debug.bold );
-        console.log( data.shipment );
-    }
-
-    jQuery.ajax({
-        method: 'GET',
-        url: SHIP_AND_WEIGH.api.url.rates,
-        beforeSend( xhr ) {
-            xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
-        },
-        data: {
-            shipment: data.shipment,
-        },
-        error( response ) {
-            if ( DEBUG ) {
-                console.log( '%cAn error occurred while retrieving shipment rates', debug.bold );
-                console.log( response.responseJSON );
-            }
-            
-            callback();
-        },
-        success( response ) {
-            if ( DEBUG ) {
-                console.log( '%cSuccessfully loaded rates:', debug.bold );
-                console.log( response );
-            }
-            
-            callback( response );
-        },
-    });
-};
-
 jQuery( $ => {
     let app = new Vue({
         el: '#root',
@@ -391,6 +357,41 @@ jQuery( $ => {
         },
     });
     let rateControl = $rateSelect[ 0 ].selectize;
+
+    const getRates = callback => {
+        if ( DEBUG ) {
+            console.log( '%cGetting rates', debug.bold );
+            console.log( data.shipment );
+        }
+    
+        jQuery.ajax({
+            method: 'GET',
+            url: SHIP_AND_WEIGH.api.url.rates,
+            beforeSend( xhr ) {
+                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+            },
+            data: {
+                shipment: data.shipment,
+            },
+            error( response ) {
+                if ( DEBUG ) {
+                    console.log( '%cAn error occurred while retrieving shipment rates', debug.bold );
+                    console.log( response.responseJSON );
+                }
+                
+                callback();
+            },
+            success( response ) {
+                if ( DEBUG ) {
+                    console.log( '%cSuccessfully loaded rates:', debug.bold );
+                    console.log( response );
+                }
+
+                rateControl.clearOptions();
+                callback( response );
+            },
+        });
+    };
 
     $( '#add-recipient' ).on( 'click', e => {
         e.preventDefault();
