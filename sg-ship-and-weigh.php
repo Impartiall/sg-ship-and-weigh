@@ -97,7 +97,7 @@ class SG_Ship_And_Weigh {
         require_once( $this->functions_root_path
             . '/easypost-api/class-sg-ship-and-weigh-easypost-functions.php'
         );
-        
+
         // Require easypost client php
         require_once( $this->includes_root_path
             . "/easypost/vendor/autoload.php"

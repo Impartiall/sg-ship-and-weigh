@@ -420,6 +420,20 @@ jQuery( $ => {
                 rate: data.shipment.rate,
                 insurance: data.shipment.insurance,
             },
+            error( response ) {
+                if ( DEBUG ) {
+                    console.log( '%cAn error occurred while submitting the form', debug.bold );
+                    console.log( response.message );
+                }
+            },
+            success( response ) {
+                if ( DEBUG ) {
+                    console.log( 'Redirecting...' );
+                }
+
+                window.location.href = SHIP_AND_WEIGH.shipping_confirmation_url
+                                     + '&x=5';
+            },
         });
     });
 });

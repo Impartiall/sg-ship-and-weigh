@@ -27,6 +27,15 @@ class SG_Ship_And_Weigh_Admin_Menu {
     protected string $settings_slug = 'sg-ship-and-weigh-settings-menu';
 
     /**
+     * Shipping confirmation page menu slug
+     * 
+     * @since 1.0.0
+     * 
+     * @var string
+     */
+    protected string $shipping_confirmation_slug = 'sg-ship-and-weigh-shipping-confirmation';
+
+    /**
      * URL of the admin includes and assets
      * 
      * @since 1.0.0
@@ -67,6 +76,9 @@ class SG_Ship_And_Weigh_Admin_Menu {
     public function init_hooks() {
         add_action( 'admin_menu', array( $this, 'add_shipping_menu' ) );
         add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
+
+        add_action( 'admin_menu', array( $this, 'add_shipping_confirmation_page' ) );
+        add_action( 'admin_head', array( $this, 'hide_shipping_confirmation_page') );
     }
 
     /**
@@ -142,6 +154,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     'nonce'          => wp_create_nonce( 'wp_rest' ),
                 ),
                 'debug'   => WP_DEBUG,
+                'shipping_confirmation_url' => esc_url_raw( admin_url() . 'admin.php?page=' . $this->shipping_confirmation_slug ),
             ),
             $script_deps = [
                 'jquery',
@@ -236,6 +249,40 @@ class SG_Ship_And_Weigh_Admin_Menu {
             'manage_options',
             $this->settings_slug,
             array( $this, 'load_settings_menu' ),
+        );
+    }
+
+    public function load_shipping_confirmation_page() {
+        $this->enqueue_assets(
+            $this->shipping_confirmation_slug,
+            'js/sg-ship-and-weigh-shipping-confirmation-page.js',
+            'css/sg-ship-and-weigh-menu.css',
+            'SHIP_AND_WEIGH',
+            array(),
+        );
+        include( $this->assets_root_path . 'pages/sg-ship-and-weigh-shipping-confirmation-page.php' );
+    }
+
+    public function add_shipping_confirmation_page() {
+        add_submenu_page(
+            $this->shipping_slug,
+            'Shipping Confirmation - Ship and Weigh',
+            'Shipping Confirmation',
+            'manage_options',
+            $this->shipping_confirmation_slug,
+            array( $this, 'load_shipping_confirmation_page' ),
+        );
+    }
+
+    /**
+     * Hide shipping confirmation page
+     * 
+     * @since 1.0.0
+     */
+    public function hide_shipping_confirmation_page() {
+        remove_submenu_page(
+            $this->shipping_slug,
+            $this->shipping_confirmation_slug,
         );
     }
 }
