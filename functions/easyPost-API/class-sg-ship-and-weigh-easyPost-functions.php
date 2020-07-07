@@ -105,6 +105,15 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
             )
         );
 
+        /**
+         * !!TEST MODE ONLY - REMOVE IN PRODUCTION!!
+         */
+        $shipment->tracking_code = 'EZ1000000001';
+        $shipment->tracker->tracking_code = 'EZ1000000001';
+        /**
+         * !!TEST MODE ONLY - REMOVE IN PRODUCTION!!
+         */
+
         if ( WP_DEBUG ) {
             error_log( 'Shipment purchased:' );
             error_log( print_r( $shipment, true ) );
