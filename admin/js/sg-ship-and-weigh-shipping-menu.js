@@ -391,6 +391,24 @@ jQuery( $ => {
         addRecipient( data.shipment.to_address ).then( recipientNameReload );
     });
 
+    $( '#shipping-form' ).on( 'submit', e => {
+        e.preventDefault();
+
+        $.ajax({
+            method: 'POST',
+            url: SHIP_AND_WEIGH.api.url.buy_shipment,
+            beforeSend( xhr ) {
+                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+            },
+            data: {
+                from_address: data.shipment.from_address,
+                to_address: data.shipment.to_address,
+                parcel: data.shipment.parcel,
+                rate: data.shipment.rate,
+                insurance: data.shipment.insurance,
+            },
+        });
+    });
 });
 
 const verifyAddress = () => {
@@ -422,25 +440,6 @@ const verifyAddress = () => {
 
             updateAddressFeedback( response );
         }
-    });
-
-    $( '#shipping-form' ).on( 'submit', e => {
-        e.preventDefault();
-
-        $.ajax({
-            method: 'POST',
-            url: SHIP_AND_WEIGH.api.url.buy_shipment,
-            beforeSend( xhr ) {
-                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
-            },
-            data: {
-                from_address: data.shipment.from_address,
-                to_address: data.shipment.to_address,
-                parcel: data.shipment.parcel,
-                rate: data.shipment.rate,
-                insurance: data.shipment.insurance,
-            }
-        });
     });
 };
 
