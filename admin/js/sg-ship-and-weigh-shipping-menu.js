@@ -30,6 +30,7 @@ let data = {
             carrier: '',
             rate: '',
         },
+        insurance: '',
     },
     weight: {
         wholePounds: 0,
@@ -358,11 +359,11 @@ jQuery( $ => {
             };
         },
         onChange( value ) {
-            data.rate = rateControl.options[ value ];
+            data.shipment.rate = rateControl.options[ value ];
 
             if ( DEBUG ) {
                 console.log( `%cSet shipment rate to '${ value }'`, debug.bold );
-                console.log( data.rate );
+                console.log( data.shipment.rate );
             }
         },
         onLoad() {
@@ -414,6 +415,25 @@ const verifyAddress = () => {
 
             updateAddressFeedback( response );
         }
+    });
+
+    $( '#shipping-form' ).on( 'submit', e => {
+        e.preventDefault();
+
+        $.ajax({
+            method: 'POST',
+            url: SHIP_AND_WEIGH.api.url.buy_shipment,
+            beforeSend( xhr ) {
+                xhr.setRequestHeader( 'X-WP-Nonce', SHIP_AND_WEIGH.api.nonce );
+            },
+            data: {
+                from_address: data.shipment.from_address,
+                to_address: data.shipment.to_address,
+                parcel: data.shipment.parcel,
+                rate: data.shipment.rate,
+                insurance: data.shipment.insurance,
+            }
+        });
     });
 };
 

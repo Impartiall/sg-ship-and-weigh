@@ -73,7 +73,7 @@
             </li>
             <li>
                 <label for="insurance">Insurance</label>
-                <input type="number" name="insurance" id="insurance">
+                <input type="text" name="insurance" id="insurance" v-model="shipment.insurance">
             </li>
             <li>
                 <label for="rate">Service / Carrier / Rate</label>
