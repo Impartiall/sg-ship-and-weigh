@@ -137,6 +137,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
                         'recipients' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/recipients' ) ),
                         'address_verification' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/easypost/verify-address' ) ),
                         'rates' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/easypost/rates' ) ),
+                        'buy_shipment' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/easypost/buy-shipment' ) ),
                     ),
                     'nonce'          => wp_create_nonce( 'wp_rest' ),
                 ),

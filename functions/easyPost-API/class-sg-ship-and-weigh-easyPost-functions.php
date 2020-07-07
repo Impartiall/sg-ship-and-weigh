@@ -72,4 +72,64 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
 
         return json_decode( $shipment )->rates;
     }
+
+    /**
+     * Buy a shipment
+     * 
+     * @since 1.0.0
+     * 
+     * @param array $shipment_args
+     */
+    public function buy_shipment( array $shipment_args ) {
+        $from_address = \EasyPost\Address::create( $shipment_args[ 'from_address' ] );
+        $to_address = \EasyPost\Address::create( $shipment_args[ 'to_address' ] );
+        $parcel = \EasyPost\Parcel::create( $shipment_args[ 'parcel' ] );
+
+        $shipment = \EasyPost\Shipment::create(
+            array(
+                'from_address' => $from_address,
+                'to_address' => $to_address,
+                'parcel' => $parcel,
+            )
+        );
+
+        $rate = $this->get_rate( $shipment_args[ 'rate' ], $shipment );
+        if ( null === $rate ) {
+            return new WP_Error( '500', 'Rate unavailable' );
+        }
+
+        $shipment->buy(
+            array(
+                'rate' => $rate,
+                'insurance' => $shipment_args[ 'insurance' ],
+            )
+        );
+
+        if ( WP_DEBUG ) {
+            error_log( 'Shipment purchased:' );
+            error_log( print_r( $shipment, true ) );
+        }
+    }
+
+    /**
+     * Find a shipping rate by carrier, service, and price
+     * 
+     * @since 1.0.0
+     * 
+     * @param array $rate_args Array of attributes for the desired rate
+     * @param \EasyPost\Shipment $shipment Shipment object to search
+     */
+    protected function get_rate( array $rate_args, \EastPost\Shipment $shipment ) {
+        foreach ( $shipment->rates as $rate ) {
+            if ( $rate->carrier === $rate_args[ 'carrier' ]
+                && $rate->service === $rate_args[ 'service' ]
+                && $rate->currency === $rate_args[ 'currency' ]
+                && $rate->rate === $rate_args[ 'rate' ]
+            ) {
+                return $rate;
+            }
+        }
+
+        return null;
+    }
 }

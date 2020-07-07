@@ -71,6 +71,48 @@ class SG_Ship_And_Weigh_EasyPost_API {
                 'permissions_callback' => array( $this, 'permissions' ),
             ),
         );
+        register_rest_route( 'sg-ship-and-weigh-api/v1', '/easypost/buy-shipment',
+            array(
+                'methods' => 'POST',
+                'callback' => array( $this, 'buy_shipment' ),
+                'args' => array(
+                    'from_address' => array(
+                        'type' => 'string[]',
+                        'required' => true,
+                        'sanatize_callback' => function ( $address ) {
+                            return array_map( 'esc_attr', $address );
+                        },
+                    ),
+                    'to_address' => array(
+                        'type' => 'string[]',
+                        'required' => true,
+                        'sanatize_callback' => function ( $address ) {
+                            return array_map( 'esc_attr', $address );
+                        },
+                    ),
+                    'parcel' => array(
+                        'type' => 'string[]',
+                        'required' => true,
+                        'sanatize_callback' => function ( $address ) {
+                            return array_map( 'esc_attr', $address );
+                        },
+                    ),
+                    'rate' => array(
+                        'type' => 'string[]',
+                        'required' => true,
+                        'sanatize_callback' => function ( $address ) {
+                            return array_map( 'esc_attr', $address );
+                        },
+                    ),
+                    'insurance' => array(
+                        'type' => 'string',
+                        'required' => false,
+                        'sanatize_callback' => 'sanaztize_text_field',
+                    ),
+                ),
+                'permissions_callback' => array( $this, 'permissions' ),
+            ),
+        );
     }
 
     /**
@@ -115,6 +157,21 @@ class SG_Ship_And_Weigh_EasyPost_API {
 
         return rest_ensure_response(
             $this->easypostFunctions->get_rates( $shipment )
+        );
+    }
+
+    /**
+     * Buy a shipment
+     * 
+     * @since 1.0.0
+     * 
+     * @param WP_REST_Request $request
+     */
+    public function buy_shipment( WP_REST_Request $request ) {
+        $shipment = $request->get_params();
+
+        return rest_ensure_response(
+            $this->easypostFunctions->buy_shipment( $shipment )
         );
     }
 }
