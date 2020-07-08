@@ -265,6 +265,7 @@ class SG_Ship_And_Weigh_Admin_Menu {
                     ),
                 ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
+                'debug' => WP_DEBUG,
             ),
         );
         include( $this->assets_root_path . 'pages/sg-ship-and-weigh-shipping-confirmation-page.php' );
