@@ -90,6 +90,9 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
                 'from_address' => $from_address,
                 'to_address' => $to_address,
                 'parcel' => $parcel,
+                'options' => array(
+                    'label_format' => 'PDF',
+                ),
             )
         );
 
