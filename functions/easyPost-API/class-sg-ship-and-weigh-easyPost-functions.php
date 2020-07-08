@@ -123,8 +123,8 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
 
         return array(
             'id' => $shipment->id,
-            'label_url' => $shipment->label_url,
             'tracking_url' => $shipment->tracker->public_url,
+            'label_url' => $shipment->postage_label->label_url,
         );
     }
 

@@ -429,10 +429,14 @@ jQuery( $ => {
             success( response ) {
                 if ( DEBUG ) {
                     console.log( 'Redirecting...' );
+                    console.log( response.label_url );
+                    debugger;
                 }
 
                 window.location.href = SHIP_AND_WEIGH.shipping_confirmation_url
-                                     + '&x=5';
+                                     + '&id=' + encodeURIComponent( response.id )
+                                     + '&tracking_url=' + encodeURIComponent( response.tracking_url )
+                                     + '&label_url=' + encodeURIComponent( response.label_url );
             },
         });
     });

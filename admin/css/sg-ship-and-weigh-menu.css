@@ -24,7 +24,7 @@ form .selectize-control {
 }
 
 form label.suffix-label {
-    float: none
+    float: none;
 }
 
 form #address-feedback {
@@ -72,4 +72,32 @@ form #weight-pounds, form #weight-ounces {
 
 form #weigh-button {
     margin-right: 10px;
+}
+
+#shipping-confirmation {
+    padding: 35px;
+}
+
+.info-link {
+    display: block;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.info-link h2 {
+    float: left;
+    width: 25%;
+    max-width: 160px;
+    margin-top: 0;
+    margin-right: 30px;
+    text-align: left;
+}
+
+.info-link a {
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.info-link .dashicons {
+    margin-left: 5px;
 }
