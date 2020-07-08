@@ -14,6 +14,7 @@
 
     <button id="refund" class="button button-primary">Refund Shipment</button>
 
+    <p id="feedback"></p>
     <script>
         const params = <?php echo json_encode( $_GET, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES ); ?>;
     </script>
