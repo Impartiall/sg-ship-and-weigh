@@ -113,6 +113,20 @@ class SG_Ship_And_Weigh_EasyPost_API {
                 'permissions_callback' => array( $this, 'permissions' ),
             ),
         );
+        register_rest_route( 'sg-ship-and-weigh-api/v1', '/easypost/refund',
+            array(
+                'methods' => 'POST',
+                'callback' => array( $this, 'refund_shipment' ),
+                'args' => array(
+                    'id' => array(
+                        'type' => 'string',
+                        'required' => true,
+                        'sanatize_callback' => 'sanatize_text_field',
+                    ),
+                ),
+                'permissions_callback' => array( $this, 'permissions' ),
+            ),
+        );
     }
 
     /**
@@ -172,6 +186,20 @@ class SG_Ship_And_Weigh_EasyPost_API {
 
         return rest_ensure_response(
             $this->easypostFunctions->buy_shipment( $shipment )
+        );
+    }
+
+    /**
+     * Request a shipment refund
+     * 
+     * @since 1.0.0
+     * 
+     * @param WP_REST_Request $request
+     */
+    public function refund_shipment( WP_REST_Request $request ) {
+        $shipment_id = $request->get_param( 'id' );
+        return rest_ensure_response(
+            $this->easypostFunctions->refund_shipment( $shipment_id )
         );
     }
 }

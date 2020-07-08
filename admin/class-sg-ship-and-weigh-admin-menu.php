@@ -258,7 +258,14 @@ class SG_Ship_And_Weigh_Admin_Menu {
             'js/sg-ship-and-weigh-shipping-confirmation-page.js',
             'css/sg-ship-and-weigh-menu.css',
             'SHIP_AND_WEIGH',
-            array(),
+            array(
+                'api' => array(
+                    'url' => array(
+                        'refund' => esc_url_raw( rest_url( 'sg-ship-and-weigh-api/v1/easypost/refund' ) ),
+                    ),
+                ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+            ),
         );
         include( $this->assets_root_path . 'pages/sg-ship-and-weigh-shipping-confirmation-page.php' );
     }

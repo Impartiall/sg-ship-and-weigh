@@ -129,6 +129,19 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
     }
 
     /**
+     * Request a shipment refund
+     * 
+     * @since 1.0.0
+     * 
+     * @param string $shipment_id ID of the shipment to be refunded
+     */
+    public function refund_shipment( string $shipment_id ) {
+        $shipment = \EasyPost\Shipment::retrieve( $shipment_id );
+
+        $shipment->refund();
+    }
+
+    /**
      * Find a shipping rate by carrier, service, and price
      * 
      * @since 1.0.0
