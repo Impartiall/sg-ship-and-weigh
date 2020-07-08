@@ -407,6 +407,8 @@ jQuery( $ => {
     $( '#shipping-form' ).on( 'submit', e => {
         e.preventDefault();
 
+        $( '#form-submit' ).text( 'Submiting...' );
+
         $.ajax({
             method: 'POST',
             url: SHIP_AND_WEIGH.api.url.buy_shipment,
@@ -425,12 +427,12 @@ jQuery( $ => {
                     console.log( '%cAn error occurred while submitting the form', debug.bold );
                     console.log( response.message );
                 }
+
+                $( '#form-submit' ).text( 'Submit' );
             },
             success( response ) {
                 if ( DEBUG ) {
                     console.log( 'Redirecting...' );
-                    console.log( response.label_url );
-                    debugger;
                 }
 
                 window.location.href = SHIP_AND_WEIGH.shipping_confirmation_url

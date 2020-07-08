@@ -79,16 +79,8 @@
                 <label for="rate">Service / Carrier / Rate</label>
                 <select name="rate" id="rate"></select>
             </li>
-            <!-- <li>
-                <label for="tracking">Tracking</label>
-                <select name="tracking" id="tracking"></select>
-            </li>
-            <li>
-                <label for="carrier">Carrier</label>
-                <select name="carrier" id="carrier"></select>
-            </li> -->
         </ul>
-        <button type="submit" class="button button-primary">Submit</button>
+        <button id="form-submit" type="submit" class="button button-primary">Submit</button>
     </form>
     <p>{{ feedback }}</p>
 </div>
