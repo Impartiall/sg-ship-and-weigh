@@ -138,7 +138,13 @@ class SG_Ship_And_Weigh_EasyPost_Functions {
     public function refund_shipment( string $shipment_id ) {
         $shipment = \EasyPost\Shipment::retrieve( $shipment_id );
 
-        $shipment->refund();
+        try {
+             $shipment->refund();
+        } catch ( \EasyPost\Error $e ) {
+            return new WP_Error( '500', 'EasyPost could not request a refund', $e->jsonBody[ 'error' ] );
+        }
+
+        return 'Refund request submitted';
     }
 
     /**
