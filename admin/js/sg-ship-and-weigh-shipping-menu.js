@@ -407,7 +407,7 @@ jQuery( $ => {
     $( '#shipping-form' ).on( 'submit', e => {
         e.preventDefault();
 
-        $( '#form-submit' ).text( 'Submiting...' );
+        $( '#form-submit' ).text( 'Submitting...' );
 
         $.ajax({
             method: 'POST',
