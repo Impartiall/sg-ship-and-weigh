@@ -17,6 +17,8 @@ let data = {
         country: '',
     },
     default_weight_mode: '',
+    easypost_api_key: '',
+    easypost_api_key_visible: false,
     address_feedback: '',
     feedback: '',
 };
@@ -129,7 +131,17 @@ jQuery( $ => {
 
             data.from_address = response.from_address || defaultAddress;
             data.default_weight_mode = response.default_weight_mode || "";
+            data.easypost_api_key = response.easypost_api_key || "";
+
+            if ( data.easypost_api_key == "" ) {
+                data.feedback = "Please enter an EasyPost API key to use this plugin.";
+            }
         },
+    });
+
+    $( '#easypost-api-key-toggle-visibility' ).on( 'click', e => {
+        e.preventDefault();
+        data.easypost_api_key_visible = !data.easypost_api_key_visible;
     });
 
     $( '#settings-form' ).on( 'submit', e => {
@@ -138,6 +150,7 @@ jQuery( $ => {
         let settings = {
             from_address: data.from_address,
             default_weight_mode: data.default_weight_mode,
+            easypost_api_key: data.easypost_api_key,
         };
 
         if ( DEBUG ) {

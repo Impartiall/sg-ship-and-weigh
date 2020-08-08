@@ -60,6 +60,11 @@ class SG_Ship_And_Weigh_Admin_API {
                             'required' => false,
                             'sanatize_callback' => 'sanatize_text_field',
                         ),
+                        'easypost_api_key' => array(
+                            'type' => 'string',
+                            'required' => false,
+                            'sanatize_callback' => 'sanatize_text_field',
+                        ),
                     ),
                     'permissions_callback' => array( $this, 'permissions' )
                 ),

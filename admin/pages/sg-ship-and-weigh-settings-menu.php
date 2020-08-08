@@ -40,6 +40,11 @@
                 <input type="radio" name="default-weight-mode" id="decimal-pounds" v-model="default_weight_mode" value="decimal-pounds">
                 <label for="decimal-pounds" class="suffix-label">Decimal Pounds</label>
             </li>
+            <li>
+                <label for="easypost-api-key">EasyPost API Key</label>
+                <input :type="easypost_api_key_visible ? 'text' : 'password'" name="easypost-api-key" id="easypost-api-key" v-model="easypost_api_key">
+                <button class="button" id="easypost-api-key-toggle-visibility">{{ easypost_api_key_visible ? "Hide" : "Show" }}</button>
+            </li>
         </ul>
 
         <button type="submit" class="button button-primary">Submit</button>
